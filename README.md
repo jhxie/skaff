@@ -1,5 +1,5 @@
 ## Genmake
-An automatic makefile generater based on CMake.
+An automatic CMake-based project generator.
 
 # License
 Copyright &copy; 2016 Jiahui Xie
