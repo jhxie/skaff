@@ -1,0 +1,4 @@
+include README.md
+include LICENSE.txt
+include genmake/config/*.txt
+include genmake/license/*.txt
