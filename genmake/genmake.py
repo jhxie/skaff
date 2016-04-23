@@ -69,7 +69,7 @@ def _license_sign(author, directory, license):
 
     license_text = sys.path[0] + "/license/" + license + ".txt"
     license_target = directory + "LICENSE.txt"
-    if license in set(("bsd2", "bsd3")):
+    if license in set(("bsd2", "bsd3", "mit")):
         with open(license_text, "r") as from_file:
             vanilla_license_text = from_file.read()
             with open(license_target, "w") as to_file:
