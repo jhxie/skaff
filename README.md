@@ -1,7 +1,9 @@
-# Genmake
+![genmake](./img/banner.png)
+
+## Overview
 An automatic CMake-based project generator.
 
-# License
+## License
 Copyright &copy; 2016 Jiahui Xie  
 Licensed under the [BSD 2-Clause License][BSD2].  
 Distributed under the [BSD 2-Clause License][BSD2].  
