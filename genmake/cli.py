@@ -16,7 +16,7 @@ from genmake import genmake
 def main():
     """
     """
-    genmake_cli_description = "Generate a CMake-Based C/C++ Project Structure"
+    genmake_cli_description = "CMake-Based C/C++ Project Structure Generator"
     genmake_cli_dict = {"author": str(),
                         "directories": set(),
                         "language": str(),
