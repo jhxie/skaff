@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="0"
      inkscape:zoom="0.35"
-     inkscape:cx="1546.3672"
-     inkscape:cy="177.14286"
+     inkscape:cx="1805.4026"
+     inkscape:cy="-51.428571"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -52,84 +52,196 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4349"
+       width="500"
+       height="500"
+       x="500"
+       y="552.36218" />
+    <rect
+       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4514"
+       width="500"
+       height="500"
+       x="500"
+       y="52.362167" />
+    <rect
+       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516"
+       width="500"
+       height="500"
+       x="0"
+       y="52.362183" />
+    <rect
+       style="fill:#11a0a8;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-6"
+       width="500"
+       height="500"
+       x="0"
+       y="552.36218" />
     <circle
-       style="fill:#e16b6b;fill-opacity:1"
-       id="path4168"
-       cx="500"
-       cy="552.36218"
-       r="500" />
-    <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4170"
-       cx="500"
-       cy="552.36218"
-       r="400" />
-    <circle
-       style="fill:#a2c0c4;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4170-1"
-       cx="500"
-       cy="552.36218"
-       r="350" />
-    <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4269"
-       cx="500"
-       cy="552.36218"
+       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="path4661"
+       cx="0"
+       cy="302.36218"
        r="250" />
+    <circle
+       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="path4661-9"
+       cx="750"
+       cy="52.362183"
+       r="250" />
+    <circle
+       style="fill:#11a0a8;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="path4661-9-5"
+       cx="250"
+       cy="1052.3622"
+       r="250" />
+    <circle
+       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="path4661-9-5-8"
+       cx="1000"
+       cy="802.36218"
+       r="250" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710"
+       width="250"
+       height="50"
+       x="-270"
+       y="172.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710-9"
+       width="250"
+       height="50"
+       x="-270"
+       y="282.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710-99"
+       width="250"
+       height="50"
+       x="-270"
+       y="382.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710-0"
+       width="250"
+       height="50"
+       x="1000"
+       y="672.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710-93"
+       width="260"
+       height="50"
+       x="1000"
+       y="772.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4710-4"
+       width="250"
+       height="50"
+       x="1000"
+       y="872.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751"
+       width="50"
+       height="250"
+       x="600"
+       y="302.36221" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751-9"
+       width="50"
+       height="250"
+       x="725.28601"
+       y="302.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751-5"
+       width="50"
+       height="250"
+       x="850"
+       y="302.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751-8"
+       width="50"
+       height="250"
+       x="100"
+       y="552.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751-3"
+       width="50"
+       height="250"
+       x="225"
+       y="552.36218" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4751-83"
+       width="50"
+       height="250"
+       x="350"
+       y="552.36218" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:500px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#795549;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
-       x="1171.9238"
+       style="font-style:normal;font-weight:normal;font-size:500px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#dd1156;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="1471.9238"
        y="745.2821"
-       id="text4271"
+       id="text4798"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         id="tspan4273"
-         x="1171.9238"
+         id="tspan4800"
+         x="1471.9238"
          y="745.2821">GenMake</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a2c0c4;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="497.19238"
-       y="1541.9618"
+       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#dd1156;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="697.19238"
+       y="1841.9618"
        id="text5873"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5875"
-         x="497.19238"
-         y="1541.9618">Copyright © 2016 Jiahui Xie</tspan></text>
+         x="697.19238"
+         y="1841.9618">Copyright © 2016 Jiahui Xie</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e16b6b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#fff6d9;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1500.1465"
-       y="1541.9618"
+       y="1841.9618"
        id="text3452"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3454"
          x="1500.1465"
-         y="1541.9618">Tools Used: Inkscape</tspan></text>
+         y="1841.9618">Tools Used: Inkscape</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#a2c0c4;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="598.54999"
-       y="1747.7122"
+       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#11a0a8;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="798.54999"
+       y="2047.7122"
        id="text3405"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3407"
-         x="598.54999"
-         y="1747.7122">版权所有 © 2016 谢嘉辉 </tspan></text>
+         x="798.54999"
+         y="2047.7122">版权所有 © 2016 谢嘉辉 </tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e16b6b;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:50px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#554434;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="1499.2"
-       y="1741.9618"
+       y="2041.9618"
        id="text4209"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4211"
          x="1499.2"
-         y="1741.9618">使用工具: Inkscape</tspan></text>
+         y="2041.9618">使用工具: Inkscape</tspan></text>
   </g>
 </svg>

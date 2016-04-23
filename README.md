@@ -4,10 +4,13 @@
 An automatic CMake-based project generator.
 
 ## Credit
-* GenMake's logo is inspired by the android app [Material
-Circle](https://play.google.com/store/apps/details?id=com.twom.motion.circle).
+* The colorscheme of GenMake's logo is inspired by this
+[example
+](http://i34.photobucket.com/albums/d142/JanetB0601/ColorComboChallenge72.jpg).
 * [Inkscape](https://inkscape.org/) is used to design the original SVG format
 logo.
+* Motivation from Douglas Mcilroy:"*As a programmer, it is your job to put
+yourself out of business. What you do today can be automated tomorrow.*"
 
 ## License
 Copyright &copy; 2016 Jiahui Xie  
