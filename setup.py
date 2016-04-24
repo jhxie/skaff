@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version="0.1",
+          version="0.2",
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
