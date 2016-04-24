@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 
+"""
+Main module of genmake.
+"""
 # --------------------------------- MODULES -----------------------------------
 import os
 import pwd
 import shutil
+import subprocess
 import sys
 
 from datetime import datetime
 # --------------------------------- MODULES -----------------------------------
 
 
-def genmake(author, directories, language, license):
+def genmake(author, directories, language, license, quiet):
     """
     Create all the necessary subdirectories in addition to the project root.
     """
@@ -29,6 +33,7 @@ def genmake(author, directories, language, license):
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
         _conf_spawn(base_dir, language)
+        _doc_create(author, base_dir, license, quiet)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -42,7 +47,7 @@ def _license_sign(author, directory, license):
     Copy the license chosen by the 'author' to the 'directory' and sign it with
     'author' with current year prepended if applicable.
 
-    If the license is not specified, default to GPLv3.
+    If the license is not specified, default to BSD 2-clause license.
     """
     licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     bsd_copyright = "Copyright (c) {0}, {1}\n"
@@ -50,24 +55,14 @@ def _license_sign(author, directory, license):
     if 0 == len(directory) or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    # If the license is left as empty, default to GPLv3.
+    # If the license is left as empty, default to BSD 2-clause license.
     if 0 == len(license):
-        license = "gpl3"
+        license = "bsd2"
     elif license not in licenses:
         raise ValueError("Invalid license choice")
 
-    # If the author's name is not explicitly stated in the commmand-line
-    # argument, default to the GECOS field, which normally stands for the
-    # full username of the current user; otherwise fall back to login name.
-    pw_record = None
     if not author:
-        author = pwd.getpwuid(os.getuid()).pw_gecos
-        pw_record = pwd.getpwuid(os.getuid())
-
-        if pw_record.pw_gecos:
-            author = pw_record.pw_gecos
-        else:
-            author = pw_record.pw_name
+        author = _author_get()
 
     if not sys.path[0]:
         raise RuntimeError("Current sys.path[0] is empty")
@@ -113,8 +108,67 @@ def _conf_spawn(directory, language):
                     conf_target_prefix + configuration)
 
 
-def _doc_create(directory, license, quiet=False):
+def _doc_create(author, directory, license, quiet=False):
     """
+    Create 'Doxyfile' and 'README.md' template.
+
+    Launch $EDITOR or vim on the 'Doxyfile' upon completion, can be turned off
+    by setting quiet to True.
     """
-    pass
-    # licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+    licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+    # If the license is left as empty, default to BSD 2-clause license.
+    if 0 == len(license):
+        license = "bsd2"
+    elif license not in licenses:
+        raise ValueError("Invalid license choice")
+
+    if not author:
+        author = _author_get()
+
+    readme_header = "## Overview\n\n## License\n"
+    copyright_line = "Copyright &copy; {0} {1}\n"
+    readme_text = directory + "README.md"
+    license_text = sys.path[0] + "/license/" + license + ".md"
+
+    with open(license_text, "r") as license_file:
+        license_markdown = license_file.read()
+        with open(readme_text, "w") as readme_file:
+            date_record = datetime.now()
+            readme_file.write(readme_header)
+            readme_file.write(copyright_line.format(date_record.year, author))
+            readme_file.write(license_markdown)
+
+    doxyfile = "Doxyfile"
+    doxyfile_source_prefix = sys.path[0] + "/config/"
+    doxyfile_target_prefix = directory
+    shutil.copy(doxyfile_source_prefix + doxyfile,
+                doxyfile_target_prefix + doxyfile)
+
+    if not quiet:
+        # Default to 'vim' if the environment variable is not set.
+        editor = os.environ.get("EDITOR", "vim")
+        subprocess.call([editor, doxyfile_target_prefix + doxyfile])
+
+
+def _author_get():
+    """
+    Get the current logged-in username from GECOS or name field.
+
+    Raise RuntimeError if both attempt fail.
+    """
+    # If the author's name is not explicitly stated in the commmand-line
+    # argument, default to the GECOS field, which normally stands for the
+    # full username of the current user; otherwise fall back to login name.
+    author = None
+    pw_record = None
+    pw_record = pwd.getpwuid(os.getuid())
+
+    if pw_record.pw_gecos:
+        author = pw_record.pw_gecos
+    elif pw_record.pw_name:
+        author = pw_record.pw_name
+
+    if author:
+        return author
+    else:
+        raise RuntimeError("Failed attempt to get default username")

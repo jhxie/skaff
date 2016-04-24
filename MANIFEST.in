@@ -1,8 +1,10 @@
 include README.md
 include LICENSE.txt
 include genmake/config/*.txt
+include genmake/config/Doxyfile
 include genmake/config/c/*.txt
 include genmake/config/cxx/*.txt
+include genmake/license/*.md
 include genmake/license/*.txt
 global-exclude __pycache__
 global-exclude *.py[co]

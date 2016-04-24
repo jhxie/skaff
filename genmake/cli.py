@@ -15,12 +15,14 @@ from genmake import genmake
 
 def main():
     """
+    Parse and validate command line option flags, then invoke 'genmake()'.
     """
     genmake_cli_description = "CMake-Based C/C++ Project Structure Generator"
     genmake_cli_dict = {"author": str(),
                         "directories": set(),
                         "language": str(),
-                        "license": str()}
+                        "license": str(),
+                        "quiet": False}
 
     if "posix" != os.name:
         sys.exit("This script is only mean to be used on POSIX systems.")
@@ -47,9 +49,18 @@ def main():
                         required=False,
                         choices=set(("bsd2", "bsd3", "gpl2", "gpl3", "mit")),
                         help="Type of License")
+    parser.add_argument("-q",
+                        "--quiet",
+                        action="store_true",
+                        required=False,
+                        help="Type of License")
 
     args = parser.parse_args()
-    arg_attrs = (args.author, args.directories, args.language, args.license)
+    arg_attrs = (args.author,
+                 args.directories,
+                 args.language,
+                 args.license,
+                 args.quiet)
 
     for dict_key, arg_attr in zip(sorted(genmake_cli_dict.keys()), arg_attrs):
         if arg_attr:
@@ -57,4 +68,6 @@ def main():
 
     genmake(**genmake_cli_dict)
 
-main()
+
+if __name__ == "__main__":
+    main()
