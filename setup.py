@@ -7,7 +7,9 @@ if __name__ == "__main__":
     genmake_long_description = "Simple script that generates " +\
         "language specific (c/c++) cmake based project structures"
 
-    # Based on the guide at
+    # This script and MANIFEST.in file are based on the guide at
+    # https://pythonhosted.org/setuptools/setuptools.html
+    # and
     # https://python-packaging.readthedocs.org/en/latest/index.html
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -15,11 +17,11 @@ if __name__ == "__main__":
           version="0.1",
           description=genmake_description,
           long_description=genmake_long_description,
-          # "Development Status :: 4 - Beta",
+          # "Development Status :: 2 - Pre-Alpha",
           # "Development Status :: 5 - Production/Stable",
           # "Natural Language :: English",
           classifiers=[
-              "Development Status :: 2 - Pre-Alpha",
+              "Development Status :: 4 - Beta",
               "Environment :: Console",
               "Intended Audience :: Developers",
               "License :: OSI Approved :: BSD License",

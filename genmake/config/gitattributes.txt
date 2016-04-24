@@ -1,0 +1,3 @@
+*.cpp whitespace=tab-in-indent,trailing-space
+*.hpp whitespace=tab-in-indent,trailing-space
+*.[ch] whitespace=tab-in-indent,trailing-space

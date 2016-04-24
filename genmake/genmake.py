@@ -93,7 +93,7 @@ def _conf_spawn(directory):
     if 0 == len(directory) or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    conf_files = ("gitignore", "editorconfig")
+    conf_files = ("gitattributes", "gitignore", "editorconfig")
     conf_target_prefix = directory + "."
     conf_source_prefix = sys.path[0] + "/config/"
 

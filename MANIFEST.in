@@ -2,3 +2,5 @@ include README.md
 include LICENSE.txt
 include genmake/config/*.txt
 include genmake/license/*.txt
+global-exclude __pycache__
+global-exclude *.py[co]
