@@ -28,6 +28,7 @@ def genmake(author, directories, language, license):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
+        _conf_spawn(base_dir)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -38,18 +39,22 @@ def genmake(author, directories, language, license):
 
 def _license_sign(author, directory, license):
     """
+    Copy the license chosen by the 'author' to the 'directory' and sign it with
+    'author' with current year prepended if applicable.
+
+    If the license is not specified, default to GPLv3.
     """
     licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     bsd_copyright = "Copyright (c) {0}, {1}\n"
+
+    if 0 == len(directory) or not os.path.isdir(directory):
+        raise ValueError("Invalid directory argument")
 
     # If the license is left as empty, default to GPLv3.
     if 0 == len(license):
         license = "gpl3"
     elif license not in licenses:
         raise ValueError("Invalid license choice")
-
-    if "/" != directory[-1]:
-        directory += "/"
 
     # If the author's name is not explicitly stated in the commmand-line
     # argument, default to the GECOS field, which normally stands for the
@@ -80,7 +85,18 @@ def _license_sign(author, directory, license):
         shutil.copy(license_text, license_target)
 
 
-def _conf_spawn(language):
+def _conf_spawn(directory):
     """
+    Spawn configuration files .editorconfig and .gitignore under the project
+    root directory.
     """
-    pass
+    if 0 == len(directory) or not os.path.isdir(directory):
+        raise ValueError("Invalid directory argument")
+
+    conf_files = ("gitignore", "editorconfig")
+    conf_target_prefix = directory + "."
+    conf_source_prefix = sys.path[0] + "/config/"
+
+    for configuration in conf_files:
+        shutil.copy(conf_source_prefix + configuration + ".txt",
+                    conf_target_prefix + configuration)
