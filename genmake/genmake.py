@@ -28,7 +28,7 @@ def genmake(author, directories, language, license):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
-        _conf_spawn(language, base_dir)
+        _conf_spawn(base_dir, language)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -85,10 +85,9 @@ def _license_sign(author, directory, license):
         shutil.copy(license_text, license_target)
 
 
-def _conf_spawn(language, directory):
+def _conf_spawn(directory, language):
     """
-    Spawn configuration files .editorconfig and .gitignore under the project
-    root directory.
+    Spawn configuration files under the project root directory.
     """
     languages = set(("c", "cxx"))
 
@@ -112,3 +111,10 @@ def _conf_spawn(language, directory):
     for configuration in conf_files:
         shutil.copy(conf_source_prefix + configuration + ".txt",
                     conf_target_prefix + configuration)
+
+
+def _doc_create(directory, license, quiet=False):
+    """
+    """
+    pass
+    # licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
