@@ -18,10 +18,11 @@ if __name__ == "__main__":
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
+          # "Development Status :: 4 - Beta",
           # "Development Status :: 5 - Production/Stable",
           # "Natural Language :: English",
           classifiers=[
-              "Development Status :: 4 - Beta",
+              "Development Status :: 3 - Alpha",
               "Environment :: Console",
               "Intended Audience :: Developers",
               "License :: OSI Approved :: BSD License",

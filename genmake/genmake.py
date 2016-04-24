@@ -28,7 +28,7 @@ def genmake(author, directories, language, license):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
-        _conf_spawn(base_dir)
+        _conf_spawn(language, base_dir)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -85,17 +85,29 @@ def _license_sign(author, directory, license):
         shutil.copy(license_text, license_target)
 
 
-def _conf_spawn(directory):
+def _conf_spawn(language, directory):
     """
     Spawn configuration files .editorconfig and .gitignore under the project
     root directory.
     """
+    languages = set(("c", "cxx"))
+
+    if 0 == len(language):
+        language = "c"
+    elif language not in languages:
+        raise ValueError("Invalid language argument")
+
     if 0 == len(directory) or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
+    cmake_file = "CMakeLists.txt"
+    cmake_source_prefix = sys.path[0] + "/config/" + language + "/"
+
+    shutil.copy(cmake_source_prefix + cmake_file, directory)
+
     conf_files = ("gitattributes", "gitignore", "editorconfig")
-    conf_target_prefix = directory + "."
     conf_source_prefix = sys.path[0] + "/config/"
+    conf_target_prefix = directory + "."
 
     for configuration in conf_files:
         shutil.copy(conf_source_prefix + configuration + ".txt",
