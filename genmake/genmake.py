@@ -8,7 +8,6 @@ import os
 import pwd
 import shutil
 import subprocess
-import sys
 
 from datetime import datetime
 from distutils import spawn
@@ -77,10 +76,7 @@ def _license_sign(author, directory, license):
     if not author:
         author = _author_get()
 
-    if not sys.path[0]:
-        raise RuntimeError("Current sys.path[0] is empty")
-
-    license_text = sys.path[0] + "/license/" + license + ".txt"
+    license_text = _basepath_find() + "/license/" + license + ".txt"
     license_target = directory + "LICENSE.txt"
     if license in set(("bsd2", "bsd3", "mit")):
         with open(license_text, "r") as from_file:
@@ -108,12 +104,12 @@ def _conf_spawn(directory, language):
         raise ValueError("Invalid directory argument")
 
     cmake_file = "CMakeLists.txt"
-    cmake_source_prefix = sys.path[0] + "/config/" + language + "/"
+    cmake_source_prefix = _basepath_find() + "/config/" + language + "/"
 
     shutil.copy(cmake_source_prefix + cmake_file, directory)
 
     conf_files = ("gitattributes", "gitignore", "editorconfig")
-    conf_source_prefix = sys.path[0] + "/config/"
+    conf_source_prefix = _basepath_find() + "/config/"
     conf_target_prefix = directory + "."
 
     for configuration in conf_files:
@@ -141,7 +137,7 @@ def _doc_create(author, directory, license, quiet=False):
     readme_header = "## Overview\n\n## License\n"
     copyright_line = "Copyright &copy; {0} {1}\n"
     readme_text = directory + "README.md"
-    license_text = sys.path[0] + "/license/" + license + ".md"
+    license_text = _basepath_find() + "/license/" + license + ".md"
 
     with open(license_text, "r") as license_file:
         license_markdown = license_file.read()
@@ -152,7 +148,7 @@ def _doc_create(author, directory, license, quiet=False):
             readme_file.write(license_markdown)
 
     doxyfile = "Doxyfile"
-    doxyfile_source_prefix = sys.path[0] + "/config/"
+    doxyfile_source_prefix = _basepath_find() + "/config/"
     doxyfile_target_prefix = directory
     shutil.copy(doxyfile_source_prefix + doxyfile,
                 doxyfile_target_prefix + doxyfile)
@@ -193,3 +189,12 @@ def _author_get():
         return author
     else:
         raise RuntimeError("Failed attempt to get default username")
+
+
+def _basepath_find():
+    """
+    Return the base directory name of the genmake module.
+
+    The extra 'os.path.abspath' invocation is to suppress relative path output.
+    """
+    return os.path.dirname(os.path.abspath(__file__))

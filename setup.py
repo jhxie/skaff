@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version="0.2",
+          version="0.3",
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
@@ -39,15 +39,15 @@ if __name__ == "__main__":
           author="Jiahui Xie",
           author_email="jxie2@ualberta.ca",
           license="BSD",
-          packages=find_packages("genmake", exclude=["tests"]),
+          packages=["genmake"],
           package_data={
               "genmake": [
-                  "config/*.txt",
-                  "config/Doxyfile",
-                  "config/c/*.txt",
-                  "config/cxx/*.txt",
-                  "license/*.md",
-                  "license/*.txt"]
+                  "genmake/config/*.txt",
+                  "genmake/config/Doxyfile",
+                  "genmake/config/c/*.txt",
+                  "genmake/config/cxx/*.txt",
+                  "genmake/license/*.md",
+                  "genmake/license/*.txt"]
           },
           entry_points={
               "console_scripts": ["genmake=genmake.cli:main"]
