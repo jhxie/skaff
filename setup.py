@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 if __name__ == "__main__":
-    genmake_description = "Cmake project generator"
+    genmake_description = "CMake-based project generator"
     genmake_long_description = "Simple script that generates " +\
         "language specific (c/c++) cmake based project structures"
 
@@ -27,14 +27,28 @@ if __name__ == "__main__":
               "Intended Audience :: Developers",
               "License :: OSI Approved :: BSD License",
               "Operating System :: POSIX",
+              "Programming Language :: Python :: 3",
               "Programming Language :: Python :: 3.2",
+              "Programming Language :: Python :: 3.3",
+              "Programming Language :: Python :: 3.4",
+              "Programming Language :: Python :: 3.5",
               "Topic :: Software Development :: Build Tools"
           ],
+          keywords="cmake",
           url="http://github.com/jhxie/genmake",
           author="Jiahui Xie",
           author_email="jxie2@ualberta.ca",
           license="BSD",
-          packages=["genmake"],
+          packages=find_packages("genmake", exclude=["tests"]),
+          package_data={
+              "genmake": [
+                  "config/*.txt",
+                  "config/Doxyfile",
+                  "config/c/*.txt",
+                  "config/cxx/*.txt",
+                  "license/*.md",
+                  "license/*.txt"]
+          },
           entry_points={
               "console_scripts": ["genmake=genmake.cli:main"]
           },

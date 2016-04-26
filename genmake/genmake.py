@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 from datetime import datetime
-from distuils import spawn
+from distutils import spawn
 # --------------------------------- MODULES -----------------------------------
 
 
