@@ -11,12 +11,20 @@ import subprocess
 import sys
 
 from datetime import datetime
+from distuils import spawn
 # --------------------------------- MODULES -----------------------------------
 
 
 def genmake(author, directories, language, license, quiet):
     """
     Create all the necessary subdirectories in addition to the project root.
+
+    All arguments can be 'None' except 'directories', which must be a list of
+    strings of length >= 1.
+
+    If the above is the case, 'author' will be guessed by GECOS field and login
+    name of the current user; 'language' will default to 'c', 'license' will be
+    set to 'bsd2', 'quiet' will be unchanged (equivalent to False).
     """
     if not isinstance(directories, list):
         raise ValueError("'directories' argument must be of list type")
@@ -150,8 +158,16 @@ def _doc_create(author, directory, license, quiet=False):
                 doxyfile_target_prefix + doxyfile)
 
     if not quiet:
-        # Default to 'vim' if the environment variable is not set.
-        editor = os.environ.get("EDITOR", "vim")
+        # Default to 'vi' or 'vim' if the environment variable is not set.
+        default_editor = None
+        editor_candidates = ("vim", "vi")
+
+        for candidate in editor_candidates:
+            if spawn.find_executable(candidate):
+                default_editor = candidate
+                break
+
+        editor = os.environ.get("EDITOR", default_editor)
         subprocess.call([editor, doxyfile_target_prefix + doxyfile])
 
 
