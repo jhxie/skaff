@@ -18,11 +18,7 @@ def main():
     Parse and validate command line option flags, then invoke 'genmake()'.
     """
     genmake_cli_description = "CMake-Based C/C++ Project Structure Generator"
-    genmake_cli_dict = {"author": str(),
-                        "directories": set(),
-                        "language": str(),
-                        "license": str(),
-                        "quiet": False}
+    genmake_cli_dict = dict()
 
     if "posix" != os.name:
         sys.exit("This script is only mean to be used on POSIX systems.")
@@ -56,15 +52,11 @@ def main():
                         help="Type of License")
 
     args = parser.parse_args()
-    arg_attrs = (args.author,
-                 args.directories,
-                 args.language,
-                 args.license,
-                 args.quiet)
 
-    for dict_key, arg_attr in zip(sorted(genmake_cli_dict.keys()), arg_attrs):
-        if arg_attr:
-            genmake_cli_dict[dict_key] = arg_attr
+    # Processing all the "non-private" attributes of args and store them into
+    # the 'genmake_cli_dict' dictionary to be passed as arguments
+    for attr in filter(lambda attr: not attr.startswith('_'), dir(args)):
+        genmake_cli_dict[attr] = getattr(args, attr)
 
     genmake(**genmake_cli_dict)
 

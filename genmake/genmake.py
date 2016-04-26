@@ -18,6 +18,11 @@ def genmake(author, directories, language, license, quiet):
     """
     Create all the necessary subdirectories in addition to the project root.
     """
+    if not isinstance(directories, list):
+        raise ValueError("'directories' argument must be of list type")
+    elif 0 == len(directories):
+        raise ValueError("'directories' argument must not be empty")
+
     subdirectories = (
         "build",
         "coccinelle",
@@ -52,11 +57,11 @@ def _license_sign(author, directory, license):
     licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     bsd_copyright = "Copyright (c) {0}, {1}\n"
 
-    if 0 == len(directory) or not os.path.isdir(directory):
+    if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
     # If the license is left as empty, default to BSD 2-clause license.
-    if 0 == len(license):
+    if not license:
         license = "bsd2"
     elif license not in licenses:
         raise ValueError("Invalid license choice")
@@ -86,12 +91,12 @@ def _conf_spawn(directory, language):
     """
     languages = set(("c", "cxx"))
 
-    if 0 == len(language):
+    if not language:
         language = "c"
     elif language not in languages:
         raise ValueError("Invalid language argument")
 
-    if 0 == len(directory) or not os.path.isdir(directory):
+    if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
     cmake_file = "CMakeLists.txt"
@@ -117,7 +122,7 @@ def _doc_create(author, directory, license, quiet=False):
     """
     licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     # If the license is left as empty, default to BSD 2-clause license.
-    if 0 == len(license):
+    if not license:
         license = "bsd2"
     elif license not in licenses:
         raise ValueError("Invalid license choice")
