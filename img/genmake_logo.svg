@@ -25,9 +25,9 @@
      borderopacity="0.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="0"
-     inkscape:zoom="0.35"
-     inkscape:cx="1805.4026"
-     inkscape:cy="-51.428571"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="431.98089"
+     inkscape:cy="446.84139"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -53,141 +53,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4349"
-       width="500"
-       height="500"
-       x="500"
-       y="552.36218" />
-    <rect
-       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4514"
-       width="500"
-       height="500"
-       x="500"
-       y="52.362167" />
-    <rect
-       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4516"
-       width="500"
-       height="500"
-       x="0"
-       y="52.362183" />
-    <rect
        style="fill:#11a0a8;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="rect4516-6"
-       width="500"
-       height="500"
-       x="0"
-       y="552.36218" />
-    <circle
-       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4661"
-       cx="0"
-       cy="302.36218"
-       r="250" />
-    <circle
-       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4661-9"
-       cx="750"
-       cy="52.362183"
-       r="250" />
-    <circle
-       style="fill:#11a0a8;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4661-9-5"
-       cx="250"
-       cy="1052.3622"
-       r="250" />
-    <circle
-       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="path4661-9-5-8"
-       cx="1000"
-       cy="802.36218"
-       r="250" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710"
-       width="250"
-       height="50"
-       x="-270"
-       y="172.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710-9"
-       width="250"
-       height="50"
-       x="-270"
-       y="282.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710-99"
-       width="250"
-       height="50"
-       x="-270"
-       y="382.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710-0"
-       width="250"
-       height="50"
-       x="1000"
-       y="672.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710-93"
-       width="260"
-       height="50"
-       x="1000"
-       y="772.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4710-4"
-       width="250"
-       height="50"
-       x="1000"
-       y="872.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751"
-       width="50"
-       height="250"
-       x="600"
-       y="302.36221" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751-9"
-       width="50"
-       height="250"
-       x="725.28601"
-       y="302.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751-5"
-       width="50"
-       height="250"
-       x="850"
-       y="302.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751-8"
-       width="50"
-       height="250"
-       x="100"
-       y="552.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751-3"
-       width="50"
-       height="250"
-       x="225"
-       y="552.36218" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-opacity:1"
-       id="rect4751-83"
-       width="50"
-       height="250"
-       x="350"
-       y="552.36218" />
+       width="100"
+       height="600"
+       x="300"
+       y="152.36218" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:500px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#dd1156;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
@@ -243,5 +114,54 @@
          id="tspan4211"
          x="1499.2"
          y="2041.9618">使用工具: Inkscape</tspan></text>
+    <rect
+       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-0-3-0-4"
+       width="1000"
+       height="100"
+       x="100"
+       y="852.36218" />
+    <rect
+       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-0-3-0-0-5"
+       width="100"
+       height="1050"
+       x="0"
+       y="2.3621826" />
+    <rect
+       style="fill:#dd1156;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-0-3-0-9"
+       width="1100"
+       height="100"
+       x="0"
+       y="-47.637817" />
+    <rect
+       style="fill:#554434;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-0-3-0-0-5-6"
+       width="100"
+       height="1000"
+       x="900"
+       y="52.362183" />
+    <rect
+       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4514-4"
+       width="400"
+       height="100"
+       x="400"
+       y="152.36218" />
+    <rect
+       style="fill:#11a0a8;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4516-6-3"
+       width="600"
+       height="100"
+       x="200"
+       y="552.36218" />
+    <rect
+       style="fill:#fff6d9;fill-opacity:1;stroke:none;stroke-opacity:1"
+       id="rect4514-4-4"
+       width="100"
+       height="400"
+       x="700"
+       y="152.36218" />
   </g>
 </svg>
