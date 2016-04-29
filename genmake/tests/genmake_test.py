@@ -15,11 +15,25 @@ from genmake.genmake import _doc_create
 from genmake.genmake import _license_sign
 # --------------------------------- MODULES -----------------------------------
 
+
 class TestGenMake(unittest.TestCase):
     """
     """
     def test_genmake(self):
-        pass
+        argument_dict = dict(author=None, directories=("project"),
+                             language=None, license=None,
+                             quiet=True)
+        # Fail due to wrong type for 'directories' argument
+        with self.assertRaises(ValueError):
+            genmake(**argument_dict)
+
+        argument_dict["directories"] = list()
+
+        # Fail due to empty 'directories' argument
+        with self.assertRaises(ValueError):
+            genmake(**argument_dict)
+
+        argument_dict["directories"] = ["project"]
 
     def test__author_get(self):
         pass
