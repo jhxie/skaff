@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 if __name__ == "__main__":
     genmake_description = "CMake-based project generator"
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version="0.3",
+          version="0.4",
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
