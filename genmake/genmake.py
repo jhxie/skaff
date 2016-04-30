@@ -67,6 +67,9 @@ def _license_sign(author, directory, license):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
+    if "/" != directory[-1]:
+        directory += "/"
+
     # If the license is left as empty, default to BSD 2-clause license.
     if not license:
         license = "bsd2"
@@ -103,6 +106,9 @@ def _conf_spawn(directory, language):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
+    if "/" != directory[-1]:
+        directory += "/"
+
     cmake_file = "CMakeLists.txt"
     cmake_source_prefix = _basepath_find() + "/config/" + language + "/"
 
@@ -133,6 +139,12 @@ def _doc_create(author, directory, license, quiet=False):
 
     if not author:
         author = _author_get()
+
+    if not directory or not os.path.isdir(directory):
+        raise ValueError("Invalid directory argument")
+
+    if "/" != directory[-1]:
+        directory += "/"
 
     readme_header = "## Overview\n\n## License\n"
     copyright_line = "Copyright &copy; {0} {1}\n"
@@ -177,7 +189,6 @@ def _author_get():
     # argument, default to the GECOS field, which normally stands for the
     # full username of the current user; otherwise fall back to login name.
     author = None
-    pw_record = None
     pw_record = pwd.getpwuid(os.getuid())
 
     if pw_record.pw_gecos:
