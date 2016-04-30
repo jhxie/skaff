@@ -1,4 +1,4 @@
-![genmake](./img/banner.png)
+![genmake](./img/banner.png?raw=true)
 
 ## Overview
 An automatic CMake-based project generator.
