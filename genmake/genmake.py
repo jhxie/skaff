@@ -3,6 +3,11 @@
 """
 Main module of genmake.
 """
+
+# --------------------------------- VERSION -----------------------------------
+__version__ = "0.5"
+# --------------------------------- VERSION -----------------------------------
+
 # --------------------------------- MODULES -----------------------------------
 import os
 import pwd
@@ -54,6 +59,20 @@ def genmake(author, directories, language, license, quiet):
         os.makedirs(base_dir + "include/" + os.path.basename(base_dir[:-1]))
 
 
+def genmake_version_get():
+    """
+    Return the version information string of the GenMake program.
+    """
+    genmake_version_info = "genmake " +\
+        "(An automatic CMake-based project generator) 0.5\n" +\
+        "Copyright (C) 2016 Jiahui Xie.\n" +\
+        "Licensed and distributed under BSD 2-Clause License.\n" +\
+        "This is free software: you are free to change and redistribute it." +\
+        "\nThere is NO WARRANTY, to the extent permitted by law.\n\n" +\
+        "Written by Jiahui Xie."
+    return genmake_version_info
+
+
 def _license_sign(author, directory, license):
     """
     Copy the license chosen by the 'author' to the 'directory' and sign it with
@@ -61,7 +80,7 @@ def _license_sign(author, directory, license):
 
     If the license is not specified, default to BSD 2-clause license.
     """
-    licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+    licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     bsd_copyright = "Copyright (c) {0}, {1}\n"
 
     if not directory or not os.path.isdir(directory):
@@ -81,7 +100,7 @@ def _license_sign(author, directory, license):
 
     license_text = _basepath_find() + "/license/" + license + ".txt"
     license_target = directory + "LICENSE.txt"
-    if license in set(("bsd2", "bsd3", "mit")):
+    if license in frozenset(("bsd2", "bsd3", "mit")):
         with open(license_text, "r") as from_file:
             vanilla_license_text = from_file.read()
             with open(license_target, "w") as to_file:
@@ -96,7 +115,7 @@ def _conf_spawn(directory, language):
     """
     Spawn configuration files under the project root directory.
     """
-    languages = set(("c", "cxx"))
+    languages = frozenset(("c", "cxx"))
 
     if not language:
         language = "c"
@@ -130,7 +149,7 @@ def _doc_create(author, directory, license, quiet=False):
     Launch $EDITOR or vim on the 'Doxyfile' upon completion, can be turned off
     by setting quiet to True.
     """
-    licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+    licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     # If the license is left as empty, default to BSD 2-clause license.
     if not license:
         license = "bsd2"

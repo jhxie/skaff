@@ -12,6 +12,7 @@ from tempfile import TemporaryDirectory
 
 # Avoid import globbing: each function is imported separately instead.
 from genmake.genmake import genmake
+from genmake.genmake import genmake_version_get
 from genmake.genmake import _author_get
 from genmake.genmake import _basepath_find
 from genmake.genmake import _conf_spawn
@@ -44,6 +45,9 @@ class TestGenMake(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             genmake(**argument_dict)
         os.rmdir(argument_dict["directories"][0])
+
+    def test_genmake_version_get(self):
+        self.assertTrue(genmake_version_get())
 
     def test__author_get(self):
         # Get system password database record based on current user UID
@@ -97,7 +101,8 @@ class TestGenMake(unittest.TestCase):
                              directory=None,
                              license=None,
                              quiet=True)
-        licenses = set(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+        # Use immutable variant of set instead
+        licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
         # Fail because 'directory' cannot be empty
         with self.assertRaises(ValueError):
