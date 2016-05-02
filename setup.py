@@ -14,15 +14,15 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version="0.4",
+          version="0.5",
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
-          # "Development Status :: 4 - Beta",
+          # "Development Status :: 3 - Alpha",
           # "Development Status :: 5 - Production/Stable",
           # "Natural Language :: English",
           classifiers=[
-              "Development Status :: 3 - Alpha",
+              "Development Status :: 4 - Beta",
               "Environment :: Console",
               "Intended Audience :: Developers",
               "License :: OSI Approved :: BSD License",
