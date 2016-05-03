@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 
+# --------------------------------- MODULES -----------------------------------
+import sys
+
+from genmake import __author__, __email__, __license__, __version__
 from setuptools import setup
+# --------------------------------- MODULES -----------------------------------
 
 if __name__ == "__main__":
     genmake_description = "CMake-based project generator"
     genmake_long_description = "Simple script that generates " +\
         "language specific (c/c++) cmake based project structures"
 
+    if "install" in sys.argv:
+        pass
     # This script and MANIFEST.in file are based on the guide at
     # https://pythonhosted.org/setuptools/setuptools.html
     # and
@@ -14,7 +21,7 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version="0.5",
+          version=__version__,
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
@@ -36,9 +43,9 @@ if __name__ == "__main__":
           ],
           keywords="cmake",
           url="http://github.com/jhxie/genmake",
-          author="Jiahui Xie",
-          author_email="jxie2@ualberta.ca",
-          license="BSD",
+          author=__author__,
+          author_email=__email__,
+          license=__license__,
           packages=["genmake"],
           package_data={
               "genmake": [

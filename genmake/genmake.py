@@ -4,9 +4,15 @@
 Main module of genmake.
 """
 
-# --------------------------------- VERSION -----------------------------------
+# ------------------------------- MODULE INFO ---------------------------------
+# Note the naming convention shown here coming from the 'ranger' program from
+# http://ranger.nongnu.org/
+__author__ = "Jiahui Xie"
+__email__ = "jiahui.xie@outlook.com"
+__license__ = "BSD"
+__maintainer__ = __author__
 __version__ = "0.5"
-# --------------------------------- VERSION -----------------------------------
+# ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
 import os
@@ -64,12 +70,13 @@ def genmake_version_get():
     Return the version information string of the GenMake program.
     """
     genmake_version_info = "genmake " +\
-        "(An automatic CMake-based project generator) 0.5\n" +\
-        "Copyright (C) 2016 Jiahui Xie.\n" +\
+        "(An automatic CMake-based project generator) " +\
+        "{0}\n".format(__version__) +\
+        "Copyright (C) 2016 {0}.\n".format(__author__) +\
         "Licensed and distributed under BSD 2-Clause License.\n" +\
         "This is free software: you are free to change and redistribute it." +\
         "\nThere is NO WARRANTY, to the extent permitted by law.\n\n" +\
-        "Written by Jiahui Xie."
+        "Written by {0}.".format(__author__)
     return genmake_version_info
 
 

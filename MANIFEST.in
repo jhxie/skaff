@@ -2,5 +2,6 @@ include README.md
 include LICENSE.txt
 recursive-include genmake/config *
 recursive-include genmake/license *
+recursive-include man
 global-exclude __pycache__
 global-exclude *.py[co]
