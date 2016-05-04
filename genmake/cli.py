@@ -32,33 +32,33 @@ def main():
                         "--author",
                         type=str,
                         required=False,
-                        help="Author of the Project")
+                        help="author of the project")
     parser.add_argument("directories",
                         type=str,
                         nargs="+",
-                        help="Project Base Output Directories")
+                        help="project base output directories")
     parser.add_argument("-x",
                         "--language",
                         type=str,
                         required=False,
                         choices={"c", "cxx"},
-                        help="Major Programming Language Used")
+                        help="major programming language used")
     parser.add_argument("-l",
                         "--license",
                         type=str,
                         required=False,
                         choices={"bsd2", "bsd3", "gpl2", "gpl3", "mit"},
-                        help="Type of License")
+                        help="type of license")
     parser.add_argument("-q",
                         "--quiet",
                         action="store_true",
                         required=False,
-                        help="No Interactive Doxyfile Editing")
-    parser.add_argument("-v",
+                        help="no interactive Doxyfile editing")
+    parser.add_argument("-V",
                         "--version",
                         action="version",
                         version=genmake_version_get(),
-                        help="Print Version of GenMake and Exit")
+                        help="print version of GenMake and exit")
 
     args = parser.parse_args()
 

@@ -33,6 +33,7 @@ sudo dnf install python3-setuptools
 then simply change directory to where the un-compressed source directory
 resides and install by:
 ```bash
+python3 ./setup.py clean build
 sudo python3 ./setup.py install
 ```
 show usage help by:
