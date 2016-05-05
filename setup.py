@@ -39,7 +39,7 @@ if __name__ == "__main__":
               "License :: OSI Approved :: BSD License",
               "Operating System :: POSIX",
               "Programming Language :: Python :: 3",
-              "Programming Language :: Python :: 3.2",
+              # 'shutil.get_terminal_size()' is supported starting at 3.3
               "Programming Language :: Python :: 3.3",
               "Programming Language :: Python :: 3.4",
               "Programming Language :: Python :: 3.5",

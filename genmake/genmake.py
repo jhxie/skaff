@@ -27,7 +27,7 @@ from distutils import spawn
 
 def genmake(author, directories, language, license, quiet):
     """
-    Create all the necessary subdirectories in addition to the project root.
+    Creates all the necessary subdirectories in addition to the project root.
 
     All arguments can be 'None' except 'directories', which must be a list of
     strings of length >= 1.
@@ -67,7 +67,7 @@ def genmake(author, directories, language, license, quiet):
 
 def genmake_version_get():
     """
-    Return the version information string of the GenMake program.
+    Returns the version information string of the GenMake program.
     """
     genmake_version_info = "genmake " +\
         "(An automatic CMake-based project generator) " +\
@@ -82,8 +82,8 @@ def genmake_version_get():
 
 def _license_sign(author, directory, license):
     """
-    Copy the license chosen by the 'author' to the 'directory' and sign it with
-    'author' with current year prepended if applicable.
+    Copies the license chosen by the 'author' to the 'directory' and sign it
+    with 'author' with current year prepended if applicable.
 
     If the license is not specified, default to BSD 2-clause license.
     """
@@ -120,7 +120,7 @@ def _license_sign(author, directory, license):
 
 def _conf_spawn(directory, language):
     """
-    Spawn configuration files under the project root directory.
+    Spawns configuration files under the project root directory.
     """
     languages = frozenset(("c", "cxx"))
 
@@ -151,10 +151,10 @@ def _conf_spawn(directory, language):
 
 def _doc_create(author, directory, license, quiet=False):
     """
-    Create 'Doxyfile' and 'README.md' template.
+    Creates 'Doxyfile' and 'README.md' template.
 
-    Launch $EDITOR or vim on the 'Doxyfile' upon completion, can be turned off
-    by setting quiet to True.
+    Launches $EDITOR or vim on the 'Doxyfile' upon completion, can be turned
+    off by setting quiet to True.
     """
     licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
     # If the license is left as empty, default to BSD 2-clause license.
@@ -207,9 +207,9 @@ def _doc_create(author, directory, license, quiet=False):
 
 def _author_get():
     """
-    Get the current logged-in username from GECOS or name field.
+    Gets the current logged-in username from GECOS or name field.
 
-    Raise RuntimeError if both attempt fail.
+    Raises RuntimeError if both attempt fail.
     """
     # If the author's name is not explicitly stated in the commmand-line
     # argument, default to the GECOS field, which normally stands for the
@@ -230,7 +230,7 @@ def _author_get():
 
 def _basepath_find():
     """
-    Return the base directory name of the genmake module.
+    Returns the base directory name of the genmake module.
 
     The extra 'os.path.abspath' invocation is to suppress relative path output.
     """
