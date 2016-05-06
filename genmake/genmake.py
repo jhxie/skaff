@@ -11,7 +11,7 @@ __author__ = "Jiahui Xie"
 __email__ = "jiahui.xie@outlook.com"
 __license__ = "BSD"
 __maintainer__ = __author__
-__version__ = "0.6"
+__version__ = "0.7"
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
@@ -20,6 +20,7 @@ import pwd
 import shutil
 import subprocess
 
+from clitools import single_keypress_read, timeout, ANSIColor, TimeOutError
 from datetime import datetime
 from distutils import spawn
 # --------------------------------- MODULES -----------------------------------
@@ -56,7 +57,7 @@ def genmake(author, directories, language, license, quiet):
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
         _conf_spawn(base_dir, language)
-        _doc_create(author, base_dir, license, quiet)
+        _doc_create_prompt(author, base_dir, license, quiet)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -235,3 +236,44 @@ def _basepath_find():
     The extra 'os.path.abspath' invocation is to suppress relative path output.
     """
     return os.path.dirname(os.path.abspath(__file__))
+
+
+def _doc_create_prompt(author, directory, license, quiet):
+    """
+    Prints info related to the current 'directory' if 'quiet' is 'False'.
+
+    Calls '_doc_create()' with exactly the same arguments.
+    """
+    if not hasattr(_doc_create_prompt, "skip_rest"):
+        _doc_create_prompt.skip_rest = False
+
+    if _doc_create_prompt.skip_rest:
+        quiet = True
+
+    if not quiet:
+        terminal_info = shutil.get_terminal_size()
+        directory_line = "Upcoming Doxyfile Editing for {0}{1}{2}".format(
+            ANSIColor.BLUE, directory, ANSIColor.RESET)
+        hint_line1 = "Press [{0}a{1}] to skip all the rest.".format(
+            ANSIColor.RED, ANSIColor.RESET)
+        hint_line2 = "Press [{0}k{1}] for the current directory only.".format(
+            ANSIColor.RED, ANSIColor.RESET)
+        os.system("clear")
+        print("-" * terminal_info.columns + "\n")
+        for line in (directory_line, hint_line1, hint_line2):
+            print(line.center(terminal_info.columns))
+        print("\n" + "-" * terminal_info.columns)
+        try:
+            while True:
+                key = timeout(4)(single_keypress_read)()
+                if "a" == key.lower():
+                    _doc_create_prompt.skip_rest = True
+                    quiet = True
+                    break
+                elif "k" == key.lower():
+                    quiet = True
+                    break
+        except TimeOutError:
+            pass
+
+    _doc_create(author, directory, license, quiet)
