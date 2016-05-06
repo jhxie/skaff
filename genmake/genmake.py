@@ -20,9 +20,12 @@ import pwd
 import shutil
 import subprocess
 
-from clitools import single_keypress_read, timeout, ANSIColor, TimeOutError
 from datetime import datetime
 from distutils import spawn
+from genmake.clitools import single_keypress_read
+from genmake.clitools import timeout
+from genmake.clitools import ANSIColor
+from genmake.clitools import TimeOutError
 # --------------------------------- MODULES -----------------------------------
 
 
@@ -242,7 +245,7 @@ def _doc_create_prompt(author, directory, license, quiet):
     """
     Prints info related to the current 'directory' if 'quiet' is 'False'.
 
-    Calls '_doc_create()' with exactly the same arguments.
+    Calls '_doc_create()' with exactly the same arguments afterwards.
     """
     if not hasattr(_doc_create_prompt, "skip_rest"):
         _doc_create_prompt.skip_rest = False

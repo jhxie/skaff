@@ -17,6 +17,7 @@ from genmake.genmake import _author_get
 from genmake.genmake import _basepath_find
 from genmake.genmake import _conf_spawn
 from genmake.genmake import _doc_create
+from genmake.genmake import _doc_create_prompt
 from genmake.genmake import _license_sign
 # --------------------------------- MODULES -----------------------------------
 
@@ -138,6 +139,9 @@ class TestGenMake(unittest.TestCase):
                 _doc_create(**argument_dict)
                 with open(tmp_dir + "/README.md", "r") as readme_file:
                     self.assertIn(license.upper(), readme_file.read())
+
+    def test__doc_create(self):
+        pass
 
     def test__license_sign(self):
         argument_dict = dict(author=None, directory=None, license=None)
