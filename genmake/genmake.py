@@ -61,8 +61,7 @@ def genmake(author, directories, language, license, quiet):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
-        _conf_spawn(base_dir, language, quiet)
-        _doc_create_prompt(author, base_dir, license, quiet)
+        _conf_doc_prompt(author, base_dir, language, license, quiet)
 
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
@@ -285,6 +284,14 @@ def _doxyfile_attr_match(project_name, line):
         raise ValueError(("Both 'project_name' and 'line' "
                          "have to be of 'str' type"))
 
+    # Gets rid of the trailing slash character
+    if "/" == project_name[-1]:
+        project_name = project_name[:-1]
+
+    # Tests whether the length of 'project_name' become 0 after truncation
+    if not project_name:
+        raise ValueError("'project_name' cannot be a single slash character")
+
     attr_dict = {"PROJECT_NAME": "\"" + project_name.title() + "\"",
                  "OUTPUT_DIRECTORY": "./doc",
                  "TAB_SIZE": 8,
@@ -342,16 +349,18 @@ def _basepath_find():
     return os.path.dirname(os.path.abspath(__file__))
 
 
-def _doc_create_prompt(author, directory, license, quiet):
+def _conf_doc_prompt(author, directory, language, license, quiet):
     """
-    Prints info related to the current 'directory' if 'quiet' is 'False'.
+    Prints interactive prompt related to the current 'directory' if 'quiet' is
+    False.
 
-    Calls '_doc_create()' with exactly the same arguments afterwards.
+    Calls '_conf_spawn' and '_doc_create()' with the arguments given
+    afterwards.
     """
-    if not hasattr(_doc_create_prompt, "skip_rest"):
-        _doc_create_prompt.skip_rest = False
+    if not hasattr(_conf_doc_prompt, "skip_rest"):
+        _conf_doc_prompt.skip_rest = False
 
-    if _doc_create_prompt.skip_rest:
+    if _conf_doc_prompt.skip_rest:
         quiet = True
 
     if not quiet:
@@ -371,7 +380,7 @@ def _doc_create_prompt(author, directory, license, quiet):
             while True:
                 key = timeout(4)(single_keypress_read)()
                 if "a" == key.lower():
-                    _doc_create_prompt.skip_rest = True
+                    _conf_doc_prompt.skip_rest = True
                     quiet = True
                     break
                 elif "k" == key.lower():
@@ -380,4 +389,5 @@ def _doc_create_prompt(author, directory, license, quiet):
         except TimeOutError:
             pass
 
+    _conf_spawn(directory, language, quiet)
     _doc_create(author, directory, license, quiet)

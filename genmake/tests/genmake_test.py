@@ -11,14 +11,14 @@ import unittest
 from tempfile import TemporaryDirectory
 
 # Avoid import globbing: each function is imported separately instead.
-from genmake.genmake import genmake
-from genmake.genmake import genmake_version_get
-from genmake.genmake import _author_get
-from genmake.genmake import _basepath_find
-from genmake.genmake import _conf_spawn
-from genmake.genmake import _doc_create
-from genmake.genmake import _doc_create_prompt
-from genmake.genmake import _license_sign
+from genmake import genmake
+from genmake import genmake_version_get
+from genmake import _author_get
+from genmake import _basepath_find
+from genmake import _conf_spawn
+from genmake import _doc_create
+from genmake import _doc_create_prompt
+from genmake import _license_sign
 # --------------------------------- MODULES -----------------------------------
 
 
