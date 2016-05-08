@@ -17,8 +17,10 @@ __version__ = "0.7"
 # --------------------------------- MODULES -----------------------------------
 import os
 import pwd
+import re
 import shutil
 import subprocess
+import tempfile
 
 from datetime import datetime
 from distutils import spawn
@@ -59,7 +61,7 @@ def genmake(author, directories, language, license, quiet):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
-        _conf_spawn(base_dir, language)
+        _conf_spawn(base_dir, language, quiet)
         _doc_create_prompt(author, base_dir, license, quiet)
 
         for sub_dir in subdirectories:
@@ -122,7 +124,7 @@ def _license_sign(author, directory, license):
         shutil.copy(license_text, license_target)
 
 
-def _conf_spawn(directory, language):
+def _conf_spawn(directory, language, quiet):
     """
     Spawns configuration files under the project root directory.
     """
@@ -152,8 +154,44 @@ def _conf_spawn(directory, language):
         shutil.copy(conf_source_prefix + configuration + ".txt",
                     conf_target_prefix + configuration)
 
+    if not quiet:
+        _conf_edit(directory, [cmake_file])
 
-def _doc_create(author, directory, license, quiet=False):
+
+def _conf_edit(directory, conf_files):
+    """
+    Edits all the 'conf_files' under 'directory' interactively.
+
+    By default the environment variable 'EDITOR' is used; if it is empty,
+    fall back to either 'vim' or 'vi'.
+    """
+    if not directory or not os.path.isdir(directory):
+        raise ValueError("Invalid directory argument")
+
+    if "/" != directory[-1]:
+        directory += "/"
+
+    if not isinstance(conf_files, list):
+        raise ValueError("'conf_files' argument must be of list type")
+    elif 0 == len(conf_files):
+        raise ValueError("'conf_files' argument must not be empty")
+
+    # Default to 'vi' or 'vim' if the environment variable is not set.
+    default_editor = None
+    editor_candidates = ("vim", "vi")
+
+    for candidate in editor_candidates:
+        if spawn.find_executable(candidate):
+            default_editor = candidate
+            break
+
+    editor = os.environ.get("EDITOR", default_editor)
+
+    for conf_file in conf_files:
+        subprocess.call([editor, directory + conf_file])
+
+
+def _doc_create(author, directory, license, quiet):
     """
     Creates 'Doxyfile' and 'README.md' template.
 
@@ -189,31 +227,94 @@ def _doc_create(author, directory, license, quiet=False):
             readme_file.write(copyright_line.format(date_record.year, author))
             readme_file.write(license_markdown)
 
+    _doxyfile_generate(directory, quiet)
+
+
+def _doxyfile_generate(directory, quiet):
+    """
+    Generates or uses existing template 'Doxyfile' within 'directory'.
+
+    Launches $EDITOR or vim afterwards if 'quiet' is set to False.
+    """
+    if not directory or not os.path.isdir(directory):
+        raise ValueError("Invalid directory argument")
+
+    if "/" != directory[-1]:
+        directory += "/"
+
     doxyfile = "Doxyfile"
     doxyfile_source_prefix = _basepath_find() + "/config/"
     doxyfile_target_prefix = directory
-    shutil.copy(doxyfile_source_prefix + doxyfile,
-                doxyfile_target_prefix + doxyfile)
+    doxygen_cmd = ["doxygen", "-g", doxyfile_target_prefix + doxyfile]
+
+    if spawn.find_executable("doxygen"):
+        # Redirects the terminal output of 'doxygen' to null device
+        with open(os.devnull, "w") as null_device:
+            subprocess.call(doxygen_cmd, stdout=null_device)
+        with tempfile.TemporaryFile("w+") as tmp_file:
+            with open(doxyfile_target_prefix + doxyfile, "r+") as output_file:
+                for line in output_file:
+                    match = _doxyfile_attr_match(directory, line)
+                    tmp_file.write(line if not match else match)
+                tmp_file.seek(0)
+                output_file.seek(0)
+                output_file.truncate()
+                shutil.copyfileobj(tmp_file, output_file)
+    else:
+        shutil.copy(doxyfile_source_prefix + doxyfile,
+                    doxyfile_target_prefix + doxyfile)
 
     if not quiet:
-        # Default to 'vi' or 'vim' if the environment variable is not set.
-        default_editor = None
-        editor_candidates = ("vim", "vi")
+        _conf_edit(directory, [doxyfile])
 
-        for candidate in editor_candidates:
-            if spawn.find_executable(candidate):
-                default_editor = candidate
-                break
 
-        editor = os.environ.get("EDITOR", default_editor)
-        subprocess.call([editor, doxyfile_target_prefix + doxyfile])
+def _doxyfile_attr_match(project_name, line):
+    """
+    Determines whether there is any 'Doxyfile' options available in 'line'.
+
+    Return the updated version if 'line' contains options that need to be
+    changed; otherwise return None.
+    """
+    arguments = (project_name, line)
+
+    if not all(argument for argument in arguments):
+        raise ValueError(("Both 'project_name' and 'line' "
+                         "have to be non-empty 'str' type"))
+
+    if not all(isinstance(argument, str) for argument in arguments):
+        raise ValueError(("Both 'project_name' and 'line' "
+                         "have to be of 'str' type"))
+
+    attr_dict = {"PROJECT_NAME": "\"" + project_name.title() + "\"",
+                 "OUTPUT_DIRECTORY": "./doc",
+                 "TAB_SIZE": 8,
+                 "EXTRACT_ALL": "YES",
+                 "EXTRACT_STATIC": "YES",
+                 "RECURSIVE": "YES",
+                 "EXCLUDE": "build",
+                 "HAVE_DOT": "YES",
+                 "UML_LOOK": "YES",
+                 "TEMPLATE_RELATIONS": "YES",
+                 "CALL_GRAPH": "YES",
+                 "DOT_IMAGE_FORMAT": "svg",
+                 "INTERACTIVE_SVG": "YES"}
+
+    for attr in attr_dict:
+        # '\s' stands for whitespace characters
+        match = re.match(attr + R"\s*=", line)
+        if match:
+            split_index = match.string.find("=") + 1
+            return match.string[:split_index] + " " +\
+                str(attr_dict[attr]) + "\n"
+
+    return None
 
 
 def _author_get():
     """
     Gets the current logged-in username from GECOS or name field.
 
-    Raises RuntimeError if both attempt fail.
+    Raises RuntimeError if both attempts fail.
     """
     # If the author's name is not explicitly stated in the commmand-line
     # argument, default to the GECOS field, which normally stands for the
@@ -255,7 +356,7 @@ def _doc_create_prompt(author, directory, license, quiet):
 
     if not quiet:
         terminal_info = shutil.get_terminal_size()
-        directory_line = "Upcoming Doxyfile Editing for {0}{1}{2}".format(
+        directory_line = "Upcoming Configuration Editing for {0}{1}{2}".format(
             ANSIColor.BLUE, directory, ANSIColor.RESET)
         hint_line1 = "Press [{0}a{1}] to skip all the rest.".format(
             ANSIColor.RED, ANSIColor.RESET)

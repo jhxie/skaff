@@ -72,7 +72,7 @@ class TestGenMake(unittest.TestCase):
         self.assertTrue(os.path.isabs(basepath))
 
     def test__conf_spawn(self):
-        argument_dict = dict(directory=None, language=None)
+        argument_dict = dict(directory=None, language=None, quiet=True)
 
         # Fail because 'directory' cannot be empty
         with self.assertRaises(ValueError):
@@ -139,9 +139,6 @@ class TestGenMake(unittest.TestCase):
                 _doc_create(**argument_dict)
                 with open(tmp_dir + "/README.md", "r") as readme_file:
                     self.assertIn(license.upper(), readme_file.read())
-
-    def test__doc_create(self):
-        pass
 
     def test__license_sign(self):
         argument_dict = dict(author=None, directory=None, license=None)
