@@ -47,6 +47,9 @@ def genmake(author, directories, language, license, quiet):
     elif 0 == len(directories):
         raise ValueError("'directories' argument must not be empty")
 
+    if not all(isinstance(directory, str) for directory in directories):
+        raise ValueError("'directories' argument must contain 'str' type")
+
     subdirectories = (
         "build",
         "coccinelle",
@@ -57,7 +60,7 @@ def genmake(author, directories, language, license, quiet):
     )
 
     for base_dir in directories:
-        if "/" != base_dir[-1]:
+        if not base_dir.endswith("/"):
             base_dir += "/"
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
@@ -74,21 +77,26 @@ def genmake_version_get():
     """
     Returns the version information string of the GenMake program.
     """
-    genmake_version_info = "genmake " +\
-        "(An automatic CMake-based project generator) " +\
-        "{0}\n".format(__version__) +\
-        "Copyright (C) 2016 {0}.\n".format(__author__) +\
-        "Licensed and distributed under BSD 2-Clause License.\n" +\
-        "This is free software: you are free to change and redistribute it." +\
-        "\nThere is NO WARRANTY, to the extent permitted by law.\n\n" +\
-        "Written by {0}.".format(__author__)
+    module_info_dict = {"author": __author__,
+                        "email": __email__,
+                        "license": __license__,
+                        "maintainer": __maintainer__,
+                        "version": __version__}
+    genmake_version_info = (
+        "genmake "
+        "(An automatic CMake-based project generator) {version}\n"
+        "Copyright (C) 2016 {author}.\n"
+        "Licensed and distributed under BSD 2-Clause License.\n"
+        "This is free software: you are free to change and redistribute it.\n"
+        "There is NO WARRANTY, to the extent permitted by law.\n\n"
+        "Written by {author}.".format(**module_info_dict))
     return genmake_version_info
 
 
 def _license_sign(author, directory, license):
     """
-    Copies the license chosen by the 'author' to the 'directory' and sign it
-    with 'author' with current year prepended if applicable.
+    Copies the license chosen by the 'author' to the 'directory', signs it
+    with 'author' and current year prepended if applicable.
 
     If the license is not specified, default to BSD 2-clause license.
     """
@@ -98,7 +106,7 @@ def _license_sign(author, directory, license):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if "/" != directory[-1]:
+    if not directory.endswith("/"):
         directory += "/"
 
     # If the license is left as empty, default to BSD 2-clause license.
@@ -137,7 +145,7 @@ def _conf_spawn(directory, language, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if "/" != directory[-1]:
+    if not directory.endswith("/"):
         directory += "/"
 
     cmake_file = "CMakeLists.txt"
@@ -167,7 +175,7 @@ def _conf_edit(directory, conf_files):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if "/" != directory[-1]:
+    if not directory.endswith("/"):
         directory += "/"
 
     if not isinstance(conf_files, list):
@@ -210,7 +218,7 @@ def _doc_create(author, directory, license, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if "/" != directory[-1]:
+    if not directory.endswith("/"):
         directory += "/"
 
     readme_header = "## Overview\n\n## License\n"
@@ -238,7 +246,7 @@ def _doxyfile_generate(directory, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if "/" != directory[-1]:
+    if not directory.endswith("/"):
         directory += "/"
 
     doxyfile = "Doxyfile"
@@ -285,7 +293,7 @@ def _doxyfile_attr_match(project_name, line):
                          "have to be of 'str' type"))
 
     # Gets rid of the trailing slash character
-    if "/" == project_name[-1]:
+    if project_name.endswith("/"):
         project_name = project_name[:-1]
 
     # Tests whether the length of 'project_name' become 0 after truncation
