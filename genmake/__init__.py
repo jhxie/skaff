@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from genmake.clitools import single_keypress_read
-from genmake.clitools import timeout
-from genmake.clitools import ANSIColor
-from genmake.clitools import TimeOutError
-from genmake.genmake import genmake
-from genmake.genmake import genmake_version_get
-from genmake.genmake import __author__
-from genmake.genmake import __email__
-from genmake.genmake import __license__
-from genmake.genmake import __maintainer__
-from genmake.genmake import __version__
+from clitools import single_keypress_read
+from clitools import timeout
+from clitools import ANSIColor
+from clitools import TimeOutError
+from genmake import genmake
+from genmake import genmake_version_get
+from genmake import __author__
+from genmake import __email__
+from genmake import __license__
+from genmake import __maintainer__
+from genmake import __version__
