@@ -54,7 +54,7 @@ def main():
                         action="store_true",
                         required=False,
                         help="no interactive Doxyfile editing")
-    parser.add_argument("-V",
+    parser.add_argument("-v",
                         "--version",
                         action="version",
                         version=genmake_version_get(),
