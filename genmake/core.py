@@ -24,10 +24,10 @@ import tempfile
 
 from datetime import datetime
 from distutils import spawn
-from clitools import single_keypress_read
-from clitools import timeout
-from clitools import ANSIColor
-from clitools import TimeOutError
+from genmake import single_keypress_read
+from genmake import timeout
+from genmake import ANSIColor
+from genmake import TimeOutError
 # --------------------------------- MODULES -----------------------------------
 
 

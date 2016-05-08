@@ -6,7 +6,7 @@ import os
 import shutil
 import sys
 
-from genmake import __author__, __email__, __license__, __version__
+import genmake
 from setuptools import setup
 # --------------------------------- MODULES -----------------------------------
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     # Classifier List
     # https://pypi.python.org/pypi?%3Aaction=list_classifiers
     setup(name="genmake",
-          version=__version__,
+          version=genmake.__version__,
           description=genmake_description,
           long_description=genmake_long_description,
           # "Development Status :: 2 - Pre-Alpha",
@@ -47,9 +47,9 @@ if __name__ == "__main__":
           ],
           keywords="cmake",
           url="http://github.com/jhxie/genmake",
-          author=__author__,
-          author_email=__email__,
-          license=__license__,
+          author=genmake.__author__,
+          author_email=genmake.__email__,
+          license=genmake.__license__,
           packages=["genmake"],
           package_data={
               "genmake": [
