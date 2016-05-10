@@ -64,6 +64,11 @@ class TestGenMake(unittest.TestCase):
         self.assertTrue(os.path.isdir(basepath))
         self.assertTrue(os.path.isabs(basepath))
 
+    def test___conf_edit(self):
+        # Omitted because this is an interactive UI-related function
+        # and the author does not know how to test it properly
+        pass
+
     def test__conf_spawn(self):
         argument_dict = dict(directory=None, language=None, quiet=True)
 
@@ -132,6 +137,17 @@ class TestGenMake(unittest.TestCase):
                 genmake._doc_create(**argument_dict)
                 with open(tmp_dir + "/README.md", "r") as readme_file:
                     self.assertIn(license.upper(), readme_file.read())
+
+    def test___conf_doc_prompt(self):
+        # Omitted because this is an interactive UI-related function
+        # and the author does not know how to test it properly
+        pass
+
+    def test___doxyfile_attr_match(self):
+        pass
+
+    def test__doxyfile_generate(self):
+        pass
 
     def test__license_sign(self):
         argument_dict = dict(author=None, directory=None, license=None)
