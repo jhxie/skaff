@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Unit testing suite for genmake module.
+Unit testing suite for core module.
 """
 # --------------------------------- MODULES -----------------------------------
 import os

@@ -3,6 +3,10 @@
 ## Overview
 An automatic CMake-based project generator.
 
+## Build Status
+* [![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]
+(https://travis-ci.org/jhxie/genmake)
+
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden
 bugs.
@@ -56,8 +60,10 @@ logo.
 yourself out of business. What you do today can be automated tomorrow.*"
 
 ## License
-Copyright &copy; 2016 Jiahui Xie  
-Licensed under the [BSD 2-Clause License][BSD2].  
-Distributed under the [BSD 2-Clause License][BSD2].  
+Copyright &copy; 2016 Jiahui Xie
+
+Licensed under the [BSD 2-Clause License][BSD2].
+
+Distributed under the [BSD 2-Clause License][BSD2].
 
 [BSD2]: https://opensource.org/licenses/BSD-2-Clause
