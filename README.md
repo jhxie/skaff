@@ -4,7 +4,7 @@
 An automatic CMake-based project generator.
 
 ## Build Status
-* [![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]
+[![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]
 (https://travis-ci.org/jhxie/genmake)
 
 ## Versioning
@@ -40,10 +40,18 @@ resides and install by:
 python3 ./setup.py clean build
 sudo python3 ./setup.py install
 ```
-show usage help by:
+
+## Usage
+Show usage help by:
 ```bash
 genmake --help
 ```
+For the detailed command-line reference manual, use *man* as usual:
+```bash
+man 1 genmake
+```
+A few more examples along with its detailed documentation will be given on
+[ReadTheDocs](https://readthedocs.org) later on.
 
 ## Supported Platforms
 * Linux
@@ -61,9 +69,7 @@ yourself out of business. What you do today can be automated tomorrow.*"
 
 ## License
 Copyright &copy; 2016 Jiahui Xie
-
 Licensed under the [BSD 2-Clause License][BSD2].
-
 Distributed under the [BSD 2-Clause License][BSD2].
 
 [BSD2]: https://opensource.org/licenses/BSD-2-Clause
