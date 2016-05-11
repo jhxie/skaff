@@ -15,7 +15,7 @@ import genmake
 # --------------------------------- MODULES -----------------------------------
 
 
-class TestGenMake(unittest.TestCase):
+class TestCore(unittest.TestCase):
     """
     Main unit testing suite, which is a subclass of 'unittest.TestCase'.
     """
@@ -64,7 +64,7 @@ class TestGenMake(unittest.TestCase):
         self.assertTrue(os.path.isdir(basepath))
         self.assertTrue(os.path.isabs(basepath))
 
-    def test___conf_edit(self):
+    def test__conf_edit(self):
         # Omitted because this is an interactive UI-related function
         # and the author does not know how to test it properly
         pass
@@ -138,16 +138,68 @@ class TestGenMake(unittest.TestCase):
                 with open(tmp_dir + "/README.md", "r") as readme_file:
                     self.assertIn(license.upper(), readme_file.read())
 
-    def test___conf_doc_prompt(self):
+    def test__conf_doc_prompt(self):
         # Omitted because this is an interactive UI-related function
         # and the author does not know how to test it properly
         pass
 
-    def test___doxyfile_attr_match(self):
-        pass
+    def test__doxyfile_attr_match(self):
+        argument_dict = dict(project_name="Project", line=None)
+        attr_dict = {"PROJECT_NAME":
+                     "\"{project_name}\"".format(**argument_dict),
+                     "OUTPUT_DIRECTORY": "./doc",
+                     "TAB_SIZE": 8,
+                     "EXTRACT_ALL": "YES",
+                     "EXTRACT_STATIC": "YES",
+                     "RECURSIVE": "YES",
+                     "EXCLUDE": "build",
+                     "HAVE_DOT": "YES",
+                     "UML_LOOK": "YES",
+                     "TEMPLATE_RELATIONS": "YES",
+                     "CALL_GRAPH": "YES",
+                     "DOT_IMAGE_FORMAT": "svg",
+                     "INTERACTIVE_SVG": "YES"}
+
+        # Fail because both arguments have to be non-empty strings
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_attr_match(project_name=None, line=None)
+
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_attr_match(project_name="Project", line=None)
+
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_attr_match(project_name=None, line="PlaceHolder")
+
+        # Fail because the project name cannot be solely composed of
+        # a single slash character
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_attr_match(project_name="/", line="PlaceHolder")
+
+        for attr in attr_dict:
+            argument_dict["line"] = attr + " = "
+            self.assertEqual(genmake._doxyfile_attr_match(**argument_dict),
+                             argument_dict["line"] + str(attr_dict[attr]) +
+                             "\n")
 
     def test__doxyfile_generate(self):
-        pass
+        argument_dict = dict(directory=None, quiet=True)
+
+        # Fail because 'directory' cannot be empty
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_generate(**argument_dict)
+
+        with TemporaryDirectory() as tmp_dir:
+            argument_dict["directory"] = tmp_dir
+            genmake._doxyfile_generate(**argument_dict)
+            self.assertTrue(os.path.isfile(tmp_dir + "/Doxyfile"))
+            # Fail because of newly created documentation
+            # the 'directory' is no longer empty
+            with self.assertRaises(OSError):
+                os.rmdir(tmp_dir)
+
+        # Fail because of non-existing 'directory'
+        with self.assertRaises(ValueError):
+            genmake._doxyfile_generate(**argument_dict)
 
     def test__license_sign(self):
         argument_dict = dict(author=None, directory=None, license=None)
