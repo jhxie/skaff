@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## 0.7 (2016-05-10)
 * Add dynamic *Doxyfile* generation by invoking *doxygen* executable
 * Add interactive prompt for configuration file editing
+* Add *Travis-CI* integration
 * Extend interactive *Doxyfile* editing to work on *CMakeLists.txt* as well
 ## 0.6 (2016-05-04)
 * Add gzipped format for the command-line reference manual
