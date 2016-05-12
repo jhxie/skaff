@@ -200,7 +200,7 @@ def _conf_edit(directory, conf_files):
 
 def _doc_create(author, directory, license, quiet):
     """
-    Creates 'Doxyfile' and 'README.md' template.
+    Creates 'CHANGELOG.md', 'Doxyfile', and 'README.md' template.
 
     Launches $EDITOR or vim on the 'Doxyfile' upon completion, can be turned
     off by setting quiet to True.
@@ -221,10 +221,22 @@ def _doc_create(author, directory, license, quiet):
     if not directory.endswith("/"):
         directory += "/"
 
-    readme_header = "## Overview\n\n## License\n"
+    changelog_header = (
+        "# Change Log\n"
+        "This document records all notable changes to {0}.  \n"
+        "This project adheres to [Semantic Versioning](http://semver.org/).\n"
+        "\n## 0.1 (Upcoming)\n"
+        "* New feature here\n"
+    ).format(directory[:-1].title())
+    readme_header = (
+        "![{0}](img/banner.png)\n"
+        "\n## Overview\n"
+        "\n## License\n"
+    ).format(directory[:-1])
+    changelog_text = directory + "CHANGELOG.md"
     copyright_line = "Copyright &copy; {0} {1}\n"
-    readme_text = directory + "README.md"
     license_text = _basepath_find() + "/license/" + license + ".md"
+    readme_text = directory + "README.md"
 
     with open(license_text, "r") as license_file:
         license_markdown = license_file.read()
@@ -233,6 +245,9 @@ def _doc_create(author, directory, license, quiet):
             readme_file.write(readme_header)
             readme_file.write(copyright_line.format(date_record.year, author))
             readme_file.write(license_markdown)
+
+    with open(changelog_text, "w") as changelog_file:
+        changelog_file.write(changelog_header)
 
     _doxyfile_generate(directory, quiet)
 

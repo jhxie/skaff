@@ -110,6 +110,7 @@ class TestCore(unittest.TestCase):
         with TemporaryDirectory() as tmp_dir:
             argument_dict["directory"] = tmp_dir
             genmake._doc_create(**argument_dict)
+            self.assertTrue(os.path.isfile(tmp_dir + "/CHANGELOG.md"))
             self.assertTrue(os.path.isfile(tmp_dir + "/Doxyfile"))
             self.assertTrue(os.path.isfile(tmp_dir + "/README.md"))
             # Fail because of newly created documentation
