@@ -11,7 +11,7 @@ __author__ = "Jiahui Xie"
 __email__ = "jiahui.xie@outlook.com"
 __license__ = "BSD"
 __maintainer__ = __author__
-__version__ = "0.7"
+__version__ = "0.8"
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
@@ -135,7 +135,7 @@ def _conf_spawn(directory, language, quiet):
     """
     Spawns configuration files under the project root directory.
     """
-    languages = frozenset(("c", "cxx"))
+    languages = frozenset(("c", "cpp"))
 
     if not language:
         language = "c"
@@ -153,14 +153,21 @@ def _conf_spawn(directory, language, quiet):
 
     shutil.copy(cmake_source_prefix + cmake_file, directory)
 
-    conf_files = ("gitattributes", "gitignore", "editorconfig")
+    conf_files = ("editorconfig", "gitattributes", "gitignore")
     conf_source_prefix = _basepath_find() + "/config/"
     conf_target_prefix = directory + "."
+    travis_file = "travis.yml"
+    language_header = "language: {0}\n".format(language)
 
     for configuration in conf_files:
         shutil.copy(conf_source_prefix + configuration + ".txt",
                     conf_target_prefix + configuration)
 
+    with open(conf_source_prefix + travis_file, "r") as travis_source:
+        travis_text = travis_source.read()
+        with open(conf_target_prefix + travis_file, "w") as travis_target:
+            travis_target.write(language_header)
+            travis_target.write(travis_text)
     if not quiet:
         _conf_edit(directory, [cmake_file])
 

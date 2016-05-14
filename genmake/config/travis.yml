@@ -1,0 +1,15 @@
+sudo: required
+dist: trusty
+compiler:
+        - clang
+        - gcc
+before_install:
+        - sudo apt-get update -qq
+        - sudo apt-get install -y \
+          cmake \
+          cmake-curses-gui \
+          cmake-extras \
+          extra-cmake-modules
+script: cmake -Bbuild -H.
+notifications:
+        email: false

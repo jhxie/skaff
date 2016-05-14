@@ -56,7 +56,7 @@ if __name__ == "__main__":
                   "genmake/config/*.txt",
                   "genmake/config/Doxyfile",
                   "genmake/config/c/*.txt",
-                  "genmake/config/cxx/*.txt",
+                  "genmake/config/cpp/*.txt",
                   "genmake/license/*.md",
                   "genmake/license/*.txt"]
           },

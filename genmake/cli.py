@@ -15,7 +15,7 @@ from genmake import genmake, genmake_version_get
 
 def main():
     """
-    Parse and validate command line option flags, then invoke 'genmake()'.
+    Parses and validates command line option flags, then invoke 'genmake()'.
     """
     genmake_cli_description = "CMake-Based C/C++ Project Structure Generator"
     genmake_cli_dict = dict()
@@ -41,7 +41,7 @@ def main():
                         "--language",
                         type=str,
                         required=False,
-                        choices={"c", "cxx"},
+                        choices={"c", "cpp"},
                         help="major programming language used")
     parser.add_argument("-l",
                         "--license",
@@ -53,7 +53,8 @@ def main():
                         "--quiet",
                         action="store_true",
                         required=False,
-                        help="no interactive Doxyfile editing")
+                        help=("no interactive "
+                              "CMakeLists.txt and Doxyfile editing"))
     parser.add_argument("-v",
                         "--version",
                         action="version",

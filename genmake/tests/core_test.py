@@ -71,6 +71,8 @@ class TestCore(unittest.TestCase):
 
     def test__conf_spawn(self):
         argument_dict = dict(directory=None, language=None, quiet=True)
+        conf_files = frozenset((".editorconfig", ".gitattributes",
+                                ".gitignore", ".travis.yml", "CMakeLists.txt"))
 
         # Fail because 'directory' cannot be empty
         with self.assertRaises(ValueError):
@@ -79,7 +81,8 @@ class TestCore(unittest.TestCase):
         with TemporaryDirectory() as tmp_dir:
             argument_dict["directory"] = tmp_dir
             genmake._conf_spawn(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + "/CMakeLists.txt"))
+            for conf_file in conf_files:
+                self.assertTrue(os.path.isfile(tmp_dir + "/" + conf_file))
             # Fail because of newly spawned configuration files
             # the 'directory' is no longer empty
             with self.assertRaises(OSError):

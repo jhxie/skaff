@@ -3,7 +3,10 @@ This document records all notable changes to GenMake.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.8 (Upcoming)
-* Add basic *CHANGELOG.md* template generation
+* Add *CHANGELOG.md* template generation
+* Add *Travis-CI* configuration file *.travis.yml* generation
+* Add dedicated **ini-parsing** module for saving/restoring defaults
+* Change language option for C++ to be **cpp** instead of **cxx**
 
 ## 0.7 (2016-05-10)
 * Add dynamic *Doxyfile* generation by invoking *doxygen* executable
