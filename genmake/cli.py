@@ -17,7 +17,7 @@ def main():
     """
     Parses and validates command line option flags, then invoke 'genmake()'.
     """
-    genmake_cli_description = "CMake-Based C/C++ Project Structure Generator"
+    genmake_cli_description = "A CMake-Based Project Scaffolding Tool"
     genmake_cli_dict = dict()
 
     if "posix" != os.name:

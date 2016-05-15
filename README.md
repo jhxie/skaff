@@ -1,7 +1,7 @@
 ![genmake](img/banner.png)
 
 ## Overview
-An automatic CMake-based project generator.
+A CMake-based project scaffolding tool.
 
 ## Build Status
 [![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]

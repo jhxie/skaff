@@ -11,7 +11,7 @@ from setuptools import setup
 # --------------------------------- MODULES -----------------------------------
 
 if __name__ == "__main__":
-    genmake_description = "CMake-based project generator"
+    genmake_description = "A CMake-Based Project Scaffolding Tool"
     genmake_long_description = "Simple script that generates " +\
         "language specific (c/c++) cmake based project structures"
     install_prefix = os.path.dirname(os.path.abspath(__file__))

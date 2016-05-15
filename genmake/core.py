@@ -54,6 +54,7 @@ def genmake(author, directories, language, license, quiet):
         "build",
         "coccinelle",
         "doc",
+        "examples",
         "img",
         "src",
         "tests"
@@ -84,7 +85,7 @@ def genmake_version_get():
                         "version": __version__}
     genmake_version_info = (
         "genmake "
-        "(An automatic CMake-based project generator) {version}\n"
+        "(A CMake-based project scaffolding tool) {version}\n"
         "Copyright (C) 2016 {author}.\n"
         "Licensed and distributed under BSD 2-Clause License.\n"
         "This is free software: you are free to change and redistribute it.\n"
