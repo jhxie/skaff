@@ -21,7 +21,7 @@ def main():
     genmake_cli_dict = dict()
 
     if "posix" != os.name:
-        sys.exit("This script is only mean to be used on POSIX systems.")
+        sys.exit("This program is only mean to be used on POSIX systems.")
 
     # Fall back to SmartFormatter to let the string returned
     # by 'genmake_version_get()' function print properly

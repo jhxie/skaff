@@ -27,6 +27,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.3 (2016-04-26)
 * Add editor lookup functionality based on environment variable **EDITOR**
+* Fix "*unable to locate configuration file*" bug
 
 ## 0.2 (2016-04-24)
 * Add static *Doxyfile* generation functionality based on existing template

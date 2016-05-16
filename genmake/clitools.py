@@ -68,6 +68,16 @@ def single_keypress_read():
     """
     # Borrowed from stackoverflow:
     # /questions/983354/how-do-i-make-python-to-wait-for-a-pressed-key
+    # Windows support is added but not tested.
+
+    if "nt" == os.name:
+        import msvcrt
+        try:
+            ret = msvcrt.getch()
+        except KeyboardInterrupt:
+            ret = 0
+        return ret
+
     fd = sys.stdin.fileno()
     # save old state
     flags_save = fcntl.fcntl(fd, fcntl.F_GETFL)

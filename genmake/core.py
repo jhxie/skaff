@@ -31,6 +31,20 @@ from genmake import TimeOutError
 # --------------------------------- MODULES -----------------------------------
 
 
+# --------------------------------- CLASSES -----------------------------------
+class GenMakeConfig:
+    def __init__(self, author, directories, language, license, quiet):
+        pass
+
+    def _save(self, **kwargs):
+        pass
+
+    def _load(self, **kwargs):
+        pass
+# --------------------------------- CLASSES -----------------------------------
+
+
+# -------------------------------- FUNCTIONS ----------------------------------
 def genmake(author, directories, language, license, quiet):
     """
     Creates all the necessary subdirectories in addition to the project root.
@@ -422,3 +436,4 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
 
     _conf_spawn(directory, language, quiet)
     _doc_create(author, directory, license, quiet)
+# -------------------------------- FUNCTIONS ----------------------------------
