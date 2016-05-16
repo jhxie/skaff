@@ -2,10 +2,14 @@
 This document records all notable changes to GenMake.  
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9 (Upcoming)
+* Add dedicated **json-parsing** class for saving/restoring configurations
+* Optimize performance of regular expression matching for generated *Doxyfile*
+
 ## 0.8 (Upcoming)
 * Add *CHANGELOG.md* template generation
 * Add *Travis-CI* configuration file *.travis.yml* generation
-* Add dedicated **ini-parsing** module for saving/restoring defaults
+* Add stable external API for *core* module
 * Change language option for C++ to be **cpp** instead of **cxx**
 
 ## 0.7 (2016-05-10)
