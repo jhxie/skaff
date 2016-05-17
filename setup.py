@@ -12,8 +12,8 @@ from setuptools import setup
 
 if __name__ == "__main__":
     genmake_description = "A CMake-Based Project Scaffolding Tool"
-    genmake_long_description = "Simple script that generates " +\
-        "language specific (c/c++) cmake based project structures"
+    genmake_long_description = "Simple program that generates " +\
+        "language specific (c/c++) cmake based project templates"
     install_prefix = os.path.dirname(os.path.abspath(__file__))
     genmake_man_source = install_prefix + "/man/genmake.1"
     genmake_man_target = None
