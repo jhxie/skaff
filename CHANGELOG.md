@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Add *CHANGELOG.md* template generation
 * Add *Travis-CI* configuration file *.travis.yml* generation
 * Add stable external API for *core* module
+* Allow specifying *more than one* author(s) for any project
 * Change language option for C++ to be **cpp** instead of **cxx**
 
 ## 0.7 (2016-05-10)

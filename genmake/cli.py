@@ -36,7 +36,7 @@ def main():
     parser.add_argument("directories",
                         type=str,
                         nargs="+",
-                        help="project base output directories")
+                        help="name of the output project-directory(ies)")
     parser.add_argument("-x",
                         "--language",
                         type=str,
