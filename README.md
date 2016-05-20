@@ -5,7 +5,7 @@ A CMake-based project scaffolding tool.
 
 ## Build Status
 [![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]
-(https://travis-ci.org/jhxie/genmake)
+(https://travis-ci.org/jhxie/genmake) → Click to see details.
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden
