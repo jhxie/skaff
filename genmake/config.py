@@ -68,20 +68,20 @@ class GenMakeConfig:
         else:
             raise ValueError("'authors' argument must be non-empty 'str' type")
 
-    def author_get(self):
+    def authors_get(self):
         """
         Gets the author(s) of the project(s).
         """
         return self.__config["authors"]
 
-    @classmethod
+    @staticmethod
     def author_fetch():
         """
         Gets the current logged-in username from GECOS or name field.
 
         Raises RuntimeError if both attempts fail.
 
-        Note this 'classmethod' may be automatically called from 'author_get'
+        Note this 'classmethod' may be automatically called from 'authors_get'
         member function under certain scenarios.
         """
         # If the author's name is not explicitly stated in the commmand-line

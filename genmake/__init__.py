@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-__all__ = ["clitools", "core"]
+__all__ = ["clitools", "config", "core"]
 
 # To keep older scripts who import this from breaking -- DEPRECATED
 from genmake.clitools import single_keypress_read
 from genmake.clitools import timeout
 from genmake.clitools import ANSIColor
 from genmake.clitools import TimeOutError
+from genmake.config import GenMakeConfig
 from genmake.core import genmake
 from genmake.core import genmake_version_get
 
