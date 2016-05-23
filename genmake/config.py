@@ -88,6 +88,9 @@ class GenMakeConfig:
         if not all(isinstance(author, str) for author in authors):
             raise ValueError("'authors' argument must contain 'str' type")
 
+        if not all(author.isprintable() for author in authors):
+            raise ValueError("'authors' argument must contain valid names")
+
         self.__config["authors"] = set()
 
         for author in authors:
@@ -95,13 +98,35 @@ class GenMakeConfig:
 
     def author_add(self, author):
         """
+        Adds 'author' to the internal 'database' if the name does not exist;
+        otherwise do nothing.
         """
-        pass
+        if not isinstance(author, str):
+            raise ValueError("'author' argument must be 'str' type")
 
-    def author_pop(self, author):
+        if 0 == len(author):
+            raise ValueError("'author' argument must not be empty")
+
+        if not author.isprintable():
+            raise ValueError("'author' argument must be a valid name")
+
+        self.__config["authors"].add(author)
+
+    def author_discard(self, author):
         """
+        Discards 'author' from the internal 'database' if the name exists;
+        otherwise do nothing.
         """
-        pass
+        if not isinstance(author, str):
+            raise ValueError("'author' argument must be 'str' type")
+
+        if 0 == len(author):
+            raise ValueError("'author' argument must not be empty")
+
+        if not author.isprintable():
+            raise ValueError("'author' argument must be a valid name")
+
+        self.__config["authors"].discard(author)
 
     def authors_get(self):
         """
@@ -113,6 +138,7 @@ class GenMakeConfig:
     def author_fetch():
         """
         Gets the current logged-in username from GECOS or name field.
+        This member function is called by the constructor by default.
 
         Raises RuntimeError if both attempts fail.
 
@@ -156,6 +182,10 @@ class GenMakeConfig:
         if not all(isinstance(directory, str) for directory in directories):
             raise ValueError("'directories' argument must contain 'str' type")
 
+        if not all(directory.isprintable() for directory in directories):
+            raise ValueError(("'directories' argument must contain "
+                             "valid file names"))
+
         self.__config["directories"] = set()
 
         for directory in directories:
@@ -163,13 +193,35 @@ class GenMakeConfig:
 
     def directory_add(self, directory):
         """
+        Adds 'directory' to the internal 'database' if the name does not exist;
+        otherwise do nothing.
         """
-        pass
+        if not isinstance(directory, str):
+            raise ValueError("'directory' argument must be 'str' type")
 
-    def directory_pop(self, directory):
+        if 0 == len(directory):
+            raise ValueError("'directory' argument must not be empty")
+
+        if not directory.isprintable():
+            raise ValueError("'directory' argument must be a valid file name")
+
+        self.__config["directories"].add(directory)
+
+    def directory_discard(self, directory):
         """
+        Discards 'directory' from the internal 'database' if the name exists;
+        otherwise do nothing.
         """
-        pass
+        if not isinstance(directory, str):
+            raise ValueError("'directory' argument must be 'str' type")
+
+        if 0 == len(directory):
+            raise ValueError("'directory' argument must not be empty")
+
+        if not directory.isprintable():
+            raise ValueError("'directory' argument must be a valid file name")
+
+        self.__config["directories"].discard(directory)
 
     def directories_get(self):
         """
@@ -181,6 +233,7 @@ class GenMakeConfig:
         """
         Sets the major programming language used.
         Defaults to 'c' language if left as empty or 'None'.
+        This member function is called by the constructor by default.
 
         'language' argument must be one of
         {"c", "cpp"}.
@@ -206,6 +259,7 @@ class GenMakeConfig:
         """
         Sets the type of license.
         Defaults to 'bsd2' license if left as empty or 'None'.
+        This member function is called by the constructor by default.
 
         'license' argument must be one of
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
@@ -233,6 +287,7 @@ class GenMakeConfig:
         Sets whether there is interactive CMakeLists.txt and Doxyfile editing.
         'True' to turn off the interactive editing.
         Defaults to 'True' if left as empty or 'None'.
+        This member function is called by the constructor by default.
 
         'quiet' argument must be of 'bool' type.
         """
