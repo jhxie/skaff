@@ -17,9 +17,16 @@ class GenMakeConfig:
     Configuration type used for the argument of 'genmake' function.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, directories, **kwargs):
         """
         Constructs a new 'GenMakeConfig' class instance.
+
+        Note you can also specify 'directories' in keyword arguments;
+        the value in keyword arguments will be used instead.
+
+        Required arguments:
+
+        'directories': name of the output project-directory(ies)
 
         Supported keyword arguments:
 
@@ -35,6 +42,10 @@ class GenMakeConfig:
 
         'quiet': no interactive CMakeLists.txt and Doxyfile editing
         """
+        # The value of 'directories' key will be used if it already exists;
+        # otherwise fill in the value from the positional argument
+        kwargs.setdefault("directories", directories)
+
         __ARGUMENTS = {"authors": self.authors_set,
                        "directories": self.directories_set,
                        "language": self.language_set,
@@ -55,18 +66,42 @@ class GenMakeConfig:
     def authors_set(self, authors=None):
         """
         Sets the author(s) of the project(s).
+        This member function is called by the constructor by default.
 
         Sets the single author to be the GECOS or name field of current
         logged-in user if 'authors' is left as default or 'None'.
         """
         if None == authors:
-            self.__config["authors"] = GenMakeConfig.author_fetch()
+            self.__config["authors"] = set(GenMakeConfig.author_fetch())
             return
 
-        if isinstance(authors, str) and authors and authors.isidentifier():
-            self.__config["authors"] = authors
-        else:
-            raise ValueError("'authors' argument must be non-empty 'str' type")
+        if not isinstance(authors, collections.Iterable):
+            raise ValueError("'authors' argument must be iterable")
+
+        if isinstance(authors, str):
+            raise ValueError(("'authors' argument must be an iterable "
+                             "containing 'str' type"))
+
+        if 0 == len(authors):
+            raise ValueError("'authors' argument must not be empty")
+
+        if not all(isinstance(author, str) for author in authors):
+            raise ValueError("'authors' argument must contain 'str' type")
+
+        self.__config["authors"] = set()
+
+        for author in authors:
+            self.__config["authors"].add(author)
+
+    def author_add(self, author):
+        """
+        """
+        pass
+
+    def author_pop(self, author):
+        """
+        """
+        pass
 
     def authors_get(self):
         """
@@ -103,11 +138,17 @@ class GenMakeConfig:
     def directories_set(self, directories=None):
         """
         Sets the name of the outputting project-directory(ies).
+        This member function is called by the constructor by default.
 
-        'directories' argument must be of 'collections.Iterable' type.
+        'directories' argument must be of 'collections.Iterable' type
+        containing instance of 'str'(s).
         """
         if not isinstance(directories, collections.Iterable):
             raise ValueError("'directories' argument must be iterable")
+
+        if isinstance(directories, str):
+            raise ValueError(("'directories' argument must be an iterable "
+                             "containing 'str' type"))
 
         if 0 == len(directories):
             raise ValueError("'directories' argument must not be empty")
@@ -115,7 +156,20 @@ class GenMakeConfig:
         if not all(isinstance(directory, str) for directory in directories):
             raise ValueError("'directories' argument must contain 'str' type")
 
-        self.__config["directories"] = directories
+        self.__config["directories"] = set()
+
+        for directory in directories:
+            self.__config["directories"].add(directory)
+
+    def directory_add(self, directory):
+        """
+        """
+        pass
+
+    def directory_pop(self, directory):
+        """
+        """
+        pass
 
     def directories_get(self):
         """
