@@ -2,17 +2,23 @@
 This document records all notable changes to GenMake.  
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0 (Upcoming)
+* Add **json-parsing** functionality for saving/restoring configurations
+* Allow specifying *more than one* author(s) for any project
+* Finalize a stable API for *core* module based on *GenMakeConfig* class
+
 ## 0.9 (Upcoming)
-* Add dedicated **json-parsing** class for saving/restoring configurations
 * Add **GDB** initialization file *.gdbinit* generation
+* Add full unit test cases for the prototype of *GenMakeConfig* class
+* Add tentative developer's documentation on [ReadThe
+Docs](https://readthedocs.org)
 * Optimize performance of regular expression matching for *Doxyfile* generation
 
-## 0.8 (Upcoming)
+## 0.8 (2016-05-24)
 * Add *CHANGELOG.md* template generation
 * Add *Travis-CI* configuration file *.travis.yml* generation
-* Add stable external API for *core* module
-* Allow specifying *more than one* author(s) for any project
 * Change language option for C++ to be **cpp** instead of **cxx**
+* Implement the prototype of *GenMakeConfig* class to be used for external API
 
 ## 0.7 (2016-05-10)
 * Add dynamic *Doxyfile* generation by invoking *doxygen* executable

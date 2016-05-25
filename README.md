@@ -18,6 +18,8 @@ Once the version number gets to **v1.0** it goes out of beta stage and would
 be released on [PyPI](https://pypi.python.org/pypi) as well; more features may
 be added later on.
 
+The changelog can be viewed [here](CHANGELOG.md).
+
 ## Installation
 As mentioned in the above section, for now the only way to get the package is
 here as well as the [BitBucket mirror](https://bitbucket.org/jhxie/genmake);
