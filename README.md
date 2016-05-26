@@ -27,12 +27,12 @@ there is no *binary* package available.
 
 Once downloaded, make sure you have **python3-setuptools** installed:
 
-**Ubuntu**
+**Ubuntu** (14.04 and later)
 ```bash
 sudo apt-get install python3-setuptools
 ```
 
-**Fedora**
+**Fedora** (23 and later)
 ```bash
 sudo dnf install python3-setuptools
 ```
@@ -68,6 +68,7 @@ A few more examples along with its detailed documentation will be given on
 logo.
 * Motivation from Douglas Mcilroy: "*As a programmer, it is your job to put
 yourself out of business. What you do today can be automated tomorrow.*"
+* [CMake](https://cmake.org) is developed and maintained by Kitware.
 
 ## License
 Copyright &copy; 2016 Jiahui Xie  
