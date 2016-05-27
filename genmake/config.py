@@ -72,7 +72,8 @@ class GenMakeConfig:
         logged-in user if 'authors' is left as default or 'None'.
         """
         if None == authors:
-            self.__config["authors"] = set(GenMakeConfig.author_fetch())
+            self.__config["authors"] = set()
+            self.author_add(GenMakeConfig.author_fetch())
             return
 
         if not isinstance(authors, collections.Iterable):
@@ -94,7 +95,7 @@ class GenMakeConfig:
         self.__config["authors"] = set()
 
         for author in authors:
-            self.__config["authors"].add(author)
+            self.author_add(author)
 
     def author_add(self, author):
         """
@@ -189,7 +190,7 @@ class GenMakeConfig:
         self.__config["directories"] = set()
 
         for directory in directories:
-            self.__config["directories"].add(directory)
+            self.directory_add(directory)
 
     def directory_add(self, directory):
         """
