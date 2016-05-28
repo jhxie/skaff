@@ -26,13 +26,13 @@ class GenMakeConfig:
 
         Required arguments:
 
-        'directories': name of the output project-directory(ies)
+        'directories': set of name(s) for the output project-directory(ies)
 
         Supported keyword arguments:
 
-        'authors': author(s) of the project(s)
+        'authors': set of author(s) for the project(s)
 
-        'directories': name of the output project-directory(ies)
+        'directories': set of name(s) for the output project-directory(ies)
 
         'language': major programming language used; one of
                     {"c", "cpp"}
@@ -66,6 +66,7 @@ class GenMakeConfig:
     def authors_set(self, authors=None):
         """
         Sets the author(s) of the project(s).
+        'authors' must be an iterable type containing 'str'(s).
         This member function is called by the constructor by default.
 
         Sets the single author to be the GECOS or name field of current
@@ -164,7 +165,8 @@ class GenMakeConfig:
 
     def directories_set(self, directories=None):
         """
-        Sets the name of the outputting project-directory(ies).
+        Sets the name(s) of the outputting project-directory(ies).
+        'directories' must be an iterable type containing 'str'(s).
         This member function is called by the constructor by default.
 
         'directories' argument must be of 'collections.Iterable' type

@@ -11,11 +11,10 @@ __author__ = "Jiahui Xie"
 __email__ = "jiahui.xie@outlook.com"
 __license__ = "BSD"
 __maintainer__ = __author__
-__version__ = "0.8"
+__version__ = "0.9"
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
-import collections
 import os
 import pwd
 import re
