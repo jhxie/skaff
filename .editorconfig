@@ -14,9 +14,13 @@ trim_trailing_whitespace = true
 
 # Matches multiple files with brace expansion notation
 # 8 space indentation
-[*.{c,cpp,h,hpp}]
+[*.{c,h}]
 indent_style = space
 indent_size = 8
+
+[*.{cc,cpp,cxx,hpp}]
+indent_style = space
+indent_size = 4
 
 # 4 space indentation
 [*.py]
