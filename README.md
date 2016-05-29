@@ -23,7 +23,7 @@ The changelog can be viewed [here](CHANGELOG.md).
 ## Installation
 As mentioned in the above section, for now the only way to get the package is
 here as well as the [BitBucket mirror](https://bitbucket.org/jhxie/genmake);
-there is no *binary* package available.
+there is no *binary* (or *compiled-bytecode,* if you prefer) package available.
 
 Once downloaded, make sure you have **python3-setuptools** installed:
 
@@ -61,6 +61,7 @@ A few more examples along with its detailed documentation will be given on
 * Mac OS X (haven't tested, but I see no reason why it doesn't work)
 
 ## Credit
+* [CMake](https://cmake.org) is developed and maintained by Kitware.
 * The colorscheme of GenMake's logo is inspired by this
 [example
 ](http://i34.photobucket.com/albums/d142/JanetB0601/ColorComboChallenge72.jpg).
@@ -68,7 +69,6 @@ A few more examples along with its detailed documentation will be given on
 logo.
 * Motivation from Douglas Mcilroy: "*As a programmer, it is your job to put
 yourself out of business. What you do today can be automated tomorrow.*"
-* [CMake](https://cmake.org) is developed and maintained by Kitware.
 
 ## License
 Copyright &copy; 2016 Jiahui Xie  

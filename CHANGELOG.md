@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Add **json-parsing** functionality for saving/restoring configurations
 * Allow specifying *more than one* author(s) for any project
 * Finalize a stable API for *core* module based on *GenMakeConfig* class
+* Set up a dedicated website hosted by *GitHubPages* based on existing template
 
 ## 0.9 (Upcoming)
 * Add **GDB** initialization file *.gdbinit* generation
