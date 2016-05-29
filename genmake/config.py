@@ -34,11 +34,11 @@ class GenMakeConfig:
 
         'directories': set of name(s) for the output project-directory(ies)
 
-        'language': major programming language used; one of
-                    {"c", "cpp"}
+        'language': major programming language used;
+                    must be chosen from the 'languages_list' listing.
 
-        'license': type of license; one of
-                    {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}
+        'license': type of license;
+                    must be chosen from the 'licenses_list' listing.
 
         'quiet': no interactive CMakeLists.txt and Doxyfile editing
         """
@@ -52,6 +52,8 @@ class GenMakeConfig:
                        "license": self.license_set,
                        "quiet": self.quiet_set}
         self.__config = dict()
+        self.__languages = frozenset(("c", "cpp"))
+        self.__licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
         for key in __ARGUMENTS:
             # Call corresponding mutator function with value specified in the
             # 'kwargs' dictionary if key is present
@@ -238,17 +240,18 @@ class GenMakeConfig:
         Defaults to 'c' language if left as empty or 'None'.
         This member function is called by the constructor by default.
 
-        'language' argument must be one of
-        {"c", "cpp"}.
+        'language' argument must be the ones listed in 'languages_list'.
         """
-        languages = frozenset(("c", "cpp"))
+        languages = self.languages_list()
 
         if None == language:
             self.__config["language"] = "c"
             return
 
         if language not in languages:
-            raise ValueError("'language' argument must be one of 'c' or 'cpp'")
+            raise ValueError(("'language' choice must be one of the following:"
+                              " "
+                              ", ".join(languages)))
 
         self.__config["language"] = language
 
@@ -258,16 +261,23 @@ class GenMakeConfig:
         """
         return self.__config["language"]
 
+    def languages_list(self):
+        """
+        Lists the supported primary programming languages.
+        By default they are the following:
+        {"c", "cpp"}.
+        """
+        return sorted(self.__languages)
+
     def license_set(self, license=None):
         """
         Sets the type of license.
         Defaults to 'bsd2' license if left as empty or 'None'.
         This member function is called by the constructor by default.
 
-        'license' argument must be one of
-        {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
+        'license' argument must be the ones listed in 'licenses_list'.
         """
-        licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+        licenses = self.licenses_list()
 
         if None == license:
             self.__config["license"] = "bsd2"
@@ -284,6 +294,14 @@ class GenMakeConfig:
         Gets the type of license.
         """
         return self.__config["license"]
+
+    def licenses_list(self):
+        """
+        Lists the supported licenses.
+        By default they are the following:
+        {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
+        """
+        return sorted(self.__licenses)
 
     def quiet_set(self, quiet=None):
         """
