@@ -28,7 +28,34 @@ class TestConfig(unittest.TestCase):
         self.tmp_dir.cleanup()
 
     def test_authors_set(self):
-        pass
+        # The branch where 'authors' is 'None' is tested in 'test_author_fetch'
+        # member function, so it is skipped here
+        authors = ["Andrew Grove", "An Wang", lambda x: not x]
+
+        # Fail due to non-iterable type
+        with self.assertRaises(ValueError):
+            self.config.authors_set(authors[-1])
+
+        # Fail due to non-containerized string type
+        with self.assertRaises(ValueError):
+            self.config.authors_set(authors[0])
+
+        # Fail due to empty string
+        with self.assertRaises(ValueError):
+            self.config.authors_set((str(),))
+
+        # Fail due to the existence of non-string type
+        with self.assertRaises(ValueError):
+            self.config.authors_set(authors)
+
+        authors[-1] = "\t"
+        # Fail due to the existence of non-printable string
+        with self.assertRaises(ValueError):
+            self.config.authors_set(authors)
+
+        del authors[-1]
+        self.config.authors_set(authors)
+        self.assertCountEqual(authors, self.config.authors_get())
 
     def test_author_add(self):
         # This "magic number" is questionable;
@@ -85,7 +112,12 @@ class TestConfig(unittest.TestCase):
         self.assertNotIn(author_discarded, self.config.authors_get())
 
     def test_authors_get(self):
-        pass
+        authors = ("Pratt", "Whitney")
+        get_result = None
+
+        self.config.authors_set(authors)
+        get_result = self.config.authors_get()
+        self.assertCountEqual(authors, get_result)
 
     def test_author_fetch(self):
         # Get system password database record based on current user UID
@@ -103,34 +135,153 @@ class TestConfig(unittest.TestCase):
                 GenMakeConfig.author_fetch()
 
     def test_directories_set(self):
-        pass
+        # Identical to 'test_authors_set' because the similarity between
+        # the 2 mutator member functions; may be expanded later on if new
+        # checking branches are added to 'directories_set'
+        directories = ["Apollo", "Spirit", lambda x: not x]
+
+        # Fail due to non-iterable type
+        with self.assertRaises(ValueError):
+            self.config.directories_set(directories[-1])
+
+        # Fail due to non-containerized string type
+        with self.assertRaises(ValueError):
+            self.config.directories_set(directories[0])
+
+        # Fail due to empty string
+        with self.assertRaises(ValueError):
+            self.config.directories_set((str(),))
+
+        # Fail due to the existence of non-string type
+        with self.assertRaises(ValueError):
+            self.config.directories_set(directories)
+
+        directories[-1] = "\t"
+        # Fail due to the existence of non-printable string
+        with self.assertRaises(ValueError):
+            self.config.directories_set(directories)
+
+        del directories[-1]
+        self.config.directories_set(directories)
+        self.assertCountEqual(directories, self.config.directories_get())
 
     def test_directory_add(self):
-        pass
+        # Again, identical to 'test_author_add'.
+        # This "magic number" is questionable;
+        # but to maintain "test reproducibility" it is kept this way
+        add_count = 10
+        directory_added = "Android"
+        counter = None
+
+        # Fail due to wrong type for the 'directory' argument
+        with self.assertRaises(ValueError):
+            self.config.directory_add(None)
+
+        # Fail because the 'directory' argument cannot be an empty string
+        with self.assertRaises(ValueError):
+            self.config.directory_add(str())
+
+        # Fail because the 'directory' argument cannot contain non-printables
+        with self.assertRaises(ValueError):
+            self.config.directory_add("\t")
+
+        for _ in range(add_count):
+            self.config.directory_add(directory_added)
+        # Success if 'directory_add' actually added the specified 'directory'
+        self.assertIn(directory_added, self.config.directories_get())
+
+        counter = collections.Counter(self.config.directories_get())
+        # Success if the underlying representation
+        # for authors does not permit duplicates
+        self.assertEqual(1, counter[directory_added])
 
     def test_directory_discard(self):
-        pass
+        # Again, identical to 'test_author_discard'.
+        # This "magic number" is questionable;
+        # but to maintain "test reproducibility" it is kept this way
+        add_count = 10
+        directory_discarded = "Symbian"
+
+        # Fail due to wrong type for the 'author' argument
+        with self.assertRaises(ValueError):
+            self.config.directory_discard(None)
+
+        # Fail because the 'author' argument cannot be an empty string
+        with self.assertRaises(ValueError):
+            self.config.directory_discard(str())
+
+        # Fail because the 'author' argument cannot contain non-printables
+        with self.assertRaises(ValueError):
+            self.config.directory_discard("\t")
+
+        for _ in range(add_count):
+            self.config.directory_add(directory_discarded)
+        self.config.directory_discard(directory_discarded)
+        # Success if the underlying representation
+        # for authors does not permit duplicates
+        self.assertNotIn(directory_discarded, self.config.directories_get())
 
     def test_directories_get(self):
-        pass
+        # Test directory names with non-ascii characters
+        directories = ("Αντικύθηρα", "Ουροβόρος όφις")
+        get_result = None
+
+        self.config.directories_set(directories)
+        get_result = self.config.directories_get()
+        self.assertCountEqual(directories, get_result)
 
     def test_language_set(self):
-        pass
+        language = "Svenska"
+        languages = self.config.languages_list()
+
+        # Whatever the default programming language is, it must conform to its
+        # own invarients: the language set automatically must belong to the
+        # listing of supported languages generated by the class itself.
+        self.config.language_set(None)
+        self.assertIn(self.config.language_get(), languages)
+
+        self.assertNotIn(language, languages)
+        with self.assertRaises(ValueError):
+            self.config.language_set(language)
 
     def test_language_get(self):
-        pass
+        # Every language specified in the listing should work.
+        for language in self.config.languages_list():
+            self.config.language_set(language)
+            self.assertEqual(language, self.config.language_get())
 
     def test_license_set(self):
-        pass
+        # Identical to 'test_language_set' due to the similarity between
+        # 'language_set' and 'license_set' mutator functions.
+        license = "proprietary"
+        licenses = self.config.licenses_list()
+
+        self.config.license_set(None)
+        self.assertIn(self.config.license_get(), licenses)
+
+        self.assertNotIn(license, licenses)
+        with self.assertRaises(ValueError):
+            self.config.license_set(license)
 
     def test_license_get(self):
-        pass
+        # Every license specified in the listing should work.
+        for license in self.config.licenses_list():
+            self.config.license_set(license)
+            self.assertEqual(license, self.config.license_get())
 
     def test_quiet_set(self):
-        pass
+        self.config.quiet_set(None)
+        self.assertIsInstance(self.config.quiet_get(), bool)
+
+        with self.assertRaises(ValueError):
+            self.config.quiet_set(str())
 
     def test_quiet_get(self):
-        pass
+        options = (True, False)
+
+        for option in options:
+            self.config.quiet_set(option)
+            self.assertEqual(option, self.config.quiet_get())
 
 if __name__ == "__main__":
     unittest.main()

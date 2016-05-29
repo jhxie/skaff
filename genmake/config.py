@@ -136,7 +136,7 @@ class GenMakeConfig:
         """
         Gets the author(s) of the project(s).
         """
-        return self.__config["authors"]
+        return sorted(self.__config["authors"])
 
     @staticmethod
     def author_fetch():
@@ -232,7 +232,7 @@ class GenMakeConfig:
         """
         Gets the name of the outputting project-directory(ies).
         """
-        return self.__config["directories"]
+        return sorted(self.__config["directories"])
 
     def language_set(self, language=None):
         """
@@ -307,7 +307,7 @@ class GenMakeConfig:
         """
         Sets whether there is interactive CMakeLists.txt and Doxyfile editing.
         'True' to turn off the interactive editing.
-        Defaults to 'True' if left as empty or 'None'.
+        Defaults to 'False' if left as empty or 'None'.
         This member function is called by the constructor by default.
 
         'quiet' argument must be of 'bool' type.
