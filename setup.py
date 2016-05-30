@@ -63,7 +63,7 @@ if __name__ == "__main__":
           entry_points={
               "console_scripts": ["genmake=genmake.cli:main"]
           },
-          test_suite="genmake.tests",
+          test_suite="tests",
           # All the files listed in 'MANIFEST.in' will be installed, too
           include_package_data=True,
           zip_safe=False)
