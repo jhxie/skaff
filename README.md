@@ -1,5 +1,8 @@
 ![genmake](img/banner.png)
 
+## NOTICE
+Development halts temporarily until 2016-06-18.
+
 ## Overview
 A CMake-based project scaffolding tool.
 
