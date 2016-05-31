@@ -5,10 +5,12 @@ Development halts temporarily until **2016-06-18**.
 
 ## Overview
 A CMake-based project scaffolding tool.  
-Click any of the following to see details.
+Click any of the following to see details.  
 [![Documentation Status](
 https://readthedocs.org/projects/genmake/badge/?version=latest)](
 http://genmake.readthedocs.io/en/latest/?badge=latest)
+[![License](img/bsd2.svg?style=flat-square)](
+http://opensource.org/licenses/BSD-2-Clause)
 [![Build Status](
 https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)](
 https://semaphoreci.com/jhxie/genmake)
@@ -72,6 +74,8 @@ later on.
 * The colorscheme of GenMake's logo is inspired by this
 [example
 ](http://i34.photobucket.com/albums/d142/JanetB0601/ColorComboChallenge72.jpg).
+* The **BSD-2-Clause** badge is from [here
+](https://github.com/demhydraz/badge-collection).
 * [Inkscape](https://inkscape.org/) is used to design the original SVG format
 logo.
 * Motivation from Douglas Mcilroy: "*As a programmer, it is your job to put
