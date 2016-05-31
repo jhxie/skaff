@@ -4,17 +4,14 @@
 Development halts temporarily until **2016-06-18**.
 
 ## Overview
-A CMake-based project scaffolding tool.
-
-## Build Status
-Click to see details.
-
-[![Build Status](
- https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)]
-(https://semaphoreci.com/jhxie/genmake)
+A CMake-based project scaffolding tool.  
+Click any of the following to see details.
 [![Documentation Status](
-https://readthedocs.org/projects/genmake/badge/?version=latest)]
-(http://genmake.readthedocs.io/en/latest/?badge=latest)
+https://readthedocs.org/projects/genmake/badge/?version=latest)](
+http://genmake.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](
+https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)](
+https://semaphoreci.com/jhxie/genmake)
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden
