@@ -7,9 +7,14 @@ Development halts temporarily until **2016-06-18**.
 A CMake-based project scaffolding tool.
 
 ## Build Status
+Click to see details.
+
 [![Build Status](
  https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)]
-(https://semaphoreci.com/jhxie/genmake) → Click to see details.
+(https://semaphoreci.com/jhxie/genmake)
+[![Documentation Status](
+https://readthedocs.org/projects/genmake/badge/?version=latest)]
+(http://genmake.readthedocs.io/en/latest/?badge=latest)
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden
@@ -57,7 +62,8 @@ For the detailed command-line reference manual, use *man* as usual:
 man 1 genmake
 ```
 A few more examples along with its detailed documentation will be given on
-[ReadTheDocs](https://readthedocs.org) later on.
+[ReadTheDocs](https://readthedocs.org/projects/genmake/badge/?version=latest)
+later on.
 
 ## Supported Platforms
 * Linux
