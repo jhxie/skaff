@@ -1,14 +1,15 @@
 ![genmake](img/banner.png)
 
 ## NOTICE
-Development halts temporarily until 2016-06-18.
+Development halts temporarily until **2016-06-18**.
 
 ## Overview
 A CMake-based project scaffolding tool.
 
 ## Build Status
-[![Build Status](https://travis-ci.org/jhxie/genmake.svg?branch=master)]
-(https://travis-ci.org/jhxie/genmake) → Click to see details.
+[![Build Status](
+ https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)]
+(https://semaphoreci.com/jhxie/genmake) → Click to see details.
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden

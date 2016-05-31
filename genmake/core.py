@@ -398,11 +398,11 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
     if not quiet:
         terminal_info = shutil.get_terminal_size()
         directory_line = "Upcoming Configuration Editing for {0}{1}{2}".format(
-            ANSIColor.BLUE, directory, ANSIColor.RESET)
+            ANSIColor.KHAKI, directory, ANSIColor.RESET)
         hint_line1 = "Press [{0}a{1}] to skip all the rest.".format(
-            ANSIColor.RED, ANSIColor.RESET)
+            ANSIColor.PURPLE, ANSIColor.RESET)
         hint_line2 = "Press [{0}k{1}] for the current directory only.".format(
-            ANSIColor.RED, ANSIColor.RESET)
+            ANSIColor.PURPLE, ANSIColor.RESET)
         os.system("clear")
         print("-" * terminal_info.columns + "\n")
         for line in (directory_line, hint_line1, hint_line2):
@@ -410,7 +410,7 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
         print("\n" + "-" * terminal_info.columns)
         try:
             while True:
-                key = timeout(4)(single_keypress_read)()
+                key = timeout(5)(single_keypress_read)()
                 if "a" == key.lower():
                     _conf_doc_prompt.skip_rest = True
                     quiet = True
@@ -420,6 +420,7 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
                     break
         except TimeOutError:
             pass
+        os.system("clear")
 
     _conf_spawn(directory, language, quiet)
     _doc_create(author, directory, license, quiet)
