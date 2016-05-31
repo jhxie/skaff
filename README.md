@@ -9,7 +9,8 @@ Click any of the following to see details.
 [![Documentation Status](
 https://readthedocs.org/projects/genmake/badge/?version=latest)](
 http://genmake.readthedocs.io/en/latest/?badge=latest)
-[![License](img/bsd2.svg?style=flat-square)](
+[![License](
+img/bsd2.svg)](
 http://opensource.org/licenses/BSD-2-Clause)
 [![Build Status](
 https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)](
