@@ -22,6 +22,8 @@ import sys
 sys.path.insert(0, os.path.abspath('../../'))
 
 import genmake
+
+from datetime import date
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -58,8 +60,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'genmake'
-copyright = '2016, Jiahui Xie'
-author = 'Jiahui Xie'
+author = genmake.__author__
+copyright = str(date.today().year) + ', ' + author
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -154,8 +156,8 @@ todo_include_todos = True
 # html_logo = None
 
 # The name of an image file (relative to this directory) to use as a favicon of
-# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
-# pixels large.
+# the docs.  This file should be a Windows icon file (.ico) being 16x16 or
+# 32x32 pixels large.
 #
 # html_favicon = None
 
@@ -246,23 +248,22 @@ htmlhelp_basename = 'genmakedoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
-     # The paper size ('letterpaper' or 'a4paper').
-     #
-     # 'papersize': 'letterpaper',
+# The paper size ('letterpaper' or 'a4paper').
+#
+# 'papersize': 'letterpaper',
 
-     # The font size ('10pt', '11pt' or '12pt').
-     #
-     # 'pointsize': '10pt',
+# The font size ('10pt', '11pt' or '12pt').
+#
+# 'pointsize': '10pt',
 
-     # Additional stuff for the LaTeX preamble.
-     #
-     # 'preamble': '',
+# Additional stuff for the LaTeX preamble.
+#
+# 'preamble': '',
 
-     # Latex figure (float) alignment
-     #
-     # 'figure_align': 'htbp',
-}
+# Latex figure (float) alignment
+#
+# 'figure_align': 'htbp',
+latex_elements = {}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
