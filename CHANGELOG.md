@@ -9,10 +9,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Set up a dedicated website hosted by *GitHubPages* based on existing template
 
 ## 0.9 (Upcoming)
-* Add **GDB** initialization file *.gdbinit* generation
+* Add **GDB** initialization file *.gdbinit* generation functionality
 * Add full unit test cases for the prototype of *GenMakeConfig* class
+* Add sample source file (under *src* subdirectory) generation functionality
 * Add tentative developer's documentation on [ReadThe
-Docs](https://readthedocs.org)
+Docs](https://readthedocs.org/projects/genmake/)
 * Optimize performance of regular expression matching for *Doxyfile* generation
 
 ## 0.8 (2016-05-24)

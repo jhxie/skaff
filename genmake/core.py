@@ -64,17 +64,17 @@ def genmake(author, directories, language, license, quiet):
     for base_dir in directories:
         if not base_dir.endswith(os.sep):
             base_dir += os.sep
-        os.mkdir(base_dir)
-        _license_sign(author, base_dir, license)
-        _conf_doc_prompt(author, base_dir, language, license, quiet)
 
+        os.mkdir(base_dir)
         for sub_dir in subdirectories:
             os.mkdir(base_dir + sub_dir)
-
         # Create parent directory if it does not exist
         os.makedirs("{0}include{1}{2}".format(base_dir,
                                               os.sep,
                                               os.path.basename(base_dir[:-1])))
+
+        _license_sign(author, base_dir, license)
+        _conf_doc_prompt(author, base_dir, language, license, quiet)
 
 
 def genmake_version_get():
@@ -158,8 +158,15 @@ def _conf_spawn(directory, language, quiet):
     cmake_source_prefix = _basepath_find() + os.sep +\
         "config" + os.sep +\
         language + os.sep
+    sample_source_file = "main." + language
 
     shutil.copy(cmake_source_prefix + cmake_file, directory)
+
+    if os.path.isdir(directory + "src"):
+        shutil.copy(cmake_source_prefix + "src" + os.sep + cmake_file,
+                    directory + "src" + os.sep)
+        shutil.copy(cmake_source_prefix + "src" + os.sep + sample_source_file,
+                    directory + "src" + os.sep)
 
     conf_files = ("editorconfig", "gdbinit", "gitattributes", "gitignore")
     conf_source_prefix = _basepath_find() + os.sep + "config" + os.sep

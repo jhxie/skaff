@@ -55,8 +55,11 @@ if __name__ == "__main__":
               "genmake": [
                   "genmake/config/*.txt",
                   "genmake/config/Doxyfile",
+                  "genmake/config/travis.yml",
                   "genmake/config/c/*.txt",
+                  "genmake/config/c/src/*",
                   "genmake/config/cpp/*.txt",
+                  "genmake/config/cpp/src/*",
                   "genmake/license/*.md",
                   "genmake/license/*.txt"]
           },

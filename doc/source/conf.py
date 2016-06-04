@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 import genmake
 
-from datetime import date
+from datetime import datetime
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -61,7 +61,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'genmake'
 author = genmake.__author__
-copyright = str(date.today().year) + ', ' + author
+copyright = str(datetime.now().year) + ', ' + author
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
