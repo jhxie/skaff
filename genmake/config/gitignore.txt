@@ -39,6 +39,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# IntelliJ IDEA directory
+.idea
+
 # Rope directory
 .ropeproject
 

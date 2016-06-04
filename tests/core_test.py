@@ -71,7 +71,7 @@ class TestCore(unittest.TestCase):
 
     def test__conf_spawn(self):
         argument_dict = dict(directory=None, language=None, quiet=True)
-        conf_files = frozenset((".editorconfig", ".gitattributes",
+        conf_files = frozenset((".editorconfig", ".gdbinit", ".gitattributes",
                                 ".gitignore", ".travis.yml", "CMakeLists.txt"))
 
         # Fail because 'directory' cannot be empty
@@ -82,7 +82,7 @@ class TestCore(unittest.TestCase):
             argument_dict["directory"] = tmp_dir
             genmake._conf_spawn(**argument_dict)
             for conf_file in conf_files:
-                self.assertTrue(os.path.isfile(tmp_dir + "/" + conf_file))
+                self.assertTrue(os.path.isfile(tmp_dir + os.sep + conf_file))
             # Fail because of newly spawned configuration files
             # the 'directory' is no longer empty
             with self.assertRaises(OSError):
@@ -113,9 +113,9 @@ class TestCore(unittest.TestCase):
         with TemporaryDirectory() as tmp_dir:
             argument_dict["directory"] = tmp_dir
             genmake._doc_create(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + "/CHANGELOG.md"))
-            self.assertTrue(os.path.isfile(tmp_dir + "/Doxyfile"))
-            self.assertTrue(os.path.isfile(tmp_dir + "/README.md"))
+            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "CHANGELOG.md"))
+            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "Doxyfile"))
+            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "README.md"))
             # Fail because of newly created documentation
             # the 'directory' is no longer empty
             with self.assertRaises(OSError):
@@ -139,7 +139,7 @@ class TestCore(unittest.TestCase):
             with TemporaryDirectory() as tmp_dir:
                 argument_dict["directory"] = tmp_dir
                 genmake._doc_create(**argument_dict)
-                with open(tmp_dir + "/README.md", "r") as readme_file:
+                with open(tmp_dir + os.sep + "README.md", "r") as readme_file:
                     self.assertIn(license.upper(), readme_file.read())
 
     def test__conf_doc_prompt(self):
@@ -175,9 +175,10 @@ class TestCore(unittest.TestCase):
             genmake._doxyfile_attr_match(project_name=None, line="PlaceHolder")
 
         # Fail because the project name cannot be solely composed of
-        # a single slash character
+        # a single separator character
         with self.assertRaises(ValueError):
-            genmake._doxyfile_attr_match(project_name="/", line="PlaceHolder")
+            genmake._doxyfile_attr_match(project_name=os.sep,
+                                         line="PlaceHolder")
 
         for attr in attr_dict:
             argument_dict["line"] = attr + " = "
@@ -195,7 +196,7 @@ class TestCore(unittest.TestCase):
         with TemporaryDirectory() as tmp_dir:
             argument_dict["directory"] = tmp_dir
             genmake._doxyfile_generate(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + "/Doxyfile"))
+            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "Doxyfile"))
             # Fail because of newly created documentation
             # the 'directory' is no longer empty
             with self.assertRaises(OSError):
@@ -215,7 +216,7 @@ class TestCore(unittest.TestCase):
         with TemporaryDirectory() as tmp_dir:
             argument_dict["directory"] = tmp_dir
             genmake._license_sign(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + "/LICENSE.txt"))
+            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "LICENSE.txt"))
             # Fail because of newly created documentation
             # the 'directory' is no longer empty
             with self.assertRaises(OSError):

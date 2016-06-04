@@ -62,8 +62,8 @@ def genmake(author, directories, language, license, quiet):
     )
 
     for base_dir in directories:
-        if not base_dir.endswith("/"):
-            base_dir += "/"
+        if not base_dir.endswith(os.sep):
+            base_dir += os.sep
         os.mkdir(base_dir)
         _license_sign(author, base_dir, license)
         _conf_doc_prompt(author, base_dir, language, license, quiet)
@@ -72,7 +72,9 @@ def genmake(author, directories, language, license, quiet):
             os.mkdir(base_dir + sub_dir)
 
         # Create parent directory if it does not exist
-        os.makedirs(base_dir + "include/" + os.path.basename(base_dir[:-1]))
+        os.makedirs("{0}include{1}{2}".format(base_dir,
+                                              os.sep,
+                                              os.path.basename(base_dir[:-1])))
 
 
 def genmake_version_get():
@@ -83,11 +85,12 @@ def genmake_version_get():
                         "email": __email__,
                         "license": __license__,
                         "maintainer": __maintainer__,
-                        "version": __version__}
+                        "version": __version__,
+                        "year": datetime.now().year}
     genmake_version_info = (
         "genmake "
         "(A CMake-based project scaffolding tool) {version}\n"
-        "Copyright (C) 2016 {author}.\n"
+        "Copyright (C) {year} {author}.\n"
         "Licensed and distributed under BSD 2-Clause License.\n"
         "This is free software: you are free to change and redistribute it.\n"
         "There is NO WARRANTY, to the extent permitted by law.\n\n"
@@ -108,8 +111,8 @@ def _license_sign(author, directory, license):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if not directory.endswith("/"):
-        directory += "/"
+    if not directory.endswith(os.sep):
+        directory += os.sep
 
     # If the license is left as empty, default to BSD 2-clause license.
     if not license:
@@ -120,7 +123,8 @@ def _license_sign(author, directory, license):
     if not author:
         author = _author_get()
 
-    license_text = _basepath_find() + "/license/" + license + ".txt"
+    license_text = _basepath_find() + os.sep + "license" + os.sep +\
+        license + ".txt"
     license_target = directory + "LICENSE.txt"
     if license in frozenset(("bsd2", "bsd3", "mit")):
         with open(license_text, "r") as from_file:
@@ -147,16 +151,18 @@ def _conf_spawn(directory, language, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if not directory.endswith("/"):
-        directory += "/"
+    if not directory.endswith(os.sep):
+        directory += os.sep
 
     cmake_file = "CMakeLists.txt"
-    cmake_source_prefix = _basepath_find() + "/config/" + language + "/"
+    cmake_source_prefix = _basepath_find() + os.sep +\
+        "config" + os.sep +\
+        language + os.sep
 
     shutil.copy(cmake_source_prefix + cmake_file, directory)
 
-    conf_files = ("editorconfig", "gitattributes", "gitignore")
-    conf_source_prefix = _basepath_find() + "/config/"
+    conf_files = ("editorconfig", "gdbinit", "gitattributes", "gitignore")
+    conf_source_prefix = _basepath_find() + os.sep + "config" + os.sep
     conf_target_prefix = directory + "."
     travis_file = "travis.yml"
     language_header = "language: {0}\n".format(language)
@@ -184,8 +190,8 @@ def _conf_edit(directory, conf_files):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if not directory.endswith("/"):
-        directory += "/"
+    if not directory.endswith(os.sep):
+        directory += os.sep
 
     if not isinstance(conf_files, list):
         raise ValueError("'conf_files' argument must be of list type")
@@ -227,8 +233,8 @@ def _doc_create(author, directory, license, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if not directory.endswith("/"):
-        directory += "/"
+    if not directory.endswith(os.sep):
+        directory += os.sep
 
     changelog_header = (
         "# Change Log\n"
@@ -238,13 +244,15 @@ def _doc_create(author, directory, license, quiet):
         "* New feature here\n"
     ).format(directory[:-1].title())
     readme_header = (
-        "![{0}](img/banner.png)\n"
+        "![{0}](img{1}banner.png)\n"
         "\n## Overview\n"
         "\n## License\n"
-    ).format(directory[:-1])
+    ).format(directory[:-1], os.sep)
     changelog_text = directory + "CHANGELOG.md"
     copyright_line = "Copyright &copy; {0} {1}\n"
-    license_text = _basepath_find() + "/license/" + license + ".md"
+    license_text = _basepath_find() + os.sep +\
+        "license" + os.sep +\
+        license + ".md"
     readme_text = directory + "README.md"
 
     with open(license_text, "r") as license_file:
@@ -270,11 +278,11 @@ def _doxyfile_generate(directory, quiet):
     if not directory or not os.path.isdir(directory):
         raise ValueError("Invalid directory argument")
 
-    if not directory.endswith("/"):
-        directory += "/"
+    if not directory.endswith(os.sep):
+        directory += os.sep
 
     doxyfile = "Doxyfile"
-    doxyfile_source_prefix = _basepath_find() + "/config/"
+    doxyfile_source_prefix = _basepath_find() + os.sep + "config" + os.sep
     doxyfile_target_prefix = directory
     doxygen_cmd = ["doxygen", "-g", doxyfile_target_prefix + doxyfile]
 
@@ -316,8 +324,8 @@ def _doxyfile_attr_match(project_name, line):
         raise ValueError(("Both 'project_name' and 'line' "
                          "have to be of 'str' type"))
 
-    # Gets rid of the trailing slash character
-    if project_name.endswith("/"):
+    # Gets rid of the trailing separator character
+    if project_name.endswith(os.sep):
         project_name = project_name[:-1]
 
     # Tests whether the length of 'project_name' become 0 after truncation
@@ -325,7 +333,7 @@ def _doxyfile_attr_match(project_name, line):
         raise ValueError("'project_name' cannot be a single slash character")
 
     attr_dict = {"PROJECT_NAME": "\"" + project_name.title() + "\"",
-                 "OUTPUT_DIRECTORY": "./doc",
+                 "OUTPUT_DIRECTORY": "." + os.sep + "doc",
                  "TAB_SIZE": 8,
                  "EXTRACT_ALL": "YES",
                  "EXTRACT_STATIC": "YES",
