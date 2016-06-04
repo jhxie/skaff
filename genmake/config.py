@@ -230,7 +230,7 @@ class GenMakeConfig:
 
     def directories_get(self):
         """
-        Gets the name of the outputting project-directory(ies).
+        Gets the name(s) of the outputting project-directory(ies).
         """
         return sorted(self.__config["directories"])
 
@@ -326,6 +326,38 @@ class GenMakeConfig:
         Gets whether there is interactive CMakeLists.txt and Doxyfile editing.
         """
         return self.__config["quiet"]
+
+    def subdirectories_set(self, subdirectories):
+        """
+        Sets the name(s) of the subdirectory(ies) within the project(s)' base
+        directory(ies).
+        This member function is called by the constructor by default.
+
+        'subdirectories' argument must be of 'collections.Iterable' type
+        containing instance of 'str'(s).
+        """
+        pass
+
+    def subdirectory_add(self, subdirectory):
+        """
+        Adds 'subdirectory' to the internal 'database' if the name does not
+        exist; otherwise do nothing.
+        """
+        pass
+
+    def subdirectory_discard(self, subdirectory):
+        """
+        Discards 'subdirectory' from the internal 'database' if the name
+        exists; otherwise do nothing.
+        """
+        pass
+
+    def subdirectories_get(self):
+        """
+        Gets the name(s) of the subdirectory(ies) within the project(s)' base
+        directory(ies).
+        """
+        pass
 
     def _load(self, **kwargs):
         """
