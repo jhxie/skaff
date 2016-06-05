@@ -1,20 +1,21 @@
 # Change Log
-This document records all notable changes to GenMake.  
+This document records all notable changes to Skaff.  
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0 (Upcoming)
 * Add **json-parsing** functionality for saving/restoring configurations
 * Allow specifying *more than one* author(s) for any project
-* Finalize a stable API for *core* module based on *GenMakeConfig* class
+* Finalize a stable API for *core* module based on *SkaffConfig* class
 * Set up a dedicated website hosted by *GitHubPages* based on existing template
 
 ## 0.9 (Upcoming)
 * Add **GDB** initialization file *.gdbinit* generation functionality
-* Add full unit test cases for the prototype of *GenMakeConfig* class
+* Add full unit test cases for the prototype of *SkaffConfig* class
 * Add sample source file (under *src* subdirectory) generation functionality
 * Add tentative developer's documentation on [ReadThe
-Docs](https://readthedocs.org/projects/genmake/)
+Docs](https://readthedocs.org/projects/skaff/)
 * Optimize performance of regular expression matching for *Doxyfile* generation
+* Rename the project to **skaff**
 
 ## 0.8 (2016-05-24)
 * Add *CHANGELOG.md* template generation

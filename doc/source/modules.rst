@@ -1,7 +1,7 @@
-genmake
+skaff
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   genmake
+   skaff

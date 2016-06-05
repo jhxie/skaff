@@ -9,7 +9,7 @@ import os
 import pwd
 import unittest
 
-from genmake import GenMakeConfig
+from skaff import SkaffConfig
 from tempfile import TemporaryDirectory
 # --------------------------------- MODULES -----------------------------------
 
@@ -22,7 +22,7 @@ class TestConfig(unittest.TestCase):
         self.tmp_dir = TemporaryDirectory()
         # NOTE: the 'directories' argument needs to be an iterable;
         # a tuple (denoted by an extra comma inside the parentheses) is used.
-        self.config = GenMakeConfig((self.tmp_dir.name,))
+        self.config = SkaffConfig((self.tmp_dir.name,))
 
     def tearDown(self):
         self.tmp_dir.cleanup()
@@ -125,14 +125,14 @@ class TestConfig(unittest.TestCase):
 
         # '_author_get()' must return identical term if GECOS field is defined
         if pw_record.pw_gecos:
-            self.assertEqual(GenMakeConfig.author_fetch(), pw_record.pw_gecos)
+            self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_gecos)
         # Otherwise it must matches the current user's login name
         elif pw_record.pw_name:
-            self.assertEqual(GenMakeConfig.author_fetch(), pw_record.pw_name)
+            self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_name)
         # If none of the above works, 'RuntimeError' is raised
         else:
             with self.assertRaises(RuntimeError):
-                GenMakeConfig.author_fetch()
+                SkaffConfig.author_fetch()
 
     def test_directories_set(self):
         # Identical to 'test_authors_set' because the similarity between

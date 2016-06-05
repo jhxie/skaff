@@ -1,4 +1,4 @@
-![genmake](img/banner.png)
+![skaff](img/banner.png)
 
 ## NOTICE
 Development halts temporarily until **2016-06-18**.
@@ -7,14 +7,14 @@ Development halts temporarily until **2016-06-18**.
 A CMake-based project scaffolding tool.  
 Click any of the following to see details.  
 [![Documentation Status](
-https://readthedocs.org/projects/genmake/badge/?version=latest)](
-http://genmake.readthedocs.io/en/latest/?badge=latest)
+https://readthedocs.org/projects/skaff/badge/?version=latest)](
+http://skaff.readthedocs.io/en/latest/?badge=latest)
 [![License](
 https://img.shields.io/badge/license-BSD%202--Clause-blue.svg)](
 http://opensource.org/licenses/BSD-2-Clause)
 [![Build Status](
-https://semaphoreci.com/api/v1/jhxie/genmake/branches/master/badge.svg)](
-https://semaphoreci.com/jhxie/genmake)
+https://semaphoreci.com/api/v1/jhxie/skaff/branches/master/badge.svg)](
+https://semaphoreci.com/jhxie/skaff)
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be hidden
@@ -31,7 +31,7 @@ The changelog can be viewed [here](CHANGELOG.md).
 
 ## Installation
 As mentioned in the above section, for now the only way to get the package is
-here as well as the [BitBucket mirror](https://bitbucket.org/jhxie/genmake);
+here as well as the [BitBucket mirror](https://bitbucket.org/jhxie/skaff);
 there is no *binary* (or *compiled-bytecode,* if you prefer) package available.
 
 Once downloaded, make sure you have **python3-setuptools** installed:
@@ -55,14 +55,14 @@ sudo python3 ./setup.py install
 ## Usage
 Show usage help by:
 ```bash
-genmake --help
+skaff --help
 ```
 For the detailed command-line reference manual, use *man* as usual:
 ```bash
-man 1 genmake
+man 1 skaff
 ```
 A few more examples along with its detailed documentation will be given on
-[ReadTheDocs](https://readthedocs.org/projects/genmake/badge/?version=latest)
+[ReadTheDocs](https://readthedocs.org)
 later on.
 
 ## Supported Platforms
@@ -72,7 +72,7 @@ later on.
 
 ## Credit
 * [CMake](https://cmake.org) is developed and maintained by Kitware.
-* The colorscheme of GenMake's logo is inspired by this
+* The colorscheme of Skaff's logo is inspired by this
 [example
 ](http://i34.photobucket.com/albums/d142/JanetB0601/ColorComboChallenge72.jpg).
 * The **BSD-2-Clause** badge is from [here

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Main module of genmake.
+Main module of skaff.
 """
 
 # ------------------------------- MODULE INFO ---------------------------------
@@ -24,15 +24,15 @@ import tempfile
 
 from datetime import datetime
 from distutils import spawn
-from genmake import single_keypress_read
-from genmake import timeout
-from genmake import ANSIColor
-from genmake import TimeOutError
+from skaff import single_keypress_read
+from skaff import timeout
+from skaff import ANSIColor
+from skaff import TimeOutError
 # --------------------------------- MODULES -----------------------------------
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def genmake(author, directories, language, license, quiet):
+def skaff(author, directories, language, license, quiet):
     """
     Creates all the necessary subdirectories in addition to the project root.
 
@@ -77,9 +77,9 @@ def genmake(author, directories, language, license, quiet):
         _conf_doc_prompt(author, base_dir, language, license, quiet)
 
 
-def genmake_version_get():
+def skaff_version_get():
     """
-    Returns the version information string of the GenMake program.
+    Returns the version information string of the skaff program.
     """
     module_info_dict = {"author": __author__,
                         "email": __email__,
@@ -87,15 +87,15 @@ def genmake_version_get():
                         "maintainer": __maintainer__,
                         "version": __version__,
                         "year": datetime.now().year}
-    genmake_version_info = (
-        "genmake "
+    skaff_version_info = (
+        "skaff "
         "(A CMake-based project scaffolding tool) {version}\n"
         "Copyright (C) {year} {author}.\n"
         "Licensed and distributed under BSD 2-Clause License.\n"
         "This is free software: you are free to change and redistribute it.\n"
         "There is NO WARRANTY, to the extent permitted by law.\n\n"
         "Written by {author}.".format(**module_info_dict))
-    return genmake_version_info
+    return skaff_version_info
 
 
 def _license_sign(author, directory, license):
@@ -389,7 +389,7 @@ def _author_get():
 
 def _basepath_find():
     """
-    Returns the base directory name of the genmake module.
+    Returns the base directory name of the skaff module.
 
     The extra 'os.path.abspath' invocation is to suppress relative path output.
     """

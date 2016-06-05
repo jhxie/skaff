@@ -1,37 +1,37 @@
-genmake package
+skaff package
 ===============
 
 Submodules
 ----------
 
-genmake.cli module
+skaff.cli module
 ------------------
 
-.. automodule:: genmake.cli
+.. automodule:: skaff.cli
     :members:
     :undoc-members:
     :show-inheritance:
 
-genmake.clitools module
+skaff.clitools module
 -----------------------
 
-.. automodule:: genmake.clitools
+.. automodule:: skaff.clitools
     :members:
     :undoc-members:
     :show-inheritance:
 
-genmake.config module
+skaff.config module
 ---------------------
 
-.. automodule:: genmake.config
+.. automodule:: skaff.config
     :members:
     :undoc-members:
     :show-inheritance:
 
-genmake.core module
+skaff.core module
 -------------------
 
-.. automodule:: genmake.core
+.. automodule:: skaff.core
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,7 +40,7 @@ genmake.core module
 Module contents
 ---------------
 
-.. automodule:: genmake
+.. automodule:: skaff
     :members:
     :undoc-members:
     :show-inheritance:

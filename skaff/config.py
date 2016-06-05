@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Custom configuration type for the 'core' genmake module.
+Custom configuration type for the 'core' skaff module.
 """
 
 # --------------------------------- MODULES -----------------------------------
@@ -12,14 +12,14 @@ import pwd
 
 
 # --------------------------------- CLASSES -----------------------------------
-class GenMakeConfig:
+class SkaffConfig:
     """
-    Configuration type used for the argument of 'genmake' function.
+    Configuration type used for the argument of 'skaff' function.
     """
 
     def __init__(self, directories, **kwargs):
         """
-        Constructs a new 'GenMakeConfig' class instance.
+        Constructs a new 'SkaffConfig' class instance.
 
         Note you can also specify 'directories' in keyword arguments;
         the value in keyword arguments will be used instead.
@@ -76,7 +76,7 @@ class GenMakeConfig:
         """
         if None == authors:
             self.__config["authors"] = set()
-            self.author_add(GenMakeConfig.author_fetch())
+            self.author_add(SkaffConfig.author_fetch())
             return
 
         if not isinstance(authors, collections.Iterable):

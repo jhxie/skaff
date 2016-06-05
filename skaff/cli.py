@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Main command line driver program for genmake.
+Main command line driver program for skaff.
 """
 
 # --------------------------------- MODULES -----------------------------------
@@ -9,25 +9,25 @@ import argparse
 import os
 import sys
 
-from genmake import genmake, genmake_version_get
+from skaff import skaff, skaff_version_get
 # --------------------------------- MODULES -----------------------------------
 
 
 def main():
     """
-    Parses and validates command line option flags, then invoke 'genmake()'.
+    Parses and validates command line option flags, then invoke 'skaff()'.
     """
-    genmake_cli_description = "A CMake-Based Project Scaffolding Tool"
-    genmake_cli_dict = dict()
+    skaff_cli_description = "A CMake-Based Project Scaffolding Tool"
+    skaff_cli_dict = dict()
 
     if "posix" != os.name:
         sys.exit("This program is only mean to be used on POSIX systems.")
 
     # Fall back to SmartFormatter to let the string returned
-    # by 'genmake_version_get()' function print properly
-    parser = argparse.ArgumentParser(description=genmake_cli_description,
+    # by 'skaff_version_get()' function print properly
+    parser = argparse.ArgumentParser(description=skaff_cli_description,
                                      formatter_class=SmartFormatter,
-                                     prog="GenMake")
+                                     prog="skaff")
     parser.add_argument("-a",
                         "--author",
                         type=str,
@@ -58,17 +58,17 @@ def main():
     parser.add_argument("-v",
                         "--version",
                         action="version",
-                        version=genmake_version_get(),
-                        help="print version of GenMake and exit")
+                        version=skaff_version_get(),
+                        help="print version of skaff and exit")
 
     args = parser.parse_args()
 
     # Processing all the "non-private" attributes of args and store them into
-    # the 'genmake_cli_dict' dictionary to be passed as arguments
+    # the 'skaff_cli_dict' dictionary to be passed as arguments
     for attr in filter(lambda attr: not attr.startswith('_'), dir(args)):
-        genmake_cli_dict[attr] = getattr(args, attr)
+        skaff_cli_dict[attr] = getattr(args, attr)
 
-    genmake(**genmake_cli_dict)
+    skaff(**skaff_cli_dict)
 
 
 class SmartFormatter(argparse.HelpFormatter):
