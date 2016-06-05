@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 
 # --------------------------------- MODULES -----------------------------------
+import genmake
 import gzip
 import os
 import shutil
 import sys
 
-import genmake
+from filecmp import dircmp
 from setuptools import setup
+from tempfile import TemporaryDirectory
 # --------------------------------- MODULES -----------------------------------
 
-if __name__ == "__main__":
+
+def main():
+    """
+    Main installation routine.
+    """
     genmake_description = "A CMake-Based Project Scaffolding Tool"
     genmake_long_description = "Simple program that generates " +\
         "language specific (c/c++) cmake based project templates"
-    install_prefix = os.path.dirname(os.path.abspath(__file__))
-    genmake_man_source = install_prefix + "/man/genmake.1"
-    genmake_man_target = None
 
     # This script and MANIFEST.in file are based on the guide at
     # https://pythonhosted.org/setuptools/setuptools.html
@@ -71,24 +74,48 @@ if __name__ == "__main__":
           include_package_data=True,
           zip_safe=False)
 
-    # Note the following would never be executed if permission is not satisfied
+    # Note the following would not be properly executed
+    # if permission is not satisfied
     if "install" in sys.argv:
-        with os.popen("manpath") as proc:
-            genmake_man_target = proc.read().split(":")[0]
+        manual_install()
 
-        if not genmake_man_target:
-            sys.exit("Output of the 'manpath' program cannot be parsed")
 
-        genmake_man_target = genmake_man_target.rstrip()
+def manual_install():
+    """
+    Installs the gzipped manual page to one of the non-empty 'manpath'.
+    """
+    install_prefix = os.path.dirname(os.path.abspath(__file__))
+    genmake_man_source = install_prefix + "/man/genmake.1"
+    genmake_man_candidates = None
+    genmake_man_target = None
 
-        for tail in ("/man1/", os.path.basename(genmake_man_source), ".gz"):
-            genmake_man_target += tail
+    with os.popen("manpath") as proc, TemporaryDirectory() as tmpdir:
+        genmake_man_candidates = proc.read().strip().split(os.pathsep)
+        for candidate in genmake_man_candidates:
+            # "Elect" the candidate directory with "rich" non-empty status
+            if dircmp(candidate, tmpdir).left_only:
+                genmake_man_target = candidate
+                break
 
-        # Based on example from
-        # https://docs.python.org/3/library/gzip.html
-        with open(genmake_man_source, "rb") as input_manpage:
-            with gzip.open(genmake_man_target, "wb") as output_manpage:
-                shutil.copyfileobj(input_manpage, output_manpage)
+    if not genmake_man_candidates:
+        sys.exit("Output of the 'manpath' program cannot be parsed")
 
-        # Finally rebuild the manpage database
-        os.system("mandb")
+    if not genmake_man_target:
+        sys.exit("All the directories specified in 'manpath' is empty")
+
+    # 'genmake' program belongs to "Section 1: User Commands and Tools"
+    for tail in ("/man1/", os.path.basename(genmake_man_source), ".gz"):
+        genmake_man_target += tail
+
+    # Based on example from
+    # https://docs.python.org/3/library/gzip.html
+    with open(genmake_man_source, "rb") as input_manpage:
+        with gzip.open(genmake_man_target, "wb") as output_manpage:
+            shutil.copyfileobj(input_manpage, output_manpage)
+
+    # Finally rebuild the manpage database
+    os.system("mandb")
+
+
+if __name__ == "__main__":
+    main()
