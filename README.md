@@ -1,7 +1,7 @@
 ![skaff](img/banner.png)
 
 ## NOTICE
-Development halts temporarily until **2016-06-18**.
+Development halts temporarily between **2016-06-06** and **2016-06-18**.
 
 ## Overview
 A CMake-based project scaffolding tool.  
