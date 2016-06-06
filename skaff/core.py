@@ -352,10 +352,15 @@ def _doxyfile_attr_match(project_name, line):
                  "CALL_GRAPH": "YES",
                  "DOT_IMAGE_FORMAT": "svg",
                  "INTERACTIVE_SVG": "YES"}
+    line = line.lstrip()
+
+    # If the line is solely composed of whitespace or is a comment
+    if not line or line.startswith("#"):
+        return None
 
     for attr in attr_dict:
         # '\s' stands for whitespace characters
-        match = re.match(attr + R"\s*=", line)
+        match = re.match(R"\s*" + attr + R"\s*=", line)
         if match:
             split_index = match.string.find("=") + 1
             return match.string[:split_index] + " " +\

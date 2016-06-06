@@ -16,13 +16,31 @@ http://opensource.org/licenses/BSD-2-Clause)
 https://semaphoreci.com/api/v1/jhxie/skaff/branches/master/badge.svg)](
 https://semaphoreci.com/jhxie/skaff)
 
+## Usage
+To create a project directory named *nihil*:
+```bash
+skaff nihil
+```
+
+Show usage help by:
+```bash
+skaff --help
+```
+
+For the detailed command-line reference manual, use *man* as usual:
+```bash
+man 1 skaff
+```
+
+A few more examples along with its detailed documentation will be given on
+[ReadTheDocs](http://skaff.readthedocs.io/en/latest/)
+later on.
+
 ## Versioning
-Before version **v0.5** this project is in alpha stage, there may be hidden
-bugs.
-
+Before version **v0.5** this project is in alpha stage, there may be serious
+bugs.  
 Beta stage starts at **v0.5** at which point all the necessary test cases would
-be added.
-
+be added.  
 Once the version number gets to **v1.0** it goes out of beta stage and would
 be released on [PyPI](https://pypi.python.org/pypi) as well; more features may
 be added later on.
@@ -45,25 +63,18 @@ sudo apt-get install python3-setuptools
 ```bash
 sudo dnf install python3-setuptools
 ```
-then simply change directory to where the un-compressed source directory
+
+Then simply change directory to where the un-compressed source directory
 resides and install by:
 ```bash
 python3 ./setup.py clean build
 sudo python3 ./setup.py install
 ```
 
-## Usage
-Show usage help by:
-```bash
-skaff --help
+To run the bundled unit tests:
 ```
-For the detailed command-line reference manual, use *man* as usual:
-```bash
-man 1 skaff
+python3 ./setup.py test
 ```
-A few more examples along with its detailed documentation will be given on
-[ReadTheDocs](https://readthedocs.org)
-later on.
 
 ## Supported Platforms
 * Linux
