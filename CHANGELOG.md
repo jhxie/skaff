@@ -9,12 +9,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Finalize a stable API for *core* module based on *SkaffConfig* class
 * Set up a dedicated website hosted by *GitHubPages* based on existing template
 
-## 0.9 (Upcoming)
+## 0.9 (2016-06-05)
 * Add **GDB** initialization file *.gdbinit* generation functionality
 * Add full unit test cases for the prototype of *SkaffConfig* class
 * Add sample source file (under *src* subdirectory) generation functionality
 * Add tentative developer's documentation on [ReadThe
-Docs](https://readthedocs.org/projects/skaff/)
+Docs](http://skaff.readthedocs.io/en/latest/)
 * Optimize performance of regular expression matching for *Doxyfile* generation
 * Rename the project to **skaff**
 
