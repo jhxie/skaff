@@ -7,6 +7,7 @@ Submodules
 skaff.cli module
 ------------------
 
+.. figure:: img/cli.svg
 .. automodule:: skaff.cli
     :members:
     :undoc-members:

@@ -1,0 +1,18 @@
+digraph {
+    label="The responsibility decision chart from 'cli' module's point of view"
+
+    Start[shape="circle"];
+    End[shape="circle"];
+    Input[shape="parallelogram", style=""];
+    IfValid[shape="diamond", style=""];
+    CallSkaff[shape="box", style="rounded"];
+    LoadJsonConfig[shape="box", style="rounded"];
+    SaveJsonConfig[shape="box", style="rounded"];
+    OverwriteWithGivenArguments[shape="box", style="rounded"];
+
+    Start -> Input -> IfValid;
+    IfValid -> LoadJsonConfig[label="Yes"];
+    IfValid -> End[label="No"];
+    LoadJsonConfig -> OverwriteWithGivenArguments;
+    OverwriteWithGivenArguments -> SaveJsonConfig -> CallSkaff -> End;
+}
