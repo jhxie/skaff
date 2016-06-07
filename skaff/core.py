@@ -11,7 +11,7 @@ __author__ = "Jiahui Xie"
 __email__ = "jiahui.xie@outlook.com"
 __license__ = "BSD"
 __maintainer__ = __author__
-__version__ = "0.9"
+__version__ = "1.0"
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
@@ -409,6 +409,14 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
     Calls '_conf_spawn' and '_doc_create()' with the arguments given
     afterwards.
     """
+    terminal_info = shutil.get_terminal_size()
+    directory_line = "Upcoming Configuration Editing for {0}{1}{2}".format(
+        ANSIColor.KHAKI, directory, ANSIColor.RESET)
+    hint_line1 = "Press [{0}k{1}] to skip the upcoming directory only.".format(
+        ANSIColor.PURPLE, ANSIColor.RESET)
+    hint_line2 = "Press [{0}a{1}] to skip all the rest.".format(
+        ANSIColor.PURPLE, ANSIColor.RESET)
+
     if not hasattr(_conf_doc_prompt, "skip_rest"):
         _conf_doc_prompt.skip_rest = False
 
@@ -416,13 +424,6 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
         quiet = True
 
     if not quiet:
-        terminal_info = shutil.get_terminal_size()
-        directory_line = "Upcoming Configuration Editing for {0}{1}{2}".format(
-            ANSIColor.KHAKI, directory, ANSIColor.RESET)
-        hint_line1 = "Press [{0}a{1}] to skip all the rest.".format(
-            ANSIColor.PURPLE, ANSIColor.RESET)
-        hint_line2 = "Press [{0}k{1}] for the current directory only.".format(
-            ANSIColor.PURPLE, ANSIColor.RESET)
         os.system("clear")
         print("-" * terminal_info.columns + "\n")
         for line in (directory_line, hint_line1, hint_line2):
