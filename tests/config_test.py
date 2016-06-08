@@ -288,5 +288,110 @@ class TestConfig(unittest.TestCase):
             self.config.quiet_set(option)
             self.assertEqual(option, self.config.quiet_get())
 
+    def test_subdirectories_set(self):
+        # Identical to 'test_directories_set' because the similarity between
+        # the 2 mutator member functions; may be expanded later on if new
+        # checking branches are added to 'subdirectories_set'
+        subdirectories = ["Opportunity" + os.sep,
+                          "Curiosity" + os.sep,
+                          lambda x: not x]
+
+        # Fail due to non-iterable type
+        with self.assertRaises(ValueError):
+            self.config.subdirectories_set(subdirectories[-1])
+
+        # Fail due to non-containerized string type
+        with self.assertRaises(ValueError):
+            self.config.subdirectories_set(subdirectories[0])
+
+        # Fail due to empty string
+        with self.assertRaises(ValueError):
+            self.config.subdirectories_set((str(),))
+
+        # Fail due to the existence of non-string type
+        with self.assertRaises(ValueError):
+            self.config.subdirectories_set(subdirectories)
+
+        subdirectories[-1] = "\t"
+        # Fail due to the existence of non-printable string
+        with self.assertRaises(ValueError):
+            self.config.subdirectories_set(subdirectories)
+
+        # Success
+        del subdirectories[-1]
+        self.config.subdirectories_set(subdirectories)
+        self.assertCountEqual(subdirectories, self.config.subdirectories_get())
+
+    def test_subdirectory_add(self):
+        # Again, identical to 'test_directory_add'.
+        # This "magic number" is questionable;
+        # but to maintain "test reproducibility" it is kept this way
+        add_count = 10
+        subdirectory_added = "Unix"
+        counter = None
+
+        # Fail due to wrong type for the 'directory' argument
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_add(None)
+
+        # Fail because the 'directory' argument cannot be an empty string
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_add(str())
+
+        # Fail because the 'directory' argument cannot contain non-printables
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_add("\t")
+
+        for _ in range(add_count):
+            self.config.subdirectory_add(subdirectory_added)
+        # Success if 'directory_add' actually added the specified 'directory'
+        self.assertIn(subdirectory_added + os.sep,
+                      self.config.subdirectories_get())
+
+        counter = collections.Counter(self.config.subdirectories_get())
+        # Success if the underlying representation
+        # for authors does not permit duplicates
+        self.assertEqual(1, counter[subdirectory_added + os.sep])
+
+    def test_subdirectory_discard(self):
+        # Again, identical to 'test_directory_discard'.
+        # This "magic number" is questionable;
+        # but to maintain "test reproducibility" it is kept this way
+        add_count = 10
+        subdirectory_discarded = "Multics"
+
+        # Fail due to wrong type for the 'author' argument
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_discard(None)
+
+        # Fail because the 'author' argument cannot be an empty string
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_discard(str())
+
+        # Fail because the 'author' argument cannot contain non-printables
+        with self.assertRaises(ValueError):
+            self.config.subdirectory_discard("\t")
+
+        # The path separator will be automatically added in both
+        # 'directory_add' and 'directory_discard' member functions
+        for _ in range(add_count):
+            self.config.subdirectory_add(subdirectory_discarded)
+        self.config.subdirectory_discard(subdirectory_discarded)
+        # Success if the underlying representation
+        # for authors does not permit duplicates
+        self.assertNotIn(subdirectory_discarded,
+                         self.config.subdirectories_get())
+        self.assertNotIn(subdirectory_discarded + os.sep,
+                         self.config.subdirectories_get())
+
+    def test_subdirectories_get(self):
+        # Test directory names with non-ascii characters
+        subdirectories = ["Луноход" + os.sep, "玉兔" + os.sep]
+        get_result = None
+
+        self.config.subdirectories_set(subdirectories)
+        get_result = self.config.subdirectories_get()
+        self.assertCountEqual(subdirectories, get_result)
+
 if __name__ == "__main__":
     unittest.main()
