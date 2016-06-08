@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Custom configuration type for the 'core' skaff module.
+Custom configuration type definition used for the 'core' skaff module.
 """
 
 # --------------------------------- MODULES -----------------------------------
@@ -35,12 +35,15 @@ class SkaffConfig:
         'directories': set of name(s) for the output project-directory(ies)
 
         'language': major programming language used;
-                    must be chosen from the 'languages_list' listing.
+                    must be chosen from the 'languages_list' listing
 
         'license': type of license;
-                    must be chosen from the 'licenses_list' listing.
+                    must be chosen from the 'licenses_list' listing
 
         'quiet': no interactive CMakeLists.txt and Doxyfile editing
+
+        'subdirectories': set of name(s) for the subdirectory(ies)
+        within the project(s)' base directory(ies)
         """
         # The value of 'directories' key will be used if it already exists;
         # otherwise fill in the value from the positional argument
@@ -50,7 +53,8 @@ class SkaffConfig:
                        "directories": self.directories_set,
                        "language": self.language_set,
                        "license": self.license_set,
-                       "quiet": self.quiet_set}
+                       "quiet": self.quiet_set,
+                       "subdirectories": self.subdirectories_set}
         self.__config = dict()
         self.__languages = frozenset(("c", "cpp"))
         self.__licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
@@ -134,7 +138,7 @@ class SkaffConfig:
 
     def authors_get(self):
         """
-        Gets the author(s) of the project(s).
+        Gets a list copy of author(s) for the project(s).
         """
         return sorted(self.__config["authors"])
 
@@ -168,7 +172,6 @@ class SkaffConfig:
     def directories_set(self, directories=None):
         """
         Sets the name(s) of the outputting project-directory(ies).
-        'directories' must be an iterable type containing 'str'(s).
         This member function is called by the constructor by default.
 
         'directories' argument must be of 'collections.Iterable' type
@@ -230,7 +233,7 @@ class SkaffConfig:
 
     def directories_get(self):
         """
-        Gets the name(s) of the outputting project-directory(ies).
+        Gets a list copy of name(s) for the outputting project-directory(ies).
         """
         return sorted(self.__config["directories"])
 
@@ -263,7 +266,9 @@ class SkaffConfig:
 
     def languages_list(self):
         """
-        Lists the supported primary programming languages.
+        Lists the supported primary programming languages; the returned list
+        is a copy of the internally saved information.
+
         By default they are the following:
         {"c", "cpp"}.
         """
@@ -297,7 +302,9 @@ class SkaffConfig:
 
     def licenses_list(self):
         """
-        Lists the supported licenses.
+        Lists the supported licenses; the returned list is a copy of the
+        internally saved information.
+
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
@@ -327,44 +334,92 @@ class SkaffConfig:
         """
         return self.__config["quiet"]
 
-    def subdirectories_set(self, subdirectories):
+    def subdirectories_set(self, subdirectories=None):
         """
         Sets the name(s) of the subdirectory(ies) within the project(s)' base
         directory(ies).
+        Defaults to
+        {"build", "coccinelle", "doc", "examples", "img", "src", "tests"}
+        if left as empty or 'None'.
         This member function is called by the constructor by default.
 
         'subdirectories' argument must be of 'collections.Iterable' type
         containing instance of 'str'(s).
         """
-        pass
+        if None == subdirectories:
+            self.__config["subdirectories"] = set((
+                "build",
+                "coccinelle",
+                "doc",
+                "examples",
+                "img",
+                "src",
+                "tests"
+            ))
+            return
+
+        if not isinstance(subdirectories, collections.Iterable):
+            raise ValueError("'subdirectories' argument must be iterable")
+
+        if isinstance(subdirectories, str):
+            raise ValueError(("'subdirectories' argument must be an iterable "
+                             "containing 'str' type"))
+
+        if 0 == len(subdirectories):
+            raise ValueError("'subdirectories' argument must not be empty")
+
+        self.__config["subdirectories"] = set()
+
+        for directory in subdirectories:
+            self.subdirectory_add(directory)
 
     def subdirectory_add(self, subdirectory):
         """
         Adds 'subdirectory' to the internal 'database' if the name does not
         exist; otherwise do nothing.
         """
-        pass
+        if not isinstance(subdirectory, str):
+            raise ValueError("'subdirectory' argument must be 'str' type")
+
+        if 0 == len(subdirectory):
+            raise ValueError("'subdirectory' argument must not be empty")
+
+        if not subdirectory.isprintable():
+            raise ValueError(("'subdirectory' argument must be "
+                              "a valid file name"))
+
+        self.__config["subdirectories"].add(subdirectory)
 
     def subdirectory_discard(self, subdirectory):
         """
         Discards 'subdirectory' from the internal 'database' if the name
         exists; otherwise do nothing.
         """
-        pass
+        if not isinstance(subdirectory, str):
+            raise ValueError("'subdirectory' argument must be 'str' type")
+
+        if 0 == len(subdirectory):
+            raise ValueError("'subdirectory' argument must not be empty")
+
+        if not subdirectory.isprintable():
+            raise ValueError(("'subdirectory' argument must be "
+                             "a valid file name"))
+
+        self.__config["subdirectories"].discard(subdirectory)
 
     def subdirectories_get(self):
         """
-        Gets the name(s) of the subdirectory(ies) within the project(s)' base
-        directory(ies).
+        Gets a list copy of name(s) of the subdirectory(ies) within the
+        project(s)' base directory(ies).
+        """
+        return sorted(self.__config["subdirectories"])
+
+    def _load(self, *args):
+        """
         """
         pass
 
-    def _load(self, **kwargs):
-        """
-        """
-        pass
-
-    def _save(self, **kwargs):
+    def _save(self, *args):
         """
         """
         pass
