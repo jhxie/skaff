@@ -93,12 +93,6 @@ class SkaffConfig:
         if 0 == len(authors):
             raise ValueError("'authors' argument must not be empty")
 
-        if not all(isinstance(author, str) for author in authors):
-            raise ValueError("'authors' argument must contain 'str' type")
-
-        if not all(author.isprintable() for author in authors):
-            raise ValueError("'authors' argument must contain valid names")
-
         self.__config["authors"] = set()
 
         for author in authors:
@@ -186,13 +180,6 @@ class SkaffConfig:
 
         if 0 == len(directories):
             raise ValueError("'directories' argument must not be empty")
-
-        if not all(isinstance(directory, str) for directory in directories):
-            raise ValueError("'directories' argument must contain 'str' type")
-
-        if not all(directory.isprintable() for directory in directories):
-            raise ValueError(("'directories' argument must contain "
-                             "valid file names"))
 
         self.__config["directories"] = set()
 
