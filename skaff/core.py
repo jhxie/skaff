@@ -410,12 +410,18 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
     afterwards.
     """
     terminal_info = shutil.get_terminal_size()
-    directory_line = "Upcoming Configuration Editing for {0}{1}{2}".format(
-        ANSIColor.KHAKI, directory, ANSIColor.RESET)
-    hint_line1 = "Press [{0}k{1}] to skip the upcoming directory only.".format(
-        ANSIColor.PURPLE, ANSIColor.RESET)
-    hint_line2 = "Press [{0}a{1}] to skip all the rest.".format(
-        ANSIColor.PURPLE, ANSIColor.RESET)
+    hints = list()
+    hints.append("Upcoming Configuration Editing for {0}{1}{2}".format(
+        ANSIColor.KHAKI, directory, ANSIColor.RESET))
+    hints.append("The editing will start after [{0}{1}{2}].".format(
+        ANSIColor.BLUE, "5 seconds", ANSIColor.RESET))
+    hints.append("Press [{0}c{1}] to continue the editing.".format(
+        ANSIColor.PURPLE, ANSIColor.RESET))
+    hints.append("Press [{0}k{1}] to skip the upcoming directory.".format(
+        ANSIColor.PURPLE, ANSIColor.RESET))
+    hints.append("Press [{0}a{1}] to skip all the rest.".format(
+        ANSIColor.PURPLE, ANSIColor.RESET))
+    key = str()
 
     if not hasattr(_conf_doc_prompt, "skip_rest"):
         _conf_doc_prompt.skip_rest = False
@@ -426,11 +432,11 @@ def _conf_doc_prompt(author, directory, language, license, quiet):
     if not quiet:
         os.system("clear")
         print("-" * terminal_info.columns + "\n")
-        for line in (directory_line, hint_line1, hint_line2):
+        for line in hints:
             print(line.center(terminal_info.columns))
         print("\n" + "-" * terminal_info.columns)
         try:
-            while True:
+            while "c" != key.lower():
                 key = timeout(5)(single_keypress_read)()
                 if "a" == key.lower():
                     _conf_doc_prompt.skip_rest = True
