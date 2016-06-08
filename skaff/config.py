@@ -132,9 +132,10 @@ class SkaffConfig:
 
     def authors_get(self):
         """
-        Gets a list copy of author(s) for the project(s).
+        Gets a generator containing author(s) for the project(s).
         """
-        return sorted(self.__config["authors"])
+        authors = sorted(self.__config["authors"])
+        yield from (author for author in authors)
 
     @staticmethod
     def author_fetch():
@@ -166,6 +167,7 @@ class SkaffConfig:
     def directories_set(self, directories=None):
         """
         Sets the name(s) of the outputting project-directory(ies).
+        Platform-dependent path separator will be appended if missing.
         This member function is called by the constructor by default.
 
         'directories' argument must be of 'collections.Iterable' type
@@ -190,6 +192,7 @@ class SkaffConfig:
         """
         Adds 'directory' to the internal 'database' if the name does not exist;
         otherwise do nothing.
+        Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(directory, str):
             raise ValueError("'directory' argument must be 'str' type")
@@ -199,6 +202,9 @@ class SkaffConfig:
 
         if not directory.isprintable():
             raise ValueError("'directory' argument must be a valid file name")
+
+        if not directory.endswith(os.sep):
+            directory += os.sep
 
         self.__config["directories"].add(directory)
 
@@ -206,6 +212,7 @@ class SkaffConfig:
         """
         Discards 'directory' from the internal 'database' if the name exists;
         otherwise do nothing.
+        Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(directory, str):
             raise ValueError("'directory' argument must be 'str' type")
@@ -215,6 +222,9 @@ class SkaffConfig:
 
         if not directory.isprintable():
             raise ValueError("'directory' argument must be a valid file name")
+
+        if not directory.endswith(os.sep):
+            directory += os.sep
 
         self.__config["directories"].discard(directory)
 
@@ -255,13 +265,13 @@ class SkaffConfig:
 
     def languages_list(self):
         """
-        Lists the supported primary programming languages; the returned list
-        is a copy of the internally saved information.
+        Gets a generator containing the supported programming languages.
 
         By default they are the following:
         {"c", "cpp"}.
         """
-        return sorted(self.__languages)
+        languages = sorted(self.__languages)
+        yield from (language for language in languages)
 
     def license_set(self, license=None):
         """
@@ -291,13 +301,13 @@ class SkaffConfig:
 
     def licenses_list(self):
         """
-        Lists the supported licenses; the returned list is a copy of the
-        internally saved information.
+        Gets a generator containing the supported licenses.
 
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
-        return sorted(self.__licenses)
+        licenses = sorted(self.__licenses)
+        yield from (license for license in licenses)
 
     def quiet_set(self, quiet=None):
         """
@@ -330,6 +340,7 @@ class SkaffConfig:
         Defaults to
         {"build", "coccinelle", "doc", "examples", "img", "src", "tests"}
         if left as empty or 'None'.
+        Platform-dependent path separator will be appended if missing.
         This member function is called by the constructor by default.
 
         'subdirectories' argument must be of 'collections.Iterable' type
@@ -366,6 +377,7 @@ class SkaffConfig:
         """
         Adds 'subdirectory' to the internal 'database' if the name does not
         exist; otherwise do nothing.
+        Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(subdirectory, str):
             raise ValueError("'subdirectory' argument must be 'str' type")
@@ -377,12 +389,16 @@ class SkaffConfig:
             raise ValueError(("'subdirectory' argument must be "
                               "a valid file name"))
 
+        if not subdirectory.endswith(os.sep):
+            subdirectory += os.sep
+
         self.__config["subdirectories"].add(subdirectory)
 
     def subdirectory_discard(self, subdirectory):
         """
         Discards 'subdirectory' from the internal 'database' if the name
         exists; otherwise do nothing.
+        Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(subdirectory, str):
             raise ValueError("'subdirectory' argument must be 'str' type")
@@ -393,6 +409,9 @@ class SkaffConfig:
         if not subdirectory.isprintable():
             raise ValueError(("'subdirectory' argument must be "
                              "a valid file name"))
+
+        if not subdirectory.endswith(os.sep):
+            subdirectory += os.sep
 
         self.__config["subdirectories"].discard(subdirectory)
 

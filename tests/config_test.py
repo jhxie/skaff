@@ -138,7 +138,7 @@ class TestConfig(unittest.TestCase):
         # Identical to 'test_authors_set' because the similarity between
         # the 2 mutator member functions; may be expanded later on if new
         # checking branches are added to 'directories_set'
-        directories = ["Apollo", "Spirit", lambda x: not x]
+        directories = ["Apollo" + os.sep, "Spirit" + os.sep, lambda x: not x]
 
         # Fail due to non-iterable type
         with self.assertRaises(ValueError):
@@ -161,6 +161,7 @@ class TestConfig(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.config.directories_set(directories)
 
+        # Success
         del directories[-1]
         self.config.directories_set(directories)
         self.assertCountEqual(directories, self.config.directories_get())
@@ -188,12 +189,12 @@ class TestConfig(unittest.TestCase):
         for _ in range(add_count):
             self.config.directory_add(directory_added)
         # Success if 'directory_add' actually added the specified 'directory'
-        self.assertIn(directory_added, self.config.directories_get())
+        self.assertIn(directory_added + os.sep, self.config.directories_get())
 
         counter = collections.Counter(self.config.directories_get())
         # Success if the underlying representation
         # for authors does not permit duplicates
-        self.assertEqual(1, counter[directory_added])
+        self.assertEqual(1, counter[directory_added + os.sep])
 
     def test_directory_discard(self):
         # Again, identical to 'test_author_discard'.
@@ -214,16 +215,20 @@ class TestConfig(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.config.directory_discard("\t")
 
+        # The path separator will be automatically added in both
+        # 'directory_add' and 'directory_discard' member functions
         for _ in range(add_count):
             self.config.directory_add(directory_discarded)
         self.config.directory_discard(directory_discarded)
         # Success if the underlying representation
         # for authors does not permit duplicates
         self.assertNotIn(directory_discarded, self.config.directories_get())
+        self.assertNotIn(directory_discarded + os.sep,
+                         self.config.directories_get())
 
     def test_directories_get(self):
         # Test directory names with non-ascii characters
-        directories = ("Αντικύθηρα", "Ουροβόρος όφις")
+        directories = ["Αντικύθηρα" + os.sep, "Ουροβόρος όφις" + os.sep]
         get_result = None
 
         self.config.directories_set(directories)
