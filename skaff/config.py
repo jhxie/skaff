@@ -233,9 +233,11 @@ class SkaffConfig:
 
     def directories_get(self):
         """
-        Gets a list copy of name(s) for the outputting project-directory(ies).
+        Gets a generator containing name(s) for the outputting
+        project-directory(ies).
         """
-        return sorted(self.__config["directories"])
+        directories = sorted(self.__config["directories"])
+        yield from (directory for directory in directories)
 
     def language_set(self, language=None):
         """
@@ -409,10 +411,11 @@ class SkaffConfig:
 
     def subdirectories_get(self):
         """
-        Gets a list copy of name(s) of the subdirectory(ies) within the
+        Gets a generator containing name(s) of the subdirectory(ies) within the
         project(s)' base directory(ies).
         """
-        return sorted(self.__config["subdirectories"])
+        subdirectories = sorted(self.__config["subdirectories"])
+        yield from (subdirectory for subdirectory in subdirectories)
 
     def _load(self, *args):
         """
