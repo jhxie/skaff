@@ -16,6 +16,8 @@ class SkaffConfig:
     """
     Configuration type used for the argument of 'skaff' function.
     """
+    __languages = frozenset(("c", "cpp"))
+    __licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
     def __init__(self, directories, **kwargs):
         """
@@ -56,8 +58,6 @@ class SkaffConfig:
                        "quiet": self.quiet_set,
                        "subdirectories": self.subdirectories_set}
         self.__config = dict()
-        self.__languages = frozenset(("c", "cpp"))
-        self.__licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
         for key in __ARGUMENTS:
             # Call corresponding mutator function with value specified in the
             # 'kwargs' dictionary if key is present
@@ -263,6 +263,7 @@ class SkaffConfig:
         """
         return self.__config["language"]
 
+    @classmethod
     def languages_list(self):
         """
         Gets a generator containing the supported programming languages.
@@ -270,7 +271,7 @@ class SkaffConfig:
         By default they are the following:
         {"c", "cpp"}.
         """
-        languages = sorted(self.__languages)
+        languages = sorted(SkaffConfig.__languages)
         yield from (language for language in languages)
 
     def license_set(self, license=None):
@@ -299,6 +300,7 @@ class SkaffConfig:
         """
         return self.__config["license"]
 
+    @classmethod
     def licenses_list(self):
         """
         Gets a generator containing the supported licenses.
@@ -306,7 +308,7 @@ class SkaffConfig:
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
-        licenses = sorted(self.__licenses)
+        licenses = sorted(SkaffConfig.__licenses)
         yield from (license for license in licenses)
 
     def quiet_set(self, quiet=None):
