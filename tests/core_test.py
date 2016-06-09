@@ -20,25 +20,18 @@ class TestCore(unittest.TestCase):
     Main unit testing suite, which is a subclass of 'unittest.TestCase'.
     """
     def test_skaff(self):
-        argument_dict = dict(author=None, directories=("project"),
-                             language=None, license=None,
-                             quiet=True)
-        # Fail due to wrong type for 'directories' argument
-        with self.assertRaises(ValueError):
-            skaff.skaff(**argument_dict)
+        directory = ("project",)
+        config = skaff.SkaffConfig(directory)
 
-        argument_dict["directories"] = list()
-
-        # Fail due to empty 'directories' argument
+        # Fail due to wrong type for the 'config' argument
         with self.assertRaises(ValueError):
-            skaff.skaff(**argument_dict)
+            skaff.skaff(None)
 
         # Fail due to pre-existing 'project' directory
-        argument_dict["directories"] = ["project"]
-        os.mkdir(argument_dict["directories"][0])
+        os.mkdir(directory[0])
         with self.assertRaises(FileExistsError):
-            skaff.skaff(**argument_dict)
-        os.rmdir(argument_dict["directories"][0])
+            skaff.skaff(config)
+        os.rmdir(directory[0])
 
     def test_skaff_version_get(self):
         self.assertTrue(skaff.skaff_version_get())

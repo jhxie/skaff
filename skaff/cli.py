@@ -9,7 +9,7 @@ import argparse
 import os
 import sys
 
-from skaff import skaff, skaff_version_get
+from skaff import skaff, skaff_version_get, SkaffConfig
 # --------------------------------- MODULES -----------------------------------
 
 
@@ -29,25 +29,26 @@ def main():
                                      formatter_class=SmartFormatter,
                                      prog="skaff")
     parser.add_argument("-a",
-                        "--author",
+                        "--authors",
                         type=str,
+                        nargs="+",
                         required=False,
-                        help="author of the project")
+                        help="author(s) of the project")
     parser.add_argument("directories",
                         type=str,
                         nargs="+",
-                        help="name of the output project-directory(ies)")
+                        help="name(s) for the output project-directory(ies)")
     parser.add_argument("-x",
                         "--language",
                         type=str,
                         required=False,
-                        choices={"c", "cpp"},
+                        choices=list(SkaffConfig.languages_list()),
                         help="major programming language used")
     parser.add_argument("-l",
                         "--license",
                         type=str,
                         required=False,
-                        choices={"bsd2", "bsd3", "gpl2", "gpl3", "mit"},
+                        choices=list(SkaffConfig.licenses_list()),
                         help="type of license")
     parser.add_argument("-q",
                         "--quiet",
@@ -62,13 +63,15 @@ def main():
                         help="print version of skaff and exit")
 
     args = parser.parse_args()
+    config = None
 
     # Processing all the "non-private" attributes of args and store them into
     # the 'skaff_cli_dict' dictionary to be passed as arguments
     for attr in filter(lambda attr: not attr.startswith('_'), dir(args)):
         skaff_cli_dict[attr] = getattr(args, attr)
 
-    skaff(**skaff_cli_dict)
+    config = SkaffConfig(**skaff_cli_dict)
+    skaff(config)
 
 
 class SmartFormatter(argparse.HelpFormatter):

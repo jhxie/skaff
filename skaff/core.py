@@ -27,52 +27,32 @@ from distutils import spawn
 from skaff import single_keypress_read
 from skaff import timeout
 from skaff import ANSIColor
+from skaff import SkaffConfig
 from skaff import TimeOutError
 # --------------------------------- MODULES -----------------------------------
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def skaff(author, directories, language, license, quiet):
+def skaff(config):
     """
     Creates all the necessary subdirectories in addition to the project root.
-
-    All arguments can be 'None' except 'directories', which must be a list of
-    strings of length >= 1.
-
-    If the above is the case, 'author' will be guessed by GECOS field and login
-    name of the current user; 'language' will default to 'c', 'license' will be
-    set to 'bsd2', 'quiet' will be unchanged (equivalent to False).
     """
-    if not isinstance(directories, list):
-        raise ValueError("'directories' argument must be of list type")
-    elif 0 == len(directories):
-        raise ValueError("'directories' argument must not be empty")
+    if not isinstance(config, SkaffConfig):
+        raise ValueError("'config' argument must be of 'SkaffConfig' type")
 
-    if not all(isinstance(directory, str) for directory in directories):
-        raise ValueError("'directories' argument must contain 'str' type")
+    author = list(config.authors_get())[0]
+    language = config.language_get()
+    license = config.license_get()
+    quiet = config.quiet_get()
 
-    subdirectories = (
-        "build",
-        "coccinelle",
-        "doc",
-        "examples",
-        "img",
-        "src",
-        "tests"
-    )
-
-    for base_dir in directories:
-        if not base_dir.endswith(os.sep):
-            base_dir += os.sep
-
+    for base_dir in config.directories_get():
         os.mkdir(base_dir)
-        for sub_dir in subdirectories:
+        for sub_dir in config.subdirectories_get():
             os.mkdir(base_dir + sub_dir)
         # Create parent directory if it does not exist
         os.makedirs("{0}include{1}{2}".format(base_dir,
                                               os.sep,
                                               os.path.basename(base_dir[:-1])))
-
         _license_sign(author, base_dir, license)
         _conf_doc_prompt(author, base_dir, language, license, quiet)
 
