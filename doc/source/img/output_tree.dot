@@ -1,0 +1,22 @@
+graph {
+    root[label="nihil", shape="circle"];
+    header[label="nihil", shape="circle"];
+
+    build[shape="circle"];
+    coccinelle[shape="circle"];
+    doc[shape="circle"];
+    examples[shape="circle"];
+    img[shape="circle"];
+    include[shape="circle"];
+    src[shape="circle"];
+    tests[shape="circle"];
+
+    root -- build;
+    root -- coccinelle;
+    root -- doc;
+    root -- examples;
+    root -- img;
+    root -- include -- header;
+    root -- src;
+    root -- tests;
+}

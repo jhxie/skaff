@@ -5,7 +5,7 @@ Daily update cannot be guaranteed between **2016-06-06** and **2016-06-18**.
 
 ## Overview
 A CMake-based project scaffolding tool.  
-Click any of the following to see details.  
+Click any of the following badges to see details.  
 [![Documentation Status](
 https://readthedocs.org/projects/skaff/badge/?version=latest)](
 http://skaff.readthedocs.io/en/latest/?badge=latest)
@@ -16,11 +16,14 @@ http://opensource.org/licenses/BSD-2-Clause)
 https://semaphoreci.com/api/v1/jhxie/skaff/branches/master/badge.svg)](
 https://semaphoreci.com/jhxie/skaff)
 
-## Usage
+## Getting Started
 To create a project directory named *nihil*:
 ```bash
 skaff nihil
 ```
+then a directory tree like the following will be created
+(configuration files are not shown):  
+![tree](doc/source/img/output_tree.svg)  
 
 Show usage help by:
 ```bash
@@ -32,9 +35,8 @@ For the detailed command-line reference manual, use *man* as usual:
 man 1 skaff
 ```
 
-A few more examples along with its detailed documentation will be given on
-[ReadTheDocs](http://skaff.readthedocs.io/en/latest/)
-later on.
+A few more examples along with its detailed developers' documentation will be
+given on [ReadTheDocs](http://skaff.readthedocs.io/en/latest/) later on.
 
 ## Versioning
 Before version **v0.5** this project is in alpha stage, there may be serious
