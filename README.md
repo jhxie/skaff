@@ -23,7 +23,7 @@ skaff nihil
 ```
 then a directory tree like the following will be created
 (configuration files are not shown):  
-![tree](doc/source/img/output_tree.svg)  
+![tree](doc/source/img/output_tree.png)  
 
 Show usage help by:
 ```bash
