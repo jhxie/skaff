@@ -90,9 +90,9 @@ class SmartFormatter(argparse.HelpFormatter):
     # functionality for all the rest of the help text
     # Borrowed from
     # https://bitbucket.org/ruamel/std.argparse/overview
-    def __init__(self, *args, **kw):
+    def __init__(self, *args, **kwargs):
         self._add_defaults = None
-        super(SmartFormatter, self).__init__(*args, **kw)
+        super(SmartFormatter, self).__init__(*args, **kwargs)
 
     def _fill_text(self, text, width, indent):
         return ''.join([indent + line for line in text.splitlines(True)])

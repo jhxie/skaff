@@ -145,7 +145,7 @@ class SkaffConfig:
 
         Raises RuntimeError if both attempts fail.
 
-        Note this 'classmethod' may be automatically called from 'authors_get'
+        Note this 'staticmethod' may be automatically called from 'authors_get'
         member function under certain scenarios.
         """
         # If the author's name is not explicitly stated in the commmand-line
@@ -263,8 +263,8 @@ class SkaffConfig:
         """
         return self.__config["language"]
 
-    @classmethod
-    def languages_list(self):
+    @staticmethod
+    def languages_list():
         """
         Gets a generator containing the supported programming languages.
 
@@ -300,8 +300,8 @@ class SkaffConfig:
         """
         return self.__config["license"]
 
-    @classmethod
-    def licenses_list(self):
+    @staticmethod
+    def licenses_list():
         """
         Gets a generator containing the supported licenses.
 
@@ -315,13 +315,13 @@ class SkaffConfig:
         """
         Sets whether there is interactive CMakeLists.txt and Doxyfile editing.
         'True' to turn off the interactive editing.
-        Defaults to 'False' if left as empty or 'None'.
+        Defaults to 'True' if left as empty or 'None'.
         This member function is called by the constructor by default.
 
         'quiet' argument must be of 'bool' type.
         """
         if None == quiet:
-            self.__config["quiet"] = False
+            self.__config["quiet"] = True
             return
 
         if not isinstance(quiet, bool):

@@ -11,7 +11,7 @@ from skaff.config import SkaffConfig
 from skaff.core import skaff
 from skaff.core import skaff_version_get
 
-from skaff.core import _author_get
+from skaff.core import _arguments_check
 from skaff.core import _basepath_find
 from skaff.core import _conf_doc_prompt
 from skaff.core import _conf_edit

@@ -5,7 +5,6 @@ Unit testing suite for core module.
 """
 # --------------------------------- MODULES -----------------------------------
 import os
-import pwd
 import unittest
 
 from tempfile import TemporaryDirectory
@@ -19,37 +18,44 @@ class TestCore(unittest.TestCase):
     """
     Main unit testing suite, which is a subclass of 'unittest.TestCase'.
     """
-    def test_skaff(self):
-        directory = ("project",)
-        config = skaff.SkaffConfig(directory)
+    def setUp(self):
+        self.tmp_dir = TemporaryDirectory()
+        if not self.tmp_dir.name.endswith(os.sep):
+            self.tmp_dir.name += os.sep
+        # NOTE: the 'directories' argument needs to be an iterable;
+        # a tuple (denoted by an extra comma inside the parentheses) is used.
+        self.config = skaff.SkaffConfig((self.tmp_dir.name,))
 
+    def tearDown(self):
+        self.config.directory_discard(self.tmp_dir.name)
+        self.tmp_dir.cleanup()
+
+    def test_skaff(self):
         # Fail due to wrong type for the 'config' argument
         with self.assertRaises(ValueError):
             skaff.skaff(None)
 
-        # Fail due to pre-existing 'project' directory
-        os.mkdir(directory[0])
+        # Fail due to pre-existing directory
         with self.assertRaises(FileExistsError):
-            skaff.skaff(config)
-        os.rmdir(directory[0])
+            skaff.skaff(self.config)
 
     def test_skaff_version_get(self):
         self.assertTrue(skaff.skaff_version_get())
 
-    def test__author_get(self):
-        # Get system password database record based on current user UID
-        pw_record = pwd.getpwuid(os.getuid())
+    def test__arguments_check(self):
+        # Fail because 'directory' does not exist
+        with self.assertRaises(ValueError):
+            # This 'tmp_dir' only exist within the scope of context manager
+            with TemporaryDirectory() as tmp_dir:
+                self.config.directory_add(tmp_dir)
+            skaff._arguments_check(tmp_dir, self.config)
+        self.config.directory_discard(tmp_dir)
 
-        # '_author_get()' must return identical term if GECOS field is defined
-        if pw_record.pw_gecos:
-            self.assertEqual(skaff._author_get(), pw_record.pw_gecos)
-        # Otherwise it must matches the current user's login name
-        elif pw_record.pw_name:
-            self.assertEqual(skaff._author_get(), pw_record.pw_name)
-        # If none of the above works, 'RuntimeError' is raised
-        else:
-            with self.assertRaises(RuntimeError):
-                skaff._author_get()
+        # Fail because 'directory' is not in 'config'
+        with self.assertRaises(ValueError):
+            self.config.directory_discard(self.tmp_dir.name)
+            skaff._arguments_check(self.tmp_dir.name, self.config)
+        self.config.directory_add(self.tmp_dir.name)
 
     def test__basepath_find(self):
         basepath = skaff._basepath_find()
@@ -57,88 +63,48 @@ class TestCore(unittest.TestCase):
         self.assertTrue(os.path.isdir(basepath))
         self.assertTrue(os.path.isabs(basepath))
 
+    def test__conf_doc_prompt(self):
+        # Omitted because this is an interactive UI-related function
+        # and the author does not know how to test it properly
+        pass
+
     def test__conf_edit(self):
         # Omitted because this is an interactive UI-related function
         # and the author does not know how to test it properly
         pass
 
     def test__conf_spawn(self):
-        argument_dict = dict(directory=None, language=None, quiet=True)
         conf_files = frozenset((".editorconfig", ".gdbinit", ".gitattributes",
                                 ".gitignore", ".travis.yml", "CMakeLists.txt"))
 
-        # Fail because 'directory' cannot be empty
-        with self.assertRaises(ValueError):
-            skaff._conf_spawn(**argument_dict)
-
-        with TemporaryDirectory() as tmp_dir:
-            argument_dict["directory"] = tmp_dir
-            skaff._conf_spawn(**argument_dict)
-            for conf_file in conf_files:
-                self.assertTrue(os.path.isfile(tmp_dir + os.sep + conf_file))
-            # Fail because of newly spawned configuration files
-            # the 'directory' is no longer empty
-            with self.assertRaises(OSError):
-                os.rmdir(tmp_dir)
-
-        # Fail because of non-existing 'directory'
-        with self.assertRaises(ValueError):
-            skaff._conf_spawn(**argument_dict)
-
-        # Fail because of unsupported programming languages
-        with TemporaryDirectory() as tmp_dir, self.assertRaises(ValueError):
-            argument_dict["directory"] = tmp_dir
-            argument_dict["language"] = "python"
-            skaff._conf_spawn(**argument_dict)
+        skaff._conf_spawn(self.tmp_dir.name, self.config)
+        for conf_file in conf_files:
+            self.assertTrue(os.path.isfile(self.tmp_dir.name + conf_file))
+        # Fail because of newly spawned configuration files
+        # the 'directory' is no longer empty
+        with self.assertRaises(OSError):
+            os.rmdir(self.tmp_dir.name)
 
     def test__doc_create(self):
-        argument_dict = dict(author=None,
-                             directory=None,
-                             license=None,
-                             quiet=True)
         # Use immutable variant of set instead
-        licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+        docs = frozenset(("CHANGELOG.md", "Doxyfile", "README.md"))
+        licenses = frozenset(self.config.licenses_list())
 
-        # Fail because 'directory' cannot be empty
-        with self.assertRaises(ValueError):
-            skaff._doc_create(**argument_dict)
-
-        with TemporaryDirectory() as tmp_dir:
-            argument_dict["directory"] = tmp_dir
-            skaff._doc_create(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "CHANGELOG.md"))
-            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "Doxyfile"))
-            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "README.md"))
-            # Fail because of newly created documentation
-            # the 'directory' is no longer empty
-            with self.assertRaises(OSError):
-                os.rmdir(tmp_dir)
-
-        # Fail because of non-existing 'directory'
-        with self.assertRaises(ValueError):
-            skaff._doc_create(**argument_dict)
-
-        # Fail because of unsupported license
-        with TemporaryDirectory() as tmp_dir, self.assertRaises(ValueError):
-            argument_dict["directory"] = tmp_dir
-            argument_dict["license"] = "null"
-            skaff._doc_create(**argument_dict)
+        skaff._doc_create(self.tmp_dir.name, self.config)
+        for doc in docs:
+            self.assertTrue(os.path.isfile(self.tmp_dir.name + doc))
+        # Fail because of newly created documentation
+        # the 'directory' is no longer empty
+        with self.assertRaises(OSError):
+            os.rmdir(self.tmp_dir.name)
 
         # Success since all the licenses are valid
         # ensure that correct 'README.md' is created
         for license in licenses:
-            argument_dict["license"] = license
-            # Temporary directory will be destroyed after the block
-            with TemporaryDirectory() as tmp_dir:
-                argument_dict["directory"] = tmp_dir
-                skaff._doc_create(**argument_dict)
-                with open(tmp_dir + os.sep + "README.md", "r") as readme_file:
-                    self.assertIn(license.upper(), readme_file.read())
-
-    def test__conf_doc_prompt(self):
-        # Omitted because this is an interactive UI-related function
-        # and the author does not know how to test it properly
-        pass
+            self.config.license_set(license)
+            skaff._doc_create(self.tmp_dir.name, self.config)
+            with open(self.tmp_dir.name + "README.md", "r") as readme_file:
+                self.assertIn(license.upper(), readme_file.read())
 
     def test__doxyfile_attr_match(self):
         argument_dict = dict(project_name="Project", line=None)
@@ -179,50 +145,20 @@ class TestCore(unittest.TestCase):
                              "\n")
 
     def test__doxyfile_generate(self):
-        argument_dict = dict(directory=None, quiet=True)
-
-        # Fail because 'directory' cannot be empty
-        with self.assertRaises(ValueError):
-            skaff._doxyfile_generate(**argument_dict)
-
-        with TemporaryDirectory() as tmp_dir:
-            argument_dict["directory"] = tmp_dir
-            skaff._doxyfile_generate(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "Doxyfile"))
-            # Fail because of newly created documentation
-            # the 'directory' is no longer empty
-            with self.assertRaises(OSError):
-                os.rmdir(tmp_dir)
-
-        # Fail because of non-existing 'directory'
-        with self.assertRaises(ValueError):
-            skaff._doxyfile_generate(**argument_dict)
+        skaff._doxyfile_generate(self.tmp_dir.name, self.config)
+        self.assertTrue(os.path.isfile(self.tmp_dir.name + "Doxyfile"))
+        # Fail because of newly created documentation
+        # the 'directory' is no longer empty
+        with self.assertRaises(OSError):
+            os.rmdir(self.tmp_dir.name)
 
     def test__license_sign(self):
-        argument_dict = dict(author=None, directory=None, license=None)
-
-        # Fail because 'directory' cannot be empty
-        with self.assertRaises(ValueError):
-            skaff._license_sign(**argument_dict)
-
-        with TemporaryDirectory() as tmp_dir:
-            argument_dict["directory"] = tmp_dir
-            skaff._license_sign(**argument_dict)
-            self.assertTrue(os.path.isfile(tmp_dir + os.sep + "LICENSE.txt"))
-            # Fail because of newly created documentation
-            # the 'directory' is no longer empty
-            with self.assertRaises(OSError):
-                os.rmdir(tmp_dir)
-
-        # Fail because of non-existing 'directory'
-        with self.assertRaises(ValueError):
-            skaff._license_sign(**argument_dict)
-
-        # Fail because of unsupported license
-        with TemporaryDirectory() as tmp_dir, self.assertRaises(ValueError):
-            argument_dict["directory"] = tmp_dir
-            argument_dict["license"] = "null"
-            skaff._license_sign(**argument_dict)
+        skaff._license_sign(self.tmp_dir.name, self.config)
+        self.assertTrue(os.path.isfile(self.tmp_dir.name + "LICENSE.txt"))
+        # Fail because of newly created documentation
+        # the 'directory' is no longer empty
+        with self.assertRaises(OSError):
+            os.rmdir(self.tmp_dir.name)
 
 if __name__ == "__main__":
     unittest.main()
