@@ -58,12 +58,6 @@ class TestCore(unittest.TestCase):
             skaff._arguments_check(self.tmp_dir.name, self.config)
         self.config.directory_add(self.tmp_dir.name)
 
-    def test__basepath_find(self):
-        basepath = skaff._basepath_find()
-
-        self.assertTrue(os.path.isdir(basepath))
-        self.assertTrue(os.path.isabs(basepath))
-
     def test__conf_doc_prompt(self):
         # Omitted because this is an interactive UI-related function
         # and the author does not know how to test it properly

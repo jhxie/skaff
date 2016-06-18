@@ -164,6 +164,16 @@ class SkaffConfig:
         else:
             raise RuntimeError("Failed attempt to get default username")
 
+    @staticmethod
+    def basepath_show():
+        """
+        Returns the base directory name containing the skaff 'config' module.
+
+        The extra 'os.path.abspath' invocation is to suppress relative path
+        output.
+        """
+        return os.path.dirname(os.path.abspath(__file__))
+
     def directories_set(self, directories=None):
         """
         Sets the name(s) of the outputting project-directory(ies).

@@ -138,6 +138,12 @@ class TestConfig(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 SkaffConfig.author_fetch()
 
+    def test_basepath_show(self):
+        basepath = SkaffConfig.basepath_show()
+
+        self.assertTrue(os.path.isdir(basepath))
+        self.assertTrue(os.path.isabs(basepath))
+
     def test_directories_set(self):
         # Identical to 'test_authors_set' because the similarity between
         # the 2 mutator member functions; may be expanded later on if new
