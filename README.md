@@ -1,8 +1,5 @@
 ![skaff](img/banner.png)
 
-## NOTICE
-Daily update cannot be guaranteed between **2016-06-06** and **2016-06-18**.
-
 ## Overview
 A CMake-based project scaffolding tool.  
 Click any of the following badges to see details.  

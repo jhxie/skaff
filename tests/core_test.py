@@ -27,7 +27,8 @@ class TestCore(unittest.TestCase):
         self.config = skaff.SkaffConfig((self.tmp_dir.name,))
 
     def tearDown(self):
-        self.config.directory_discard(self.tmp_dir.name)
+        # No need to invoke 'directory_discard' since for each test member
+        # function a new 'SkaffConfig' instance is created.
         self.tmp_dir.cleanup()
 
     def test_skaff(self):

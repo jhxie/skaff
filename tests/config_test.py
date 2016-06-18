@@ -20,11 +20,15 @@ class TestConfig(unittest.TestCase):
     """
     def setUp(self):
         self.tmp_dir = TemporaryDirectory()
+        if not self.tmp_dir.name.endswith(os.sep):
+            self.tmp_dir.name += os.sep
         # NOTE: the 'directories' argument needs to be an iterable;
         # a tuple (denoted by an extra comma inside the parentheses) is used.
         self.config = SkaffConfig((self.tmp_dir.name,))
 
     def tearDown(self):
+        # No need to invoke 'directory_discard' since for each test member
+        # function a new 'SkaffConfig' instance is created.
         self.tmp_dir.cleanup()
 
     def test_authors_set(self):
