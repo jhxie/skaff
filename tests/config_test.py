@@ -138,8 +138,8 @@ class TestConfig(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 SkaffConfig.author_fetch()
 
-    def test_basepath_show(self):
-        basepath = SkaffConfig.basepath_show()
+    def test_basepath_fetch(self):
+        basepath = SkaffConfig.basepath_fetch()
 
         self.assertTrue(os.path.isdir(basepath))
         self.assertTrue(os.path.isabs(basepath))
@@ -283,6 +283,9 @@ class TestConfig(unittest.TestCase):
         for license in self.config.licenses_list():
             self.config.license_set(license)
             self.assertEqual(license, self.config.license_get())
+
+    def test_templates_probe(self):
+        self.config.templates_probe()
 
     def test_quiet_set(self):
         self.config.quiet_set(None)

@@ -165,12 +165,12 @@ class SkaffConfig:
             raise RuntimeError("Failed attempt to get default username")
 
     @staticmethod
-    def basepath_show():
+    def basepath_fetch():
         """
         Returns the base directory name containing the skaff 'config' module.
 
         The extra 'os.path.abspath' invocation is to suppress relative path
-        output.
+        output; result does not include any trailing path separator.
         """
         return os.path.dirname(os.path.abspath(__file__))
 
@@ -320,6 +320,20 @@ class SkaffConfig:
         """
         licenses = sorted(SkaffConfig.__licenses)
         yield from (license for license in licenses)
+
+    def templates_probe(self):
+        """
+        TODO:
+        0. Changes '__languages' to a per-instance attribute
+        1. Checks whether all licenses specified in default '__languages' exist
+        2. Adds new licenses by users of this program to '__languages'
+        """
+        print(os.path.expanduser("~"))
+        # rootDir = '.'
+        # for dirName, subdirList, fileList in os.walk(rootDir):
+        #     print('Found directory: %s' % dirName)
+        #     for fname in fileList:
+        #         print('\t%s' % fname)
 
     def quiet_set(self, quiet=None):
         """
