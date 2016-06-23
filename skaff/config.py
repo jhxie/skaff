@@ -384,10 +384,17 @@ class SkaffConfig:
         Default is:
         "/home/$USER/.config/skaff/config/template/"
         """
+        keys = ("config", "license", "template")
+        items = kwargs.items()
         user_config = os.path.expanduser("~") + os.sep + ".config" + os.sep +\
             "skaff" + os.sep
         user_template = user_config + "template" + os.sep
         user_license = user_config + "license" + os.sep
+
+        if not all(key in keys and isinstance(val, str) for key, val in items):
+            raise ValueError(("values of 'kwargs' must be of 'str' type and "
+                              "keys must be one of the following keywords: "
+                              ", ".join(keys)))
 
         kwargs.setdefault("config", user_config)
         kwargs.setdefault("template", user_template)
@@ -412,10 +419,13 @@ class SkaffConfig:
         result_paths = list()
 
         if not all(isinstance(arg, str) for arg in args):
-            raise ValueError("'arg' must be of 'str' type")
+            raise ValueError("'args' must contain 'str' types")
 
         if 0 == len(args):
             return copy.deepcopy(self.__config["paths"])
+
+        if 1 == len(args):
+            return self.__config["paths"][args[0]]
 
         for arg in args:
             result_paths.append(self.__config["paths"][arg])

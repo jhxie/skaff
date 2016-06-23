@@ -292,10 +292,46 @@ class TestConfig(unittest.TestCase):
         self.config.licenses_probe()
 
     def test_paths_set(self):
+        keys = ("config", "license", "template")
+        random_key = "random"
+        paths = dict.fromkeys(keys)
+
+        # Fail due to 'None' values
+        with self.assertRaises(ValueError):
+            self.config.paths_set(**paths)
+
+        # Fail due to invalid key-value argument
+        with self.assertRaises(ValueError):
+            self.config.paths_set(random_key=random_key)
+
+        # Fail due to invalid value argument
+        paths["config"] = self.tmp_dir.name
+        paths["license"] = paths["config"] + "license" + os.sep
+        paths["template"] = 0
+        with self.assertRaises(ValueError):
+            self.config.paths_set(**paths)
+
+        paths["template"] = paths["config"] + "template" + os.sep
+        self.config.paths_set(**paths)
+
         self.config.paths_set()
+        self.assertTrue(all(self.config.paths_get()))
 
     def test_paths_get(self):
-        pass
+        keys = ("config", "license", "template")
+        result = None
+
+        # Fail due to 'None' type argument
+        with self.assertRaises(ValueError):
+            self.config.paths_get(None)
+
+        # Success if the dictionary returned is a deep copy;
+        # so the internal 'database' would not be accidentally altered
+        self.config.paths_set()
+        result = self.config.paths_get()
+        for key in keys:
+            result[key] = None
+            self.assertIsInstance(self.config.paths_get(key), str)
 
     def test_quiet_set(self):
         self.config.quiet_set(None)
