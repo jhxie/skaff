@@ -1,7 +1,6 @@
 include README.md
 include LICENSE.txt
 recursive-include skaff/config *
-recursive-include skaff/license *
 recursive-include man *
 global-exclude __pycache__
 global-exclude *.py[co]

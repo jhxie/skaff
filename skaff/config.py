@@ -6,6 +6,7 @@ Custom configuration type definition used for the 'core' skaff module.
 
 # --------------------------------- MODULES -----------------------------------
 import collections
+import copy
 import os
 import pwd
 # --------------------------------- MODULES -----------------------------------
@@ -16,8 +17,8 @@ class SkaffConfig:
     """
     Configuration type used for the argument of 'skaff' function.
     """
-    __languages = frozenset(("c", "cpp"))
-    __licenses = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
+    __LANGUAGES = frozenset(("c", "cpp"))
+    __LICENSES = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
     def __init__(self, directories, **kwargs):
         """
@@ -42,22 +43,26 @@ class SkaffConfig:
         'license': type of license;
                     must be chosen from the 'licenses_list' listing
 
+        'paths': paths containing configuration, template, and license files
+
         'quiet': no interactive CMakeLists.txt and Doxyfile editing
 
         'subdirectories': set of name(s) for the subdirectory(ies)
         within the project(s)' base directory(ies)
         """
-        # The value of 'directories' key will be used if it already exists;
-        # otherwise fill in the value from the positional argument
-        kwargs.setdefault("directories", directories)
-
         __ARGUMENTS = {"authors": self.authors_set,
                        "directories": self.directories_set,
                        "language": self.language_set,
                        "license": self.license_set,
+                       "paths": self.paths_set,
                        "quiet": self.quiet_set,
                        "subdirectories": self.subdirectories_set}
+
+        # The value of 'directories' key will be used if it already exists;
+        # otherwise fill in the value from the positional argument
+        kwargs.setdefault("directories", directories)
         self.__config = dict()
+
         for key in __ARGUMENTS:
             # Call corresponding mutator function with value specified in the
             # 'kwargs' dictionary if key is present
@@ -281,8 +286,13 @@ class SkaffConfig:
         By default they are the following:
         {"c", "cpp"}.
         """
-        languages = sorted(SkaffConfig.__languages)
+        languages = sorted(SkaffConfig.__LANGUAGES)
         yield from (language for language in languages)
+
+    def languages_probe(self):
+        """
+        """
+        pass
 
     def license_set(self, license=None):
         """
@@ -318,22 +328,97 @@ class SkaffConfig:
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
-        licenses = sorted(SkaffConfig.__licenses)
+        licenses = sorted(SkaffConfig.__LICENSES)
         yield from (license for license in licenses)
 
-    def templates_probe(self):
+    def licenses_probe(self):
         """
         TODO:
-        0. Changes '__languages' to a per-instance attribute
-        1. Checks whether all licenses specified in default '__languages' exist
-        2. Adds new licenses by users of this program to '__languages'
+        0. Adds a new per-isinstance argument 'licenses'
+        1. Checks whether all licenses specified in default '__LICENSES' exist
+        2. Adds new licenses by users of this program to '__LICENSES'
         """
-        print(os.path.expanduser("~"))
+        system_config = SkaffConfig.basepath_fetch() + os.sep +\
+            "config" + os.sep
+        system_template = system_config + "template" + os.sep
+        system_license = system_config + "license" + os.sep
         # rootDir = '.'
         # for dirName, subdirList, fileList in os.walk(rootDir):
         #     print('Found directory: %s' % dirName)
         #     for fname in fileList:
         #         print('\t%s' % fname)
+
+    def paths_set(self, **kwargs):
+        """
+        Sets the paths containing configuration, template, and license files.
+        This member function is called by the constructor by default.
+
+        NOTE: the paths containing configuration, template, and license files
+        specified here will take precedence over files with identical name in
+        the 'system' path.
+        For example, if there is a file named 'bsd.txt' in the default path of
+        license files:
+        "/home/$USER/.config/skaff/config/license/bsd.txt"
+        then the content within that file will be used instead of the supplied
+        stock version
+        "/usr/lib/python3/dist-packages/skaff/config/license/bsd.txt"
+        when you create a project using 'bsd' license; same goes for templates.
+        You can add new configuration, template, and licenses in this path and
+        it will be discovered by corresponding _*probe member functions, which
+        are called by the constructor by default.
+
+        Supported keyword arguments:
+
+        'config': path containing 'skaff.json' configuration file.
+        Default is:
+        "/home/$USER/.config/skaff/config/"
+
+        'license': path containing license files to be copied to the
+        directories specified in 'directories_set' or 'directory_add'.
+        Default is:
+        "/home/$USER/.config/skaff/config/license/"
+
+        'template': path containing template files to be copied to the
+        directories specified in 'directories_set', 'directory_add',
+        'subdirectories_set', or 'subdirectory_add'.
+        Default is:
+        "/home/$USER/.config/skaff/config/template/"
+        """
+        user_config = os.path.expanduser("~") + os.sep + ".config" + os.sep +\
+            "skaff" + os.sep
+        user_template = user_config + "template" + os.sep
+        user_license = user_config + "license" + os.sep
+
+        kwargs.setdefault("config", user_config)
+        kwargs.setdefault("template", user_template)
+        kwargs.setdefault("license", user_license)
+
+        self.__config["paths"] = dict()
+        self.__config["paths"]["config"] = kwargs["config"]
+        self.__config["paths"]["license"] = kwargs["license"]
+        self.__config["paths"]["template"] = kwargs["template"]
+
+    def paths_get(self, *args):
+        """
+        Gets the paths containing configuration, template, and license files.
+        Accepted arguments are strings: 'config', 'license' and 'template'.
+
+        If called without any actual argument, returns a deep copy of the
+        internal dictionary containing all the stored key-value pairs.
+
+        If called with multiple arguments, a list with corresponding results
+        will be returned.
+        """
+        result_paths = list()
+
+        if not all(isinstance(arg, str) for arg in args):
+            raise ValueError("'arg' must be of 'str' type")
+
+        if 0 == len(args):
+            return copy.deepcopy(self.__config["paths"])
+
+        for arg in args:
+            result_paths.append(self.__config["paths"][arg])
 
     def quiet_set(self, quiet=None):
         """
@@ -458,5 +543,4 @@ class SkaffConfig:
         """
         """
         pass
-
 # --------------------------------- CLASSES -----------------------------------

@@ -195,6 +195,7 @@ def _conf_spawn(directory, config):
     cmake_file = "CMakeLists.txt"
     cmake_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
         "config" + os.sep +\
+        "template" + os.sep +\
         language + os.sep
     sample_source_file = "main." + language
 
@@ -211,7 +212,8 @@ def _conf_spawn(directory, config):
     # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
     conf_files = ("editorconfig", "gdbinit", "gitattributes", "gitignore")
     conf_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
-        "config" + os.sep
+        "config" + os.sep +\
+        "template" + os.sep
     conf_target_prefix = directory + "."
     travis_file = "travis.yml"
     language_header = "language: {0}\n".format(language)
@@ -256,6 +258,7 @@ def _doc_create(directory, config):
         authors=", ".join(config.authors_get())
     )
     license_text = SkaffConfig.basepath_fetch() + os.sep +\
+        "config" + os.sep +\
         "license" + os.sep +\
         config.license_get() + ".md"
     readme_text = directory + "README.md"
@@ -338,7 +341,8 @@ def _doxyfile_generate(directory, config):
 
     doxyfile = "Doxyfile"
     doxyfile_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
-        "config" + os.sep
+        "config" + os.sep +\
+        "template" + os.sep
     doxyfile_target_prefix = directory
     doxygen_cmd = ["doxygen", "-g", doxyfile_target_prefix + doxyfile]
     quiet = config.quiet_get()
@@ -383,6 +387,7 @@ def _license_sign(directory, config):
     # responsibility of 'SkaffConfig' class; this responsibiltiy will be
     # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
     license_source = SkaffConfig.basepath_fetch() + os.sep +\
+        "config" + os.sep +\
         "license" + os.sep +\
         config.license_get() + ".txt"
     license_target = directory + "LICENSE.txt"

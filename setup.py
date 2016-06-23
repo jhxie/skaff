@@ -56,15 +56,15 @@ def main():
           packages=["skaff"],
           package_data={
               "skaff": [
-                  "skaff/config/*.txt",
-                  "skaff/config/Doxyfile",
-                  "skaff/config/travis.yml",
-                  "skaff/config/c/*.txt",
-                  "skaff/config/c/src/*",
-                  "skaff/config/cpp/*.txt",
-                  "skaff/config/cpp/src/*",
-                  "skaff/license/*.md",
-                  "skaff/license/*.txt"]
+                  "skaff/config/template/*.txt",
+                  "skaff/config/template/Doxyfile",
+                  "skaff/config/template/travis.yml",
+                  "skaff/config/template/c/*.txt",
+                  "skaff/config/template/c/src/*",
+                  "skaff/config/template/cpp/*.txt",
+                  "skaff/config/template/cpp/src/*",
+                  "skaff/config/license/*.md",
+                  "skaff/config/license/*.txt"]
           },
           entry_points={
               "console_scripts": ["skaff=skaff.cli:main"]

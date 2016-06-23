@@ -70,7 +70,7 @@ python3 ./setup.py clean build
 sudo python3 ./setup.py install
 ```
 
-To run the bundled unit tests:
+To run the bundled unit test suite:
 ```
 python3 ./setup.py test
 ```

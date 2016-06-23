@@ -14,6 +14,7 @@ from tempfile import TemporaryDirectory
 # --------------------------------- MODULES -----------------------------------
 
 
+# --------------------------------- CLASSES -----------------------------------
 class TestConfig(unittest.TestCase):
     """
     Unit testing suite for 'config' module.
@@ -265,6 +266,9 @@ class TestConfig(unittest.TestCase):
             self.config.language_set(language)
             self.assertEqual(language, self.config.language_get())
 
+    def test_languages_probe(self):
+        pass
+
     def test_license_set(self):
         # Identical to 'test_language_set' due to the similarity between
         # 'language_set' and 'license_set' mutator functions.
@@ -284,8 +288,14 @@ class TestConfig(unittest.TestCase):
             self.config.license_set(license)
             self.assertEqual(license, self.config.license_get())
 
-    def test_templates_probe(self):
-        self.config.templates_probe()
+    def test_licenses_probe(self):
+        self.config.licenses_probe()
+
+    def test_paths_set(self):
+        self.config.paths_set()
+
+    def test_paths_get(self):
+        pass
 
     def test_quiet_set(self):
         self.config.quiet_set(None)
@@ -405,6 +415,7 @@ class TestConfig(unittest.TestCase):
         self.config.subdirectories_set(subdirectories)
         get_result = self.config.subdirectories_get()
         self.assertCountEqual(subdirectories, get_result)
+# --------------------------------- CLASSES -----------------------------------
 
 if __name__ == "__main__":
     unittest.main()
