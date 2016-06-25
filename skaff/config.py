@@ -17,6 +17,40 @@ class SkaffConfig:
     """
     Configuration type used for the argument of 'skaff' function.
     """
+    # 'languages', 'licenses', and 'subdirectories' can only be determined
+    # for a given 'paths' attribute since all the mutators associated with
+    # the former three directly or indirectly call their corresponding _*probe
+    # methods, which need info about 'paths'.
+    #
+    # Similarly, 'authors', 'language', 'license', and 'quiet' are associated
+    # with a list of 'directories'.
+    #
+    # A dependency graph for the first relation stated above is:
+    #
+    #                                +-----+
+    #                                |paths|
+    #                                +-----+
+    #                                   ^
+    #                                   |
+    #                    +---------+--------+--------------+
+    #                    |languages|licenses|subdirectories|
+    #                    +---------+--------+--------------+
+    #
+    # A dependency graph for the second is:
+    #
+    #                              +-----------+
+    #                              |directories|
+    #                              +-----------+
+    #                                   ^
+    #                                   |
+    #                      +-------+--------+-------+-----+
+    #                      |authors|language|license|quiet|
+    #                      +-------+--------+-------+-----+
+    #
+    __ATTRIBUTES = ("paths",
+                    "languages", "licenses", "subdirectories",
+                    "directories",
+                    "authors", "language", "license", "quiet")
     __LANGUAGES = frozenset(("c", "cpp"))
     __LICENSES = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
@@ -50,18 +84,28 @@ class SkaffConfig:
         'subdirectories': set of name(s) for the subdirectory(ies)
         within the project(s)' base directory(ies)
         """
-        __ARGUMENTS = {"authors": self.authors_set,
-                       "directories": self.directories_set,
-                       "language": self.language_set,
-                       "license": self.license_set,
-                       "paths": self.paths_set,
-                       "quiet": self.quiet_set,
-                       "subdirectories": self.subdirectories_set}
+        __METHODS = (self.paths_set,
+                     self.languages_probe,
+                     self.licenses_probe,
+                     self.subdirectories_set,
+                     # End of 1st dependency and begin of 2nd dependency
+                     self.directories_set,
+                     self.authors_set,
+                     self.language_set,
+                     self.license_set,
+                     self.quiet_set)
 
         # The value of 'directories' key will be used if it already exists;
         # otherwise fill in the value from the positional argument
         kwargs.setdefault("directories", directories)
-        self.__config = dict()
+
+        # Mapping between valid attributes(arguments) and corresponding methods
+        relation = zip(SkaffConfig.__ATTRIBUTES, __METHODS)
+        __ARGUMENTS = collections.OrderedDict(relation)
+
+        # The actual internal per-instance mapping between
+        # attributes(arguments) and corresponding values
+        self.__config = dict.fromkeys(SkaffConfig.__ATTRIBUTES)
 
         for key in __ARGUMENTS:
             # Call corresponding mutator function with value specified in the
