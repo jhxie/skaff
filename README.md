@@ -51,7 +51,12 @@ As mentioned in the above section, for now the only way to get the package is
 here as well as the [BitBucket mirror](https://bitbucket.org/jhxie/skaff);
 there is no *binary* (or *compiled-bytecode,* if you prefer) package available.
 
-Once downloaded, make sure you have **python3-setuptools** installed:
+Once downloaded, make sure the version of python is **at least 3.3**:
+```bash
+python3 --version
+```
+
+And also remember to have **python3-setuptools** installed:
 
 **Ubuntu** (14.04 and later)
 ```bash

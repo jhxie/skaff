@@ -38,11 +38,11 @@ class TestConfig(unittest.TestCase):
         authors = ["Andrew Grove", "An Wang", lambda x: not x]
 
         # Fail due to non-iterable type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.authors_set(authors[-1])
 
         # Fail due to non-containerized string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.authors_set(authors[0])
 
         # Fail due to empty string
@@ -50,7 +50,7 @@ class TestConfig(unittest.TestCase):
             self.config.authors_set((str(),))
 
         # Fail due to the existence of non-string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.authors_set(authors)
 
         authors[-1] = "\t"
@@ -70,7 +70,7 @@ class TestConfig(unittest.TestCase):
         counter = None
 
         # Fail due to wrong type for the 'author' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.author_add(None)
 
         # Fail because the 'author' argument cannot be an empty string
@@ -98,7 +98,7 @@ class TestConfig(unittest.TestCase):
         author_discarded = "Lewis Terman"
 
         # Fail due to wrong type for the 'author' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.author_discard(None)
 
         # Fail because the 'author' argument cannot be an empty string
@@ -152,11 +152,11 @@ class TestConfig(unittest.TestCase):
         directories = ["Apollo" + os.sep, "Spirit" + os.sep, lambda x: not x]
 
         # Fail due to non-iterable type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.directories_set(directories[-1])
 
         # Fail due to non-containerized string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.directories_set(directories[0])
 
         # Fail due to empty string
@@ -164,7 +164,7 @@ class TestConfig(unittest.TestCase):
             self.config.directories_set((str(),))
 
         # Fail due to the existence of non-string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.directories_set(directories)
 
         directories[-1] = "\t"
@@ -186,7 +186,7 @@ class TestConfig(unittest.TestCase):
         counter = None
 
         # Fail due to wrong type for the 'directory' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.directory_add(None)
 
         # Fail because the 'directory' argument cannot be an empty string
@@ -215,7 +215,7 @@ class TestConfig(unittest.TestCase):
         directory_discarded = "Symbian"
 
         # Fail due to wrong type for the 'author' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.directory_discard(None)
 
         # Fail because the 'author' argument cannot be an empty string
@@ -322,7 +322,7 @@ class TestConfig(unittest.TestCase):
         result = None
 
         # Fail due to 'None' type argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.paths_get(None)
 
         # Success if the dictionary returned is a deep copy;
@@ -337,7 +337,7 @@ class TestConfig(unittest.TestCase):
         self.config.quiet_set(None)
         self.assertIsInstance(self.config.quiet_get(), bool)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.quiet_set(str())
 
     def test_quiet_get(self):
@@ -356,11 +356,11 @@ class TestConfig(unittest.TestCase):
                           lambda x: not x]
 
         # Fail due to non-iterable type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.subdirectories_set(subdirectories[-1])
 
         # Fail due to non-containerized string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.subdirectories_set(subdirectories[0])
 
         # Fail due to empty string
@@ -368,7 +368,7 @@ class TestConfig(unittest.TestCase):
             self.config.subdirectories_set((str(),))
 
         # Fail due to the existence of non-string type
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.subdirectories_set(subdirectories)
 
         subdirectories[-1] = "\t"
@@ -390,7 +390,7 @@ class TestConfig(unittest.TestCase):
         counter = None
 
         # Fail due to wrong type for the 'directory' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.subdirectory_add(None)
 
         # Fail because the 'directory' argument cannot be an empty string
@@ -420,7 +420,7 @@ class TestConfig(unittest.TestCase):
         subdirectory_discarded = "Multics"
 
         # Fail due to wrong type for the 'author' argument
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             self.config.subdirectory_discard(None)
 
         # Fail because the 'author' argument cannot be an empty string

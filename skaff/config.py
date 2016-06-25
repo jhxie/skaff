@@ -89,10 +89,10 @@ class SkaffConfig:
             return
 
         if not isinstance(authors, collections.Iterable):
-            raise ValueError("'authors' argument must be iterable")
+            raise TypeError("'authors' argument must be iterable")
 
         if isinstance(authors, str):
-            raise ValueError(("'authors' argument must be an iterable "
+            raise TypeError(("'authors' argument must be an iterable "
                              "containing 'str' type"))
 
         if 0 == len(authors):
@@ -109,7 +109,7 @@ class SkaffConfig:
         otherwise do nothing.
         """
         if not isinstance(author, str):
-            raise ValueError("'author' argument must be 'str' type")
+            raise TypeError("'author' argument must be 'str' type")
 
         if 0 == len(author):
             raise ValueError("'author' argument must not be empty")
@@ -125,7 +125,7 @@ class SkaffConfig:
         otherwise do nothing.
         """
         if not isinstance(author, str):
-            raise ValueError("'author' argument must be 'str' type")
+            raise TypeError("'author' argument must be 'str' type")
 
         if 0 == len(author):
             raise ValueError("'author' argument must not be empty")
@@ -189,10 +189,10 @@ class SkaffConfig:
         containing instance of 'str'(s).
         """
         if not isinstance(directories, collections.Iterable):
-            raise ValueError("'directories' argument must be iterable")
+            raise TypeError("'directories' argument must be iterable")
 
         if isinstance(directories, str):
-            raise ValueError(("'directories' argument must be an iterable "
+            raise TypeError(("'directories' argument must be an iterable "
                              "containing 'str' type"))
 
         if 0 == len(directories):
@@ -210,7 +210,7 @@ class SkaffConfig:
         Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(directory, str):
-            raise ValueError("'directory' argument must be 'str' type")
+            raise TypeError("'directory' argument must be 'str' type")
 
         if 0 == len(directory):
             raise ValueError("'directory' argument must not be empty")
@@ -230,7 +230,7 @@ class SkaffConfig:
         Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(directory, str):
-            raise ValueError("'directory' argument must be 'str' type")
+            raise TypeError("'directory' argument must be 'str' type")
 
         if 0 == len(directory):
             raise ValueError("'directory' argument must not be empty")
@@ -338,10 +338,29 @@ class SkaffConfig:
         1. Checks whether all licenses specified in default '__LICENSES' exist
         2. Adds new licenses by users of this program to '__LICENSES'
         """
-        system_config = SkaffConfig.basepath_fetch() + os.sep +\
+        # Reset the internal licenses database
+        self.__config["licenses"] = set()
+        # The 'system' paths are hard-coded and cannot be changed freely;
+        # in contrast to the 'user' paths set through the 'paths_set'
+        # mutator member function interface
+        system_config_path = SkaffConfig.basepath_fetch() + os.sep +\
             "config" + os.sep
-        system_template = system_config + "template" + os.sep
-        system_license = system_config + "license" + os.sep
+        system_license_path = system_config_path + "license" + os.sep
+        system_template_path = system_config_path + "template" + os.sep
+
+        for system_path in (system_config_path, system_license_path):
+            if not os.path.isdir(system_path):
+                raise FileNotFoundError()
+
+        for license in SkaffConfig.__LICENSES:
+            license_text = system_license_path + license + ".txt"
+            license_markdown = system_license_path + license + ".md"
+            if not os.path.isfile(license_text):
+                raise FileNotFoundError()
+            if not os.path.isfile(license_markdown):
+                raise FileNotFoundError()
+
+        self.__config["licenses"] |= SkaffConfig.__LICENSES
         # rootDir = '.'
         # for dirName, subdirList, fileList in os.walk(rootDir):
         #     print('Found directory: %s' % dirName)
@@ -419,7 +438,7 @@ class SkaffConfig:
         result_paths = list()
 
         if not all(isinstance(arg, str) for arg in args):
-            raise ValueError("'args' must contain 'str' types")
+            raise TypeError("'args' must contain 'str' types")
 
         if 0 == len(args):
             return copy.deepcopy(self.__config["paths"])
@@ -444,7 +463,7 @@ class SkaffConfig:
             return
 
         if not isinstance(quiet, bool):
-            raise ValueError("'quiet' must be of 'bool' type")
+            raise TypeError("'quiet' must be of 'bool' type")
 
         self.__config["quiet"] = quiet
 
@@ -480,10 +499,10 @@ class SkaffConfig:
             return
 
         if not isinstance(subdirectories, collections.Iterable):
-            raise ValueError("'subdirectories' argument must be iterable")
+            raise TypeError("'subdirectories' argument must be iterable")
 
         if isinstance(subdirectories, str):
-            raise ValueError(("'subdirectories' argument must be an iterable "
+            raise TypeError(("'subdirectories' argument must be an iterable "
                              "containing 'str' type"))
 
         if 0 == len(subdirectories):
@@ -501,7 +520,7 @@ class SkaffConfig:
         Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(subdirectory, str):
-            raise ValueError("'subdirectory' argument must be 'str' type")
+            raise TypeError("'subdirectory' argument must be 'str' type")
 
         if 0 == len(subdirectory):
             raise ValueError("'subdirectory' argument must not be empty")
@@ -522,7 +541,7 @@ class SkaffConfig:
         Platform-dependent path separator will be appended if missing.
         """
         if not isinstance(subdirectory, str):
-            raise ValueError("'subdirectory' argument must be 'str' type")
+            raise TypeError("'subdirectory' argument must be 'str' type")
 
         if 0 == len(subdirectory):
             raise ValueError("'subdirectory' argument must not be empty")
