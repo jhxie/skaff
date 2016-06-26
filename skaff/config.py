@@ -7,6 +7,7 @@ Custom configuration type definition used for the 'core' skaff module.
 # --------------------------------- MODULES -----------------------------------
 import collections
 import copy
+import glob
 import os
 import pwd
 # --------------------------------- MODULES -----------------------------------
@@ -378,38 +379,61 @@ class SkaffConfig:
     def licenses_probe(self):
         """
         TODO:
-        0. Adds a new per-isinstance argument 'licenses'
-        1. Checks whether all licenses specified in default '__LICENSES' exist
+        1. Adds a new per-isinstance argument 'licenses'
         2. Adds new licenses by users of this program to '__LICENSES'
         """
         # Reset the internal licenses database
         self.__config["licenses"] = set()
+        user_license_path = self.paths_get("license")
+        # Temporary dictionary used for comparison between licenses
+        # named with ".txt" and ".md" extension
+        temp_license_dict = {R".txt": set(), R".md": set()}
+
+        self.__config["licenses"] |= SkaffConfig.__LICENSES
+
+        if not os.path.isdir(user_license_path):
+            return
+
+        for file_ext in temp_license_dict.keys():
+            for user_license in glob.iglob(user_license_path + "*" + file_ext):
+                cut_index = user_license.rfind(file_ext)
+                user_license = user_license[:cut_index]
+                temp_license_dict[file_ext].add(os.path.basename(user_license))
+
+        if temp_license_dict[R".txt"] != temp_license_dict[R".md"]:
+            raise FileNotFoundError()
+        # rootDir = '.'
+        # for dirName, subdirList, fileList in os.walk(rootDir):
+        #     print('Found directory: %s' % dirName)
+        #     for fname in fileList:
+        #         print('\t%s' % fname)
+
+    def licenses_validate(self):
+        """
+        Validates all the stock licenses distributed along with the 'skaff'
+        program.
+        By default they reside under license subdirectory of 'system' config
+        path, which is not modifiable (see docstring of 'paths_set'):
+        "/usr/lib/python3/dist-packages/skaff/config/license/"
+        """
         # The 'system' paths are hard-coded and cannot be changed freely;
         # in contrast to the 'user' paths set through the 'paths_set'
         # mutator member function interface
-        system_config_path = SkaffConfig.basepath_fetch() + os.sep +\
-            "config" + os.sep
+        system_config_path = (SkaffConfig.basepath_fetch() + os.sep +
+                              "config" + os.sep)
         system_license_path = system_config_path + "license" + os.sep
-        system_template_path = system_config_path + "template" + os.sep
+        # system_template_path = system_config_path + "template" + os.sep
+        file_extensions = (".txt", ".md")
 
         for system_path in (system_config_path, system_license_path):
             if not os.path.isdir(system_path):
                 raise FileNotFoundError()
 
         for license in SkaffConfig.__LICENSES:
-            license_text = system_license_path + license + ".txt"
-            license_markdown = system_license_path + license + ".md"
-            if not os.path.isfile(license_text):
-                raise FileNotFoundError()
-            if not os.path.isfile(license_markdown):
-                raise FileNotFoundError()
-
-        self.__config["licenses"] |= SkaffConfig.__LICENSES
-        # rootDir = '.'
-        # for dirName, subdirList, fileList in os.walk(rootDir):
-        #     print('Found directory: %s' % dirName)
-        #     for fname in fileList:
-        #         print('\t%s' % fname)
+            for file_ext in file_extensions:
+                license_file = system_license_path + license + file_ext
+                if not os.path.isfile(license_file):
+                    raise FileNotFoundError()
 
     def paths_set(self, **kwargs):
         """

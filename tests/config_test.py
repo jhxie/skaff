@@ -291,6 +291,9 @@ class TestConfig(unittest.TestCase):
     def test_licenses_probe(self):
         self.config.licenses_probe()
 
+    def test_licenses_validate(self):
+        pass
+
     def test_paths_set(self):
         keys = ("config", "license", "template")
         random_key = "random"
