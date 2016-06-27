@@ -26,6 +26,16 @@ class SkaffConfig:
     # Similarly, 'authors', 'language', 'license', and 'quiet' are associated
     # with a list of 'directories'.
     #
+    # NOTE: 'languages' and 'licenses' attributes may be dropped without
+    # actually affecting the behavior of this class since mutators for both
+    # singular versions ('language_set' and 'license_set') automatically call
+    # 'languages_probe' and 'licenses_probe' respectively to enforce the
+    # dependency.
+    # However, for verbosity and most importantly completeness they are listed
+    # here as well: the only drawback I can think of is TWO MORE REDUNDANT
+    # calls at object construction time.
+    #
+    #
     # A dependency graph for the first relation stated above is:
     #
     #                                +-----+
@@ -336,17 +346,22 @@ class SkaffConfig:
 
     def languages_probe(self):
         """
+        This member function is called by the constructor by default.
         """
         pass
 
     def license_set(self, license=None):
         """
-        Sets the type of license.
+        Sets the type of license used.
         Defaults to 'bsd2' license if left as empty or 'None'.
         This member function is called by the constructor by default.
 
         'license' argument must be the ones listed in 'licenses_list'.
         """
+        # Ensure all the stock licenses do indeed exist
+        self.licenses_validate()
+        # Also probes the user path for possible custom licenses
+        self.licenses_probe()
         licenses = self.licenses_list()
 
         if None == license:
@@ -361,26 +376,31 @@ class SkaffConfig:
 
     def license_get(self):
         """
-        Gets the type of license.
+        Gets the type of license used.
         """
         return self.__config["license"]
 
-    @staticmethod
-    def licenses_list():
+    def licenses_list(self):
         """
         Gets a generator containing the supported licenses.
 
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
-        licenses = sorted(SkaffConfig.__LICENSES)
+        licenses = sorted(self.__config["licenses"])
         yield from (license for license in licenses)
 
     def licenses_probe(self):
         """
-        TODO:
-        1. Adds a new per-isinstance argument 'licenses'
-        2. Adds new licenses by users of this program to '__LICENSES'
+        Probes the 'license' path set by the 'paths_set' member function for
+        new licenses and add them to the internal 'database' to be returned
+        by 'licenses_list' member function.
+
+        NOTE: normally this member function does not need to be called manually
+        (if some new license files get copied to the 'license' path, for
+        example) since 'license_set' automatically calls this member function;
+        unless you just want to add those custom licenses to the internal
+        'database' WITHOUT switching the CURRENT license selected.
         """
         # Reset the internal licenses database
         self.__config["licenses"] = set()
@@ -396,12 +416,19 @@ class SkaffConfig:
 
         for file_ext in temp_license_dict.keys():
             for user_license in glob.iglob(user_license_path + "*" + file_ext):
+                # Remove the file extension and path
                 cut_index = user_license.rfind(file_ext)
                 user_license = user_license[:cut_index]
                 temp_license_dict[file_ext].add(os.path.basename(user_license))
 
         if temp_license_dict[R".txt"] != temp_license_dict[R".md"]:
-            raise FileNotFoundError()
+            raise FileNotFoundError(("The number of license files end with "
+                                     "those file extensions must equal; "
+                                     "there must be a file with same name for "
+                                     "each of the following file extension: "
+                                     ", ".join(temp_license_dict.keys())))
+
+        self.__config["licenses"] |= temp_license_dict[R".txt"]
         # rootDir = '.'
         # for dirName, subdirList, fileList in os.walk(rootDir):
         #     print('Found directory: %s' % dirName)
@@ -411,7 +438,7 @@ class SkaffConfig:
     def licenses_validate(self):
         """
         Validates all the stock licenses distributed along with the 'skaff'
-        program.
+        program (does not change any internal states).
         By default they reside under license subdirectory of 'system' config
         path, which is not modifiable (see docstring of 'paths_set'):
         "/usr/lib/python3/dist-packages/skaff/config/license/"
@@ -427,13 +454,16 @@ class SkaffConfig:
 
         for system_path in (system_config_path, system_license_path):
             if not os.path.isdir(system_path):
-                raise FileNotFoundError()
+                raise FileNotFoundError("The system path: '{}' does not exist"
+                                        .format(system_path))
 
         for license in SkaffConfig.__LICENSES:
             for file_ext in file_extensions:
                 license_file = system_license_path + license + file_ext
                 if not os.path.isfile(license_file):
-                    raise FileNotFoundError()
+                    raise FileNotFoundError(("The stock version of license "
+                                             "file: '{}' does not exist"
+                                             .format(license_file)))
 
     def paths_set(self, **kwargs):
         """
