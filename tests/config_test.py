@@ -289,9 +289,74 @@ class TestConfig(unittest.TestCase):
             self.assertEqual(license, self.config.license_get())
 
     def test_licenses_probe(self):
+        zlib_text = (
+            "This software is provided 'as-is', without any express\n"
+            "or implied warranty. In no event will the authors be held\n"
+            "liable for any damages arising from the use of this software.\n\n"
+            "Permission is granted to anyone to use this software for any\n"
+            "purpose, including commercial applications, and to alter it and\n"
+            "redistribute it freely, subject to the following "
+            "restrictions:\n\n"
+            "1. The origin of this software must not be misrepresented;\n"
+            "you must not claim that you wrote the original software.\n"
+            "If you use this software in a product, an acknowledgement\n"
+            "in the product documentation would be appreciated but is not "
+            "required.\n"
+            "2. Altered source versions must be plainly marked as such,\n"
+            "and must not be misrepresented as being the original software.\n"
+            "3. This notice may not be removed or altered from any source\n"
+            "distribution.\n")
+        zlib_markdown = (
+            "Licensed under the Zlib License.  \n"
+            "Distributed under the Zlib License.  \n\n")
+        zlib_text_name = self.tmp_dir.name + "zlib.txt"
+        zlib_markdown_name = self.tmp_dir.name + "zlib.md"
+
+        # Sets the 'user' 'license' path to the temporary directory
+        # so all the licenses created in this test case would be
+        # automatically removed upon completion (by the 'tearDown')
+        self.config.paths_set(license=self.tmp_dir.name)
+
+        # License-text only test: fail because the lack of corresponding
+        # markdown file
+        with open(zlib_text_name, "w") as license_text:
+            license_text.write(zlib_text)
+
+        with self.assertRaises(FileNotFoundError):
+            self.config.licenses_probe()
+
+        os.remove(zlib_text_name)
+
+        # License-markdown only test: fail because the lack of corresponding
+        # text file
+        with open(zlib_markdown_name, "w") as license_markdown:
+            license_markdown.write(zlib_markdown)
+
+        with self.assertRaises(FileNotFoundError):
+            self.config.licenses_probe()
+
+        os.remove(zlib_markdown_name)
+
+        # Success since there is no new custom license
         self.config.licenses_probe()
 
+        # Success due to the existence of both text and markdown format
+        # of the given license
+        with open(zlib_text_name, "w") as license_text:
+            license_text.write(zlib_text)
+
+        with open(zlib_markdown_name, "w") as license_markdown:
+            license_markdown.write(zlib_markdown)
+
+        self.config.licenses_probe()
+        self.assertIn("zlib", self.config.licenses_list())
+
     def test_licenses_validate(self):
+        # Cannot be tested since the 'system' license path is hardcoded
+        # and within this test suite assumption like
+        # "the full skaff program is installed properly in the system"
+        # cannot be made: the test suite may be launched prior to the
+        # installation of the "skaff" program, if at all.
         pass
 
     def test_paths_set(self):

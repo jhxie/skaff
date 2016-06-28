@@ -234,6 +234,13 @@ class SkaffConfig:
         """
         return os.path.dirname(os.path.abspath(__file__))
 
+    def create(self, overwrite=True, *args):
+        """
+        """
+        # Ensure all the stock licenses do indeed exist
+        # self.licenses_validate()
+        pass
+
     def directories_set(self, directories=None):
         """
         Sets the name(s) of the outputting project-directory(ies).
@@ -358,8 +365,6 @@ class SkaffConfig:
 
         'license' argument must be the ones listed in 'licenses_list'.
         """
-        # Ensure all the stock licenses do indeed exist
-        self.licenses_validate()
         # Also probes the user path for possible custom licenses
         self.licenses_probe()
         licenses = self.licenses_list()
