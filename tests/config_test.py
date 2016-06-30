@@ -288,6 +288,70 @@ class TestConfig(unittest.TestCase):
             self.config.license_set(license)
             self.assertEqual(license, self.config.license_get())
 
+    def test_licenses_list(self):
+        licenses = set(self.config.licenses_list(fullname=False))
+        qualified_licenses = set(self.config.licenses_list(fullname=True))
+        result_licenses = set()
+        bsd2_text = ("Random Empty Replacement Text")
+        bsd2_markdown = (
+            "Licensed under the BSD 2 Clause License.  \n"
+            "Distributed under the BSD 2 Clause License.  \n\n")
+        bsd2_text_name = self.tmp_dir.name + "bsd2.txt"
+        bsd2_markdown_name = self.tmp_dir.name + "bsd2.md"
+        system_config_path = (SkaffConfig.basepath_fetch() + os.sep +
+                              "config" + os.sep)
+        system_license_path = system_config_path + "license" + os.sep
+
+        # Similar to what is done in 'test_licenses_probe',
+        # sets the 'user' 'license' path to the temporary directory
+        # so all the licenses created in this test case would be
+        # automatically removed upon completion (by the 'tearDown')
+        self.config.paths_set(license=self.tmp_dir.name)
+
+        # The number of qualified version of license
+        # (licenses with fully qualified path and extension) is equal to
+        # the number of file exntension supported per license * actual number
+        # of licenses supported
+        # For example, for the current version 1.0, the supported file formats
+        # for each license are ".txt" and ".md" (refer to the __LICNESE_FORMAT
+        # private class attribute for details), if the fully qualified version
+        # of filenames are needed, then for each file both ".txt" version of
+        # the license and ".md" version of the license will be returned.
+        #
+        # Therefore the length of the 'qualified_licenses' is equal to the
+        # number of file formats for each license (".txt", ".md") times the
+        # actual number of license ('licenses' variable here).
+        self.assertEqual(len(licenses) * 2, len(qualified_licenses))
+
+        # Success if the fully qualified version of the licenses are equivalent
+        # to the originals after removing path and extension.
+        for license in qualified_licenses:
+            for func in (os.path.basename, os.path.splitext, lambda x: x[0]):
+                license = func(license)
+            result_licenses.add(license)
+
+        self.assertEqual(licenses, result_licenses)
+
+        # Both text and markdown format of the overriden license need to
+        # present; otherwise 'licenses_probe' will fail
+        with open(bsd2_text_name, "w") as license_text:
+            license_text.write(bsd2_text)
+
+        with open(bsd2_markdown_name, "w") as license_markdown:
+            license_markdown.write(bsd2_markdown)
+
+        # Success if both overridden license formats are present in the
+        # fully-qualified result; the stock version of 'bsd2' licenses
+        # in the 'system' path should not appear in the listing.
+        self.config.licenses_probe()
+        overridden_licenses = set(self.config.licenses_list(fullname=True))
+        self.assertIn(bsd2_text_name, overridden_licenses)
+        self.assertIn(bsd2_markdown_name, overridden_licenses)
+        self.assertNotIn(system_license_path + "bsd2.txt", overridden_licenses)
+        self.assertNotIn(system_license_path + "bsd2.md", overridden_licenses)
+        os.remove(bsd2_text_name)
+        os.remove(bsd2_markdown_name)
+
     def test_licenses_probe(self):
         zlib_text = (
             "This software is provided 'as-is', without any express\n"
@@ -350,6 +414,8 @@ class TestConfig(unittest.TestCase):
 
         self.config.licenses_probe()
         self.assertIn("zlib", self.config.licenses_list())
+        os.remove(zlib_text_name)
+        os.remove(zlib_markdown_name)
 
     def test_licenses_validate(self):
         # Cannot be tested since the 'system' license path is hardcoded

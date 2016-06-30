@@ -10,6 +10,9 @@ import copy
 import glob
 import os
 import pwd
+import shutil
+
+from datetime import datetime
 # --------------------------------- MODULES -----------------------------------
 
 
@@ -63,6 +66,7 @@ class SkaffConfig:
                     "directories",
                     "authors", "language", "license", "quiet")
     __LANGUAGES = frozenset(("c", "cpp"))
+    __LICENSE_FORMAT = (".txt", ".md")
     __LICENSES = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
     def __init__(self, directories, **kwargs):
@@ -234,10 +238,35 @@ class SkaffConfig:
         """
         return os.path.dirname(os.path.abspath(__file__))
 
-    def create(self, validate=True, *args):
+    def create(self, *args):
         """
+        Supported arguments:
+
+        'tree':
+        'license':
+        'template':
         """
-        pass
+        # An 'OrderedDict' is required for the default case:
+        # the 'tree' made of 'directories' and 'subdirectories' need to be
+        # created before the selected license and template files
+        options = ("tree", "license", "template")
+        methods = (None, None, None)
+        dispatch_table = collections.OrderedDict(zip(options, methods))
+
+        if not all(isinstance(arg, str) for arg in args):
+            raise TypeError("'args' must contain 'str' types")
+
+        if not all(arg in options for arg in args):
+            raise ValueError(("'args' must be selected from: "
+                              ", ".join(options)))
+
+        # Make 'args' variable "point to" the tuple object 'options' variable
+        # "points to" if 'args' is left as empty
+        if 0 == len(args):
+            args = options
+
+        for arg in args:
+            dispatch_table[arg]()
 
     def directories_set(self, directories=None):
         """
@@ -385,15 +414,59 @@ class SkaffConfig:
         """
         return self.__config["license"]
 
-    def licenses_list(self):
+    def licenses_list(self, fullname=False):
         """
-        Gets a generator containing the supported licenses.
+        Gets a generator containing the supported licenses with or without
+        paths and file exntensions, depending on whether 'fullname' is enabled.
+        For new licenses added in the license path (refer to docstrings for
+        'paths_set' mutator member function for details), remember to call
+        'licenses_probe' mutator member function to actually add them to the
+        internal database; otherwise they would not be listed.
+
+        NOTE: For overridden licenses (licenses with the same name as the
+        stock licenses but appear in the license path set by 'license_set'),
+        this generator will only reflect the difference when 'fullname'
+        argument is switched to 'True'.
+        For exmaple, with license path set to
+        "/home/$USER/.config/skaff/config/license/"
+        and a custom 'bsd2' license is set up as:
+        "/home/$USER/.config/skaff/config/license/bsd2.txt"
+        "/home/$USER/.config/skaff/config/license/bsd2.md"
+        then a licenses_list() invocation would only produce the SAME DEFAULT
+        result as shown at the BOTTOM; only licenses_list(True) will generate
+        fully qualified results like:
+        "/home/$USER/.config/skaff/config/license/bsd2.txt"
+        "/home/$USER/.config/skaff/config/license/bsd2.md"
+        (Note the rest default stock licenses are left untouched;
+        the stock bsd2 license in the system path would not be shown
+        since it is overridden)
+        "/usr/lib/python3/dist-packages/skaff/config/license/bsd3.txt"
+        "/usr/lib/python3/dist-packages/skaff/config/license/bsd3.md"
+        ...
 
         By default they are the following:
         {"bsd2", "bsd3", "gpl2", "gpl3", "mit"}.
         """
         licenses = sorted(self.__config["licenses"])
-        yield from (license for license in licenses)
+        user_license_path = self.paths_get("license")
+        system_license_path = (SkaffConfig.basepath_fetch() + os.sep +
+                               "config" + os.sep + "license" + os.sep)
+
+        if not fullname:
+            yield from (license for license in licenses)
+        else:
+            for license in licenses:
+                for ext in SkaffConfig.__LICENSE_FORMAT:
+                    user_license_file_name = user_license_path + license + ext
+                    sys_license_file_name = system_license_path + license + ext
+                    if os.path.isfile(user_license_file_name):
+                        yield user_license_file_name
+                    elif os.path.isfile(sys_license_file_name):
+                        yield sys_license_file_name
+                    else:
+                        raise FileNotFoundError(("The corresponding files for "
+                                                 "'{}' license is not found"
+                                                 .format(license)))
 
     def licenses_probe(self):
         """
@@ -408,13 +481,12 @@ class SkaffConfig:
         'database' WITHOUT switching the CURRENT license selected.
         """
         # Reset the internal licenses database
-        self.__config["licenses"] = set()
+        self.__config["licenses"] = set(SkaffConfig.__LICENSES)
         user_license_path = self.paths_get("license")
         # Temporary dictionary used for comparison between licenses
         # named with ".txt" and ".md" extension
-        temp_license_dict = {R".txt": set(), R".md": set()}
-
-        self.__config["licenses"] |= SkaffConfig.__LICENSES
+        license_extensions = SkaffConfig.__LICENSE_FORMAT
+        temp_license_dict = {key: set() for key in license_extensions}
 
         if not os.path.isdir(user_license_path):
             return
@@ -426,14 +498,14 @@ class SkaffConfig:
                 user_license = user_license[:cut_index]
                 temp_license_dict[file_ext].add(os.path.basename(user_license))
 
-        if temp_license_dict[R".txt"] != temp_license_dict[R".md"]:
+        if temp_license_dict[".txt"] != temp_license_dict[".md"]:
             raise FileNotFoundError(("The number of license files end with "
                                      "those file extensions must equal; "
                                      "there must be a file with same name for "
                                      "each of the following file extension: "
                                      ", ".join(temp_license_dict.keys())))
 
-        self.__config["licenses"] |= temp_license_dict[R".txt"]
+        self.__config["licenses"] |= temp_license_dict[".txt"]
         # rootDir = '.'
         # for dirName, subdirList, fileList in os.walk(rootDir):
         #     print('Found directory: %s' % dirName)
@@ -665,6 +737,38 @@ class SkaffConfig:
         """
         subdirectories = sorted(self.__config["subdirectories"])
         yield from (subdirectory for subdirectory in subdirectories)
+
+    def _license_sign(self, directory, config):
+        """
+        Copies the license chosen by authors to the 'directory', signs it
+        with authors and current year prepended if applicable; 'directory' must
+        already exist.
+
+        Note only licenses in {"bsd2", "bsd3", "mit"} will be signed by names
+        in authors.
+        """
+        copyright_line = "Copyright (c) {year}, {authors}\n".format(
+            year=datetime.now().year,
+            authors=", ".join(self.authors_get())
+        )
+        # Note "figuring out where the source license resides" may belong to
+        # the responsibility of 'SkaffConfig' class; this responsibiltiy will
+        # be moved to 'SkaffConfig' after "json-parsing" functionality is
+        # implemented.
+        license_source = SkaffConfig.basepath_fetch() + os.sep +\
+            "config" + os.sep +\
+            "license" + os.sep +\
+            config.license_get() + ".txt"
+        license_target = directory + "LICENSE.txt"
+
+        if config.license_get() in frozenset(("bsd2", "bsd3", "mit")):
+            with open(license_source, "r") as from_file:
+                vanilla_license_text = from_file.read()
+                with open(license_target, "w") as to_file:
+                    to_file.write(copyright_line)
+                    to_file.write(vanilla_license_text)
+        else:
+            shutil.copy(license_source, license_target)
 
     def _load(self, *args):
         """

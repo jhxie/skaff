@@ -9,7 +9,7 @@ Main module of skaff.
 # http://ranger.nongnu.org/
 __author__ = "Jiahui Xie"
 __email__ = "jiahui.xie@outlook.com"
-__license__ = "BSD"
+__license__ = "BSD2"
 __maintainer__ = __author__
 __version__ = "1.0"
 # ------------------------------- MODULE INFO ---------------------------------

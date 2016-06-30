@@ -63,7 +63,6 @@ def main():
                         help="print version of skaff and exit")
 
     args = parser.parse_args()
-    config = None
 
     # Processing all the "non-private" attributes of args and store them into
     # the 'skaff_cli_dict' dictionary to be passed as arguments
