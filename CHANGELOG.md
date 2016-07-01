@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.0 (Upcoming)
 * Add **json-parsing** functionality for saving/restoring configurations
 * Add sample header file (under *src* subdirectory) generation functionality
+* Add support for **user-defined** programming languages, subdirectories,
+licenses, and templates.
 * Allow specifying *more than one* author(s) for any project
 * Finalize a stable API for *core* module based on *SkaffConfig* class
 * Set up a dedicated website hosted by *GitHubPages* based on existing template

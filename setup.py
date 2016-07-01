@@ -20,6 +20,8 @@ def main():
     skaff_description = "A CMake-Based Project Scaffolding Tool"
     skaff_long_description = "Simple program that generates " +\
         "language specific (c/c++) cmake based project templates"
+    flags = ("--dry-run", "-n", "--help")
+    manual_conditions = (flag not in sys.argv for flag in flags)
 
     # This script and MANIFEST.in file are based on the guide at
     # https://pythonhosted.org/setuptools/setuptools.html
@@ -61,8 +63,10 @@ def main():
                   "skaff/config/template/travis.yml",
                   "skaff/config/template/c/*.txt",
                   "skaff/config/template/c/src/*",
+                  "skaff/config/template/c/include/*",
                   "skaff/config/template/cpp/*.txt",
                   "skaff/config/template/cpp/src/*",
+                  "skaff/config/template/cpp/include/*",
                   "skaff/config/license/*.md",
                   "skaff/config/license/*.txt"]
           },
@@ -76,7 +80,7 @@ def main():
 
     # Note the following would not be properly executed
     # if permission is not satisfied
-    if "install" in sys.argv:
+    if "install" in sys.argv and all(manual_conditions):
         manual_install()
 
 
@@ -116,6 +120,9 @@ def manual_install():
     # Finally rebuild the manpage database
     os.system("mandb")
 
+    if "--record" in sys.argv:
+        with open(sys.argv[sys.argv.index("--record") + 1], "a") as output:
+            output.write(skaff_man_target + "\n")
 
 if __name__ == "__main__":
     main()

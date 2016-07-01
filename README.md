@@ -71,13 +71,18 @@ sudo dnf install python3-setuptools
 Then simply change directory to where the un-compressed source directory
 resides and install by:
 ```bash
-python3 ./setup.py clean build
-sudo python3 ./setup.py install
+sudo python3 ./setup.py install --optimize 1 --record install_log.txt
 ```
 
 To run the bundled unit test suite:
-```
+```bash
 python3 ./setup.py test
+```
+
+To uninstall the *skaff* program along with its data and manual page:
+```bash
+cat install_log.txt | sudo xargs rm -rf
+sudo mandb
 ```
 
 ## Supported Platforms
