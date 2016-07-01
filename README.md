@@ -53,8 +53,10 @@ there is no *binary* (or *compiled-bytecode,* if you prefer) package available.
 
 Once downloaded, make sure the version of python is **at least 3.3**:
 ```bash
-python3 --version
+which python3 && python3 --version
 ```
+
+-------------------------------------------------------------------------------
 
 And also remember to have **python3-setuptools** installed:
 
@@ -68,6 +70,17 @@ sudo apt-get install python3-setuptools
 sudo dnf install python3-setuptools
 ```
 
+**FreeBSD** (10.3 and later)  
+The *pkg* package manager requires a *specific* version number; unlike the two
+linux distributions listed above, so either install a version that supports
+python version above **3.3** or use the following command to install the most
+recent version:
+```bash
+sudo pkg install `pkg search setuptools | grep 'Python packages installer' | sort | awk 'END{print $1}'`
+```
+
+-------------------------------------------------------------------------------
+
 Then simply change directory to where the un-compressed source directory
 resides and install by:
 ```bash
@@ -79,7 +92,7 @@ To run the bundled unit test suite:
 python3 ./setup.py test
 ```
 
-To uninstall the *skaff* program along with its data and manual page:
+To uninstall the *skaff* program along with its data and manual pages:
 ```bash
 cat install_log.txt | sudo xargs rm -rf
 sudo mandb
