@@ -193,7 +193,7 @@ def _conf_spawn(directory, config):
     language = config.language_get()
     quiet = config.quiet_get()
     cmake_file = "CMakeLists.txt"
-    cmake_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
+    cmake_source_prefix = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "template" + os.sep +\
         language + os.sep
@@ -211,7 +211,7 @@ def _conf_spawn(directory, config):
     # responsibility of 'SkaffConfig' class; this responsibiltiy will be
     # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
     conf_files = ("editorconfig", "gdbinit", "gitattributes", "gitignore")
-    conf_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
+    conf_source_prefix = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "template" + os.sep
     conf_target_prefix = directory + "."
@@ -257,7 +257,7 @@ def _doc_create(directory, config):
         year=datetime.now().year,
         authors=", ".join(config.authors_get())
     )
-    license_text = SkaffConfig.basepath_fetch() + os.sep +\
+    license_text = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "license" + os.sep +\
         config.license_get() + ".md"
@@ -340,7 +340,7 @@ def _doxyfile_generate(directory, config):
     _arguments_check(directory, config)
 
     doxyfile = "Doxyfile"
-    doxyfile_source_prefix = SkaffConfig.basepath_fetch() + os.sep +\
+    doxyfile_source_prefix = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "template" + os.sep
     doxyfile_target_prefix = directory
@@ -386,7 +386,7 @@ def _license_sign(directory, config):
     # Note "figuring out where the source license resides" may belong to the
     # responsibility of 'SkaffConfig' class; this responsibiltiy will be
     # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
-    license_source = SkaffConfig.basepath_fetch() + os.sep +\
+    license_source = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "license" + os.sep +\
         config.license_get() + ".txt"

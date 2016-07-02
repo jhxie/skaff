@@ -76,7 +76,7 @@ linux distributions listed above, so either install a version that supports
 python version above **3.3** or use the following command to install the most
 recent version:
 ```bash
-sudo pkg install `pkg search setuptools | grep 'Python packages installer' | sort | awk 'END{print $1}'`
+sudo pkg install `pkg search -ce 'Python packages installer' | sort | awk 'END{print $1}'`
 ```
 
 -------------------------------------------------------------------------------

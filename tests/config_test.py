@@ -283,10 +283,53 @@ class TestConfig(unittest.TestCase):
             self.config.license_set(license)
 
     def test_license_get(self):
+        bsd2_text = ("Random Empty Replacement Text")
+        bsd2_markdown = (
+            "Licensed under the BSD 2 Clause License.  \n"
+            "Distributed under the BSD 2 Clause License.  \n\n")
+        bsd2_text_name = self.tmp_dir.name + "bsd2.txt"
+        bsd2_markdown_name = self.tmp_dir.name + "bsd2.md"
+        normalize_funcs = (os.path.basename, os.path.splitext, lambda x: x[0])
+        system_licenses = None
+        user_licenses = None
+
         # Every license specified in the listing should work.
         for license in self.config.licenses_list():
             self.config.license_set(license)
             self.assertEqual(license, self.config.license_get())
+
+        # The following tests abide by the similar test patern used in
+        # 'test_license_list'; but slightly simpler.
+        # Revert to the default license
+        self.config.license_set()
+        system_licenses = self.config.license_get(fullname=True)
+
+        with open(bsd2_text_name, "w") as license_text:
+            license_text.write(bsd2_text)
+
+        with open(bsd2_markdown_name, "w") as license_markdown:
+            license_markdown.write(bsd2_markdown)
+
+        # Add the overriden 'bsd2' license to the internal database
+        self.config.paths_set(license=self.tmp_dir.name)
+        self.config.licenses_probe()
+        user_licenses = self.config.license_get(fullname=True)
+
+        # Success if two versions of qualified licenses differ;
+        # should be the case if 'bsd2' license is successfully overriden
+        self.assertNotEqual(system_licenses, user_licenses)
+
+        # Success if the fully qualified version of the licenses are equivalent
+        # to each other after removing paths and file extensions
+        for licenses in (system_licenses, user_licenses):
+            for index, license in enumerate(licenses):
+                for func in normalize_funcs:
+                    licenses[index] = func(license)
+
+        self.assertEqual(system_licenses, user_licenses)
+
+        os.remove(bsd2_text_name)
+        os.remove(bsd2_markdown_name)
 
     def test_licenses_list(self):
         licenses = set(self.config.licenses_list(fullname=False))
@@ -298,8 +341,7 @@ class TestConfig(unittest.TestCase):
             "Distributed under the BSD 2 Clause License.  \n\n")
         bsd2_text_name = self.tmp_dir.name + "bsd2.txt"
         bsd2_markdown_name = self.tmp_dir.name + "bsd2.md"
-        system_config_path = (SkaffConfig.basepath_fetch() + os.sep +
-                              "config" + os.sep)
+        system_config_path = (SkaffConfig.basepath_fetch() + "config" + os.sep)
         system_license_path = system_config_path + "license" + os.sep
 
         # Similar to what is done in 'test_licenses_probe',
@@ -313,7 +355,7 @@ class TestConfig(unittest.TestCase):
         # the number of file exntension supported per license * actual number
         # of licenses supported
         # For example, for the current version 1.0, the supported file formats
-        # for each license are ".txt" and ".md" (refer to the __LICNESE_FORMAT
+        # for each license are ".txt" and ".md" (refer to the __LICNESE_FORMATS
         # private class attribute for details), if the fully qualified version
         # of filenames are needed, then for each file both ".txt" version of
         # the license and ".md" version of the license will be returned.

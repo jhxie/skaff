@@ -29,13 +29,13 @@ class SkaffConfig:
     # Similarly, 'authors', 'language', 'license', and 'quiet' are associated
     # with a list of 'directories'.
     #
-    # NOTE: 'languages' and 'licenses' attributes may be dropped without
-    # actually affecting the behavior of this class since mutators for both
-    # singular versions ('language_set' and 'license_set') automatically call
-    # 'languages_probe' and 'licenses_probe' respectively to enforce the
-    # dependency.
+    # NOTE: 'languages', 'licenses', and 'templates' attributes may be dropped
+    # without actually affecting the behavior of this class since mutators for
+    # all three ('language_set', 'license_set', 'templates_set') automatically
+    # call 'languages_probe' and 'licenses_probe' 'templates_probe'
+    # respectively to enforce the dependency.
     # However, for verbosity and most importantly completeness they are listed
-    # here as well: the only drawback I can think of is TWO MORE REDUNDANT
+    # here as well: the only drawback I can think of is THREE MORE REDUNDANT
     # calls at object construction time.
     #
     #
@@ -49,6 +49,11 @@ class SkaffConfig:
     #                    +---------+--------+--------------+
     #                    |languages|licenses|subdirectories|
     #                    +---------+--------+--------------+
+    #                         ^                    ^
+    #                         |                    |
+    #                         +--------------------+
+    #                         |     templates      |
+    #                         +--------------------+
     #
     # A dependency graph for the second is:
     #
@@ -66,7 +71,7 @@ class SkaffConfig:
                     "directories",
                     "authors", "language", "license", "quiet")
     __LANGUAGES = frozenset(("c", "cpp"))
-    __LICENSE_FORMAT = (".txt", ".md")
+    __LICENSE_FORMATS = frozenset((".txt", ".md"))
     __LICENSES = frozenset(("bsd2", "bsd3", "gpl2", "gpl3", "mit"))
 
     def __init__(self, directories, **kwargs):
@@ -234,9 +239,9 @@ class SkaffConfig:
         Returns the base directory name containing the skaff 'config' module.
 
         The extra 'os.path.abspath' invocation is to suppress relative path
-        output; result does not include any trailing path separator.
+        output; result includes a trailing path separator.
         """
-        return os.path.dirname(os.path.abspath(__file__))
+        return os.path.dirname(os.path.abspath(__file__)) + os.sep
 
     def create(self, *args):
         """
@@ -251,7 +256,7 @@ class SkaffConfig:
         # created before the selected license and template files
         options = ("tree", "license", "template")
         methods = (None, None, None)
-        dispatch_table = collections.OrderedDict(zip(options, methods))
+        actions = collections.OrderedDict(zip(options, methods))
 
         if not all(isinstance(arg, str) for arg in args):
             raise TypeError("'args' must contain 'str' types")
@@ -266,7 +271,7 @@ class SkaffConfig:
             args = options
 
         for arg in args:
-            dispatch_table[arg]()
+            actions[arg]()
 
     def directories_set(self, directories=None):
         """
@@ -408,11 +413,38 @@ class SkaffConfig:
 
         self.__config["license"] = license
 
-    def license_get(self):
+    def license_get(self, fullname=False):
         """
-        Gets the type of license used.
+        Gets the type of license used if 'fullname' argument is set to 'False';
+        otherwise gets a list containing current selected license with fully
+        qualified paths and file extensions attached.
+
+        NOTE: The paths and file extensions associated with the current license
+        are governed by the rules specified in the docstrings of 'paths_set'
+        and 'licenses_list'.
         """
-        return self.__config["license"]
+        user_license_path = self.paths_get("license")
+        system_license_path = (SkaffConfig.basepath_fetch() +
+                               "config" + os.sep + "license" + os.sep)
+        license_results = list()
+
+        if not fullname:
+            return self.__config["license"]
+
+        for extension in SkaffConfig.__LICENSE_FORMATS:
+            user_license_file_name = (user_license_path +
+                                      self.__config["license"] + extension)
+            sys_license_file_name = (system_license_path +
+                                     self.__config["license"] + extension)
+            if os.path.isfile(user_license_file_name):
+                license_results.append(user_license_file_name)
+            elif os.path.isfile(sys_license_file_name):
+                license_results.append(sys_license_file_name)
+            else:
+                raise FileNotFoundError(("License file '{}' not found".format(
+                    self.__config["license"])))
+
+        return license_results
 
     def licenses_list(self, fullname=False):
         """
@@ -428,20 +460,31 @@ class SkaffConfig:
         this generator will only reflect the difference when 'fullname'
         argument is switched to 'True'.
         For exmaple, with license path set to
+
         "/home/$USER/.config/skaff/config/license/"
+
         and a custom 'bsd2' license is set up as:
+
         "/home/$USER/.config/skaff/config/license/bsd2.txt"
+
         "/home/$USER/.config/skaff/config/license/bsd2.md"
+
         then a licenses_list() invocation would only produce the SAME DEFAULT
         result as shown at the BOTTOM; only licenses_list(True) will generate
         fully qualified results like:
+
         "/home/$USER/.config/skaff/config/license/bsd2.txt"
+
         "/home/$USER/.config/skaff/config/license/bsd2.md"
+
         (Note the rest default stock licenses are left untouched;
         the stock bsd2 license in the system path would not be shown
         since it is overridden)
+
         "/usr/lib/python3/dist-packages/skaff/config/license/bsd3.txt"
+
         "/usr/lib/python3/dist-packages/skaff/config/license/bsd3.md"
+
         ...
 
         By default they are the following:
@@ -449,14 +492,14 @@ class SkaffConfig:
         """
         licenses = sorted(self.__config["licenses"])
         user_license_path = self.paths_get("license")
-        system_license_path = (SkaffConfig.basepath_fetch() + os.sep +
+        system_license_path = (SkaffConfig.basepath_fetch() +
                                "config" + os.sep + "license" + os.sep)
 
         if not fullname:
             yield from (license for license in licenses)
         else:
             for license in licenses:
-                for ext in SkaffConfig.__LICENSE_FORMAT:
+                for ext in SkaffConfig.__LICENSE_FORMATS:
                     user_license_file_name = user_license_path + license + ext
                     sys_license_file_name = system_license_path + license + ext
                     if os.path.isfile(user_license_file_name):
@@ -485,8 +528,9 @@ class SkaffConfig:
         user_license_path = self.paths_get("license")
         # Temporary dictionary used for comparison between licenses
         # named with ".txt" and ".md" extension
-        license_extensions = SkaffConfig.__LICENSE_FORMAT
+        license_extensions = SkaffConfig.__LICENSE_FORMATS
         temp_license_dict = {key: set() for key in license_extensions}
+        normalize_funcs = (os.path.basename, os.path.splitext, lambda x: x[0])
 
         if not os.path.isdir(user_license_path):
             return
@@ -494,8 +538,8 @@ class SkaffConfig:
         for file_ext in temp_license_dict.keys():
             for user_license in glob.iglob(user_license_path + "*" + file_ext):
                 # Remove the file extension and path
-                cut_index = user_license.rfind(file_ext)
-                user_license = user_license[:cut_index]
+                for func in normalize_funcs:
+                    user_license = func(user_license)
                 temp_license_dict[file_ext].add(os.path.basename(user_license))
 
         if temp_license_dict[".txt"] != temp_license_dict[".md"]:
@@ -523,7 +567,7 @@ class SkaffConfig:
         # The 'system' paths are hard-coded and cannot be changed freely;
         # in contrast to the 'user' paths set through the 'paths_set'
         # mutator member function interface
-        system_config_path = (SkaffConfig.basepath_fetch() + os.sep +
+        system_config_path = (SkaffConfig.basepath_fetch() +
                               "config" + os.sep)
         system_license_path = system_config_path + "license" + os.sep
         # system_template_path = system_config_path + "template" + os.sep
@@ -738,11 +782,36 @@ class SkaffConfig:
         subdirectories = sorted(self.__config["subdirectories"])
         yield from (subdirectory for subdirectory in subdirectories)
 
+    def templates_set(self, templates=None):
+        """
+        """
+        pass
+
+    def template_add(self, template):
+        """
+        """
+        pass
+
+    def template_discard(self, template):
+        """
+        """
+        pass
+
+    def templates_get(self, fullname=False):
+        """
+        """
+        pass
+
+    def templates_probe(self):
+        """
+        """
+        pass
+
     def _license_sign(self, directory, config):
         """
-        Copies the license chosen by authors to the 'directory', signs it
-        with authors and current year prepended if applicable; 'directory' must
-        already exist.
+        Copies the license text (ends with ".txt" extension) chosen by authors
+        to the 'directories', signs it with authors and current year prepended
+        if applicable; 'directories' must already exist.
 
         Note only licenses in {"bsd2", "bsd3", "mit"} will be signed by names
         in authors.
@@ -755,7 +824,7 @@ class SkaffConfig:
         # the responsibility of 'SkaffConfig' class; this responsibiltiy will
         # be moved to 'SkaffConfig' after "json-parsing" functionality is
         # implemented.
-        license_source = SkaffConfig.basepath_fetch() + os.sep +\
+        license_source = SkaffConfig.basepath_fetch() +\
             "config" + os.sep +\
             "license" + os.sep +\
             config.license_get() + ".txt"
