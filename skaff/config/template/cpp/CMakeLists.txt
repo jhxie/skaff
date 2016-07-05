@@ -1,4 +1,4 @@
-# this cmake configuration is based on an existing file the author
+# this cmake configuration is based on an existing file the author (Jiahui Xie)
 # wrote for another project with some minor changes added to make
 # it work properly with a modern c++ 11 codebase
 cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)

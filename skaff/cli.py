@@ -17,11 +17,11 @@ def main():
     """
     Parses and validates command line option flags, then invoke 'skaff()'.
     """
-    skaff_cli_description = "A CMake-Based Project Scaffolding Tool"
-    skaff_cli_dict = dict()
-
     if "posix" != os.name:
         sys.exit("This program is only mean to be used on POSIX systems.")
+
+    skaff_cli_description = "A CMake-Based Project Scaffolding Tool"
+    skaff_cli_dict = dict()
 
     # Fall back to SmartFormatter to let the string returned
     # by 'skaff_version_get()' function print properly
@@ -42,13 +42,13 @@ def main():
                         "--language",
                         type=str,
                         required=False,
-                        choices=list(SkaffConfig.languages_list()),
+                        choices=SkaffConfig.languages_fetch(),
                         help="major programming language used")
     parser.add_argument("-l",
                         "--license",
                         type=str,
                         required=False,
-                        choices=list(SkaffConfig.licenses_list()),
+                        choices=SkaffConfig.licenses_fetch(),
                         help="type of license")
     parser.add_argument("-q",
                         "--quiet",

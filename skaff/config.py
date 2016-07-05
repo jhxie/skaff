@@ -373,7 +373,14 @@ class SkaffConfig:
         return self.__config["language"]
 
     @staticmethod
-    def languages_list():
+    def languages_fetch():
+        """
+        Gets a list containing the supported programming languages BY DEFAULT.
+        User-defined programming languages are not shown.
+        """
+        return sorted(SkaffConfig.__LANGUAGES)
+
+    def languages_list(self):
         """
         Gets a generator containing the supported programming languages.
 
@@ -446,6 +453,14 @@ class SkaffConfig:
 
         return license_results
 
+    @staticmethod
+    def licenses_fetch():
+        """
+        Gets a list containing the supported licenses BY DEFAULT.
+        User-defined licenses are not shown.
+        """
+        return sorted(SkaffConfig.__LICENSES)
+
     def licenses_list(self, fullname=False):
         """
         Gets a generator containing the supported licenses with or without
@@ -461,21 +476,21 @@ class SkaffConfig:
         argument is switched to 'True'.
         For exmaple, with license path set to
 
-        "/home/$USER/.config/skaff/config/license/"
+        "$HOME/.config/skaff/license/"
 
         and a custom 'bsd2' license is set up as:
 
-        "/home/$USER/.config/skaff/config/license/bsd2.txt"
+        "$HOME/.config/skaff/license/bsd2.txt"
 
-        "/home/$USER/.config/skaff/config/license/bsd2.md"
+        "$HOME/.config/skaff/license/bsd2.md"
 
         then a licenses_list() invocation would only produce the SAME DEFAULT
         result as shown at the BOTTOM; only licenses_list(True) will generate
         fully qualified results like:
 
-        "/home/$USER/.config/skaff/config/license/bsd2.txt"
+        "$HOME/.config/skaff/license/bsd2.txt"
 
-        "/home/$USER/.config/skaff/config/license/bsd2.md"
+        "$HOME/.config/skaff/license/bsd2.md"
 
         (Note the rest default stock licenses are left untouched;
         the stock bsd2 license in the system path would not be shown
@@ -596,7 +611,7 @@ class SkaffConfig:
         the 'system' path.
         For example, if there is a file named 'bsd.txt' in the default path of
         license files:
-        "/home/$USER/.config/skaff/config/license/bsd.txt"
+        "$HOME/.config/skaff/license/bsd.txt"
         then the content within that file will be used instead of the supplied
         stock version
         "/usr/lib/python3/dist-packages/skaff/config/license/bsd.txt"
@@ -609,18 +624,18 @@ class SkaffConfig:
 
         'config': path containing 'skaff.json' configuration file.
         Default is:
-        "/home/$USER/.config/skaff/config/"
+        "$HOME/.config/skaff/"
 
         'license': path containing license files to be copied to the
         directories specified in 'directories_set' or 'directory_add'.
         Default is:
-        "/home/$USER/.config/skaff/config/license/"
+        "$HOME/.config/skaff/license/"
 
         'template': path containing template files to be copied to the
         directories specified in 'directories_set', 'directory_add',
         'subdirectories_set', or 'subdirectory_add'.
         Default is:
-        "/home/$USER/.config/skaff/config/template/"
+        "$HOME/.config/skaff/template/"
         """
         keys = ("config", "license", "template")
         items = kwargs.items()
