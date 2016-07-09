@@ -255,7 +255,7 @@ class SkaffConfig:
         # the 'tree' made of 'directories' and 'subdirectories' need to be
         # created before the selected license and template files
         options = ("tree", "license", "template")
-        methods = (None, None, None)
+        methods = (None, self.license_sign, None)
         actions = collections.OrderedDict(zip(options, methods))
 
         if not all(isinstance(arg, str) for arg in args):
@@ -683,6 +683,8 @@ class SkaffConfig:
         for arg in args:
             result_paths.append(self.__config["paths"][arg])
 
+        return result_paths
+
     def quiet_set(self, quiet=None):
         """
         Sets whether there is interactive CMakeLists.txt and Doxyfile editing.
@@ -822,37 +824,51 @@ class SkaffConfig:
         """
         pass
 
-    def _license_sign(self, directory, config):
+    def license_sign(self):
         """
         Copies the license text (ends with ".txt" extension) chosen by authors
-        to the 'directories', signs it with authors and current year prepended
-        if applicable; 'directories' must already exist.
+        to all the 'directories', signs it with authors and current year
+        prepended if applicable; also copies the license markdown (ends with
+        ".md" extension) chosen by authors to all the 'directories', prepends
+        'Overview' and 'License' section headers then rename it to 'README.md';
+        'directories' must already exist.
 
         Note only licenses in {"bsd2", "bsd3", "mit"} will be signed by names
         in authors.
         """
-        copyright_line = "Copyright (c) {year}, {authors}\n".format(
+        copyright_line = "Copyright © {year}, {authors}\n".format(
             year=datetime.now().year,
             authors=", ".join(self.authors_get())
         )
-        # Note "figuring out where the source license resides" may belong to
-        # the responsibility of 'SkaffConfig' class; this responsibiltiy will
-        # be moved to 'SkaffConfig' after "json-parsing" functionality is
-        # implemented.
-        license_source = SkaffConfig.basepath_fetch() +\
-            "config" + os.sep +\
-            "license" + os.sep +\
-            config.license_get() + ".txt"
-        license_target = directory + "LICENSE.txt"
+        readme_template = (
+            "![{0}](img{1}banner.png)\n"
+            "\n## Overview\n"
+            "\n## License\n"
+        )
+        license_sources = self.license_get(fullname=True)
+        sign_required_licenses = ("bsd2", "bsd3", "mit")
 
-        if config.license_get() in frozenset(("bsd2", "bsd3", "mit")):
-            with open(license_source, "r") as from_file:
-                vanilla_license_text = from_file.read()
-                with open(license_target, "w") as to_file:
-                    to_file.write(copyright_line)
-                    to_file.write(vanilla_license_text)
-        else:
-            shutil.copy(license_source, license_target)
+        for directory in self.directories_get():
+            license_target = directory + "LICENSE.txt"
+            readme_target = directory + "README.md"
+            readme_header = readme_template.format(directory[:-1], os.sep)
+            for license_source in license_sources:
+                if license_source.endswith(".md"):
+                    with open(license_source, "r") as from_file:
+                        license_markdown = from_file.read()
+                    with open(readme_target, "w") as to_file:
+                        to_file.write(readme_header)
+                        to_file.write(copyright_line)
+                        to_file.write(license_markdown)
+                else:
+                    if self.license_get() in sign_required_licenses:
+                        with open(license_source, "r") as from_file:
+                            vanilla_license_text = from_file.read()
+                        with open(license_target, "w") as to_file:
+                            to_file.write(copyright_line)
+                            to_file.write(vanilla_license_text)
+                    else:
+                        shutil.copy(license_source, license_target)
 
     def _load(self, *args):
         """

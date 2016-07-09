@@ -116,7 +116,7 @@ logo.
 yourself out of business. What you do today can be automated tomorrow.*"
 
 ## License
-Copyright &copy; 2016 Jiahui Xie  
+Copyright © 2016, Jiahui Xie  
 Licensed under the [BSD 2-Clause License][BSD2].  
 Distributed under the [BSD 2-Clause License][BSD2].
 

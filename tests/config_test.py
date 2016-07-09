@@ -495,7 +495,8 @@ class TestConfig(unittest.TestCase):
 
     def test_paths_get(self):
         keys = ("config", "license", "template")
-        result = None
+        result_dict = None
+        result_list = None
 
         # Fail due to 'None' type argument
         with self.assertRaises(TypeError):
@@ -504,10 +505,17 @@ class TestConfig(unittest.TestCase):
         # Success if the dictionary returned is a deep copy;
         # so the internal 'database' would not be accidentally altered
         self.config.paths_set()
-        result = self.config.paths_get()
+        result_dict = self.config.paths_get()
         for key in keys:
-            result[key] = None
+            result_dict[key] = None
             self.assertIsInstance(self.config.paths_get(key), str)
+
+        # Success if the list returned contains the corresponding paths
+        # of the keys given
+        self.config.paths_set()
+        result_list = self.config.paths_get(*keys)
+        for result in result_list:
+            self.assertIsInstance(result, str)
 
     def test_quiet_set(self):
         self.config.quiet_set(None)
