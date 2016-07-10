@@ -19,7 +19,7 @@ indent_style = space
 indent_size = 8
 
 # 4 space indentation
-[*.{cc,cpp,cxx,hpp}]
+[*.{cc,cpp,cxx,hh,hpp,hxx}]
 indent_style = space
 indent_size = 4
 
