@@ -272,7 +272,7 @@ class TestConfig(unittest.TestCase):
     def test_license_set(self):
         # Identical to 'test_language_set' due to the similarity between
         # 'language_set' and 'license_set' mutator functions.
-        license = "proprietary"
+        license = "EULA"
         licenses = self.config.licenses_list()
 
         self.config.license_set(None)
@@ -283,7 +283,9 @@ class TestConfig(unittest.TestCase):
             self.config.license_set(license)
 
     def test_license_get(self):
-        bsd2_text = ("Random Empty Replacement Text")
+        # Here 'bsd2' license is chosen to be overridden even though
+        # those licenses rarely (if at all) need to be "re-defined".
+        bsd2_text = ("Legal Text to be Written by Lawyers")
         bsd2_markdown = (
             "Licensed under the BSD 2 Clause License.  \n"
             "Distributed under the BSD 2 Clause License.  \n\n")
@@ -331,6 +333,21 @@ class TestConfig(unittest.TestCase):
         os.remove(bsd2_text_name)
         os.remove(bsd2_markdown_name)
 
+    def test_license_sign(self):
+        chosen_license = "bsd2"
+        spawned_files = ("LICENSE.txt", "README.md")
+
+        self.config.license_set(chosen_license)
+
+        # The 'directories' tracked by the 'config' is already created by
+        # the 'setUp' test fixture method, so a file-existence test can be
+        # performed directly for 'license_sign'.
+        self.config.license_sign()
+
+        for spawned_file in spawned_files:
+            self.assertTrue(os.path.isfile(self.tmp_dir.name + spawned_file))
+            os.remove(self.tmp_dir.name + spawned_file)
+
     def test_licenses_list(self):
         licenses = set(self.config.licenses_list(fullname=False))
         qualified_licenses = set(self.config.licenses_list(fullname=True))
@@ -354,6 +371,7 @@ class TestConfig(unittest.TestCase):
         # (licenses with fully qualified path and extension) is equal to
         # the number of file exntension supported per license * actual number
         # of licenses supported
+        #
         # For example, for the current version 1.0, the supported file formats
         # for each license are ".txt" and ".md" (refer to the __LICNESE_FORMATS
         # private class attribute for details), if the fully qualified version

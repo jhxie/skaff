@@ -223,8 +223,15 @@ class SkaffConfig:
         author = None
         pw_record = pwd.getpwuid(os.getuid())
 
+        # In Ubuntu 16.04 LTS, the default GECOS field is suffixed by 3 extra
+        # commas for some reason, so they are tested and removed if it is the
+        # case.
+        # Similar anomaly has not been found on the other linux distribution
+        # tested (Fedora) or FreeBSD.
         if pw_record.pw_gecos:
             author = pw_record.pw_gecos
+            if author.endswith(","):
+                author = author.strip(",")
         elif pw_record.pw_name:
             author = pw_record.pw_name
 
@@ -345,6 +352,18 @@ class SkaffConfig:
         directories = sorted(self.__config["directories"])
         yield from (directory for directory in directories)
 
+    def hooks_set(self, **kwargs):
+        pass
+
+    def hook_add(self, **kwargs):
+        pass
+
+    def hook_discard(self, **kwargs):
+        pass
+
+    def hooks_get(self, **kwargs):
+        pass
+
     def language_set(self, language=None):
         """
         Sets the major programming language used.
@@ -452,6 +471,52 @@ class SkaffConfig:
                     self.__config["license"])))
 
         return license_results
+
+    def license_sign(self):
+        """
+        Copies the license text (ends with ".txt" extension) chosen by authors
+        to all the 'directories', signs it with authors and current year
+        prepended if applicable; also copies the license markdown (ends with
+        ".md" extension) chosen by authors to all the 'directories', prepends
+        'Overview' and 'License' section headers then rename it to 'README.md';
+        'directories' must already exist.
+
+        Note only licenses in {"bsd2", "bsd3", "mit"} will be signed by names
+        in authors.
+        """
+        copyright_line = "Copyright © {year}, {authors}\n".format(
+            year=datetime.now().year,
+            authors=", ".join(self.authors_get())
+        )
+        readme_template = (
+            "![{0}](img{1}banner.png)\n"
+            "\n## Overview\n"
+            "\n## License\n"
+        )
+        license_sources = self.license_get(fullname=True)
+        sign_required_licenses = ("bsd2", "bsd3", "mit")
+
+        for directory in self.directories_get():
+            license_target = directory + "LICENSE.txt"
+            readme_target = directory + "README.md"
+            readme_header = readme_template.format(directory[:-1], os.sep)
+            for license_source in license_sources:
+                if license_source.endswith(".md"):
+                    with open(license_source, "r") as from_file:
+                        license_markdown = from_file.read()
+                    with open(readme_target, "w") as to_file:
+                        to_file.write(readme_header)
+                        to_file.write(copyright_line)
+                        to_file.write(license_markdown)
+                else:
+                    if self.license_get() in sign_required_licenses:
+                        with open(license_source, "r") as from_file:
+                            vanilla_license_text = from_file.read()
+                        with open(license_target, "w") as to_file:
+                            to_file.write(copyright_line)
+                            to_file.write(vanilla_license_text)
+                    else:
+                        shutil.copy(license_source, license_target)
 
     @staticmethod
     def licenses_fetch():
@@ -823,52 +888,6 @@ class SkaffConfig:
         """
         """
         pass
-
-    def license_sign(self):
-        """
-        Copies the license text (ends with ".txt" extension) chosen by authors
-        to all the 'directories', signs it with authors and current year
-        prepended if applicable; also copies the license markdown (ends with
-        ".md" extension) chosen by authors to all the 'directories', prepends
-        'Overview' and 'License' section headers then rename it to 'README.md';
-        'directories' must already exist.
-
-        Note only licenses in {"bsd2", "bsd3", "mit"} will be signed by names
-        in authors.
-        """
-        copyright_line = "Copyright © {year}, {authors}\n".format(
-            year=datetime.now().year,
-            authors=", ".join(self.authors_get())
-        )
-        readme_template = (
-            "![{0}](img{1}banner.png)\n"
-            "\n## Overview\n"
-            "\n## License\n"
-        )
-        license_sources = self.license_get(fullname=True)
-        sign_required_licenses = ("bsd2", "bsd3", "mit")
-
-        for directory in self.directories_get():
-            license_target = directory + "LICENSE.txt"
-            readme_target = directory + "README.md"
-            readme_header = readme_template.format(directory[:-1], os.sep)
-            for license_source in license_sources:
-                if license_source.endswith(".md"):
-                    with open(license_source, "r") as from_file:
-                        license_markdown = from_file.read()
-                    with open(readme_target, "w") as to_file:
-                        to_file.write(readme_header)
-                        to_file.write(copyright_line)
-                        to_file.write(license_markdown)
-                else:
-                    if self.license_get() in sign_required_licenses:
-                        with open(license_source, "r") as from_file:
-                            vanilla_license_text = from_file.read()
-                        with open(license_target, "w") as to_file:
-                            to_file.write(copyright_line)
-                            to_file.write(vanilla_license_text)
-                    else:
-                        shutil.copy(license_source, license_target)
 
     def _load(self, *args):
         """

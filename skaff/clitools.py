@@ -57,7 +57,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 
-def single_keypress_read():
+def getkey():
     """Waits for a single keypress on stdin.
 
     This is a silly function to call if you need to do it a lot because it has

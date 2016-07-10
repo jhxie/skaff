@@ -1,18 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Main module of skaff.
+Main driver module of the skaff program.
 """
-
-# ------------------------------- MODULE INFO ---------------------------------
-# Note the naming convention shown here coming from the 'ranger' program from
-# http://ranger.nongnu.org/
-__author__ = "Jiahui Xie"
-__email__ = "jiahui.xie@outlook.com"
-__license__ = "BSD2"
-__maintainer__ = __author__
-__version__ = "1.0"
-# ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
 import collections
@@ -24,11 +14,17 @@ import tempfile
 
 from datetime import datetime
 from distutils import spawn
-from skaff import single_keypress_read
+from skaff import getkey
 from skaff import timeout
 from skaff import ANSIColor
 from skaff import SkaffConfig
 from skaff import TimeOutError
+
+from skaff import __author__
+from skaff import __email__
+from skaff import __license__
+from skaff import __maintainer__
+from skaff import __version__
 # --------------------------------- MODULES -----------------------------------
 
 
@@ -125,7 +121,7 @@ def _conf_doc_prompt(directory, config):
         print("\n" + "-" * terminal_info.columns)
         try:
             while "c" != key.lower():
-                key = timeout(5)(single_keypress_read)()
+                key = timeout(5)(getkey)()
                 if "a" == key.lower() or "k" == key.lower():
                     config.quiet_set(True)
                     break

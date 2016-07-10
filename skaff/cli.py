@@ -56,7 +56,7 @@ def main():
                         required=False,
                         help=("no interactive "
                               "CMakeLists.txt and Doxyfile editing"))
-    parser.add_argument("-v",
+    parser.add_argument("-V",
                         "--version",
                         action="version",
                         version=skaff_version_get(),
