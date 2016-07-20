@@ -14,12 +14,13 @@ import tempfile
 
 from datetime import datetime
 from distutils import spawn
-from skaff import getkey
-from skaff import timeout
-from skaff import ANSIColor
-from skaff import SkaffConfig
-from skaff import TimeOutError
-
+from skaff.clitools import (
+    getkey,
+    timeout,
+    ANSIColor,
+    TimeOutError
+)
+from skaff.config import SkaffConfig
 from skaff import __author__
 from skaff import __email__
 from skaff import __license__
@@ -62,7 +63,7 @@ def skaff_version_get():
         "skaff "
         "(A CMake-based project scaffolding tool) {version}\n"
         "Copyright (C) {year} {author}.\n"
-        "Licensed and distributed under BSD 2-Clause License.\n"
+        "Licensed and distributed under the BSD 2-Clause License.\n"
         "This is free software: you are free to change and redistribute it.\n"
         "There is NO WARRANTY, to the extent permitted by law.\n\n"
         "Written by {author}.".format(**module_info_dict))
@@ -205,7 +206,7 @@ def _conf_spawn(directory, config):
 
     # Again, "figuring out where the configuration resides" may belong to the
     # responsibility of 'SkaffConfig' class; this responsibiltiy will be
-    # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
+    # moved to 'SkaffConfig' after "ini-parsing" functionality is implemented.
     conf_files = ("editorconfig", "gdbinit", "gitattributes", "gitignore")
     conf_source_prefix = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
@@ -381,7 +382,7 @@ def _license_sign(directory, config):
     )
     # Note "figuring out where the source license resides" may belong to the
     # responsibility of 'SkaffConfig' class; this responsibiltiy will be
-    # moved to 'SkaffConfig' after "json-parsing" functionality is implemented.
+    # moved to 'SkaffConfig' after "ini-parsing" functionality is implemented.
     license_source = SkaffConfig.basepath_fetch() +\
         "config" + os.sep +\
         "license" + os.sep +\

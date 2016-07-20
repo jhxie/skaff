@@ -6,13 +6,13 @@ digraph {
     Input[shape="parallelogram", style=""];
     IfValid[shape="diamond", style=""];
     CallSkaff[shape="box", style="rounded"];
-    LoadJsonConfig[shape="box", style="rounded"];
-    SaveJsonConfig[shape="box", style="rounded"];
+    LoadConfig[shape="box", style="rounded"];
+    SaveConfig[shape="box", style="rounded"];
     OverwriteWithGivenArguments[shape="box", style="rounded"];
 
     Start -> Input -> IfValid;
-    IfValid -> LoadJsonConfig[label="Yes"];
+    IfValid -> LoadConfig[label="Yes"];
     IfValid -> End[label="No"];
-    LoadJsonConfig -> OverwriteWithGivenArguments;
-    OverwriteWithGivenArguments -> SaveJsonConfig -> CallSkaff -> End;
+    LoadConfig -> OverwriteWithGivenArguments;
+    OverwriteWithGivenArguments -> SaveConfig -> CallSkaff -> End;
 }

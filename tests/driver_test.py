@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Unit testing suite for core module.
+Unit testing suite for driver module.
 """
 # --------------------------------- MODULES -----------------------------------
 import os
@@ -14,7 +14,7 @@ import skaff
 # --------------------------------- MODULES -----------------------------------
 
 
-class TestCore(unittest.TestCase):
+class TestDriver(unittest.TestCase):
     """
     Main unit testing suite, which is a subclass of 'unittest.TestCase'.
     """

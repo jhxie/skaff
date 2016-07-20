@@ -60,17 +60,17 @@ which python3 && python3 --version
 
 And also remember to have **python3-setuptools** installed:
 
-**Ubuntu** (14.04 and later)
+**Ubuntu** (14.04 - 16.04)
 ```bash
 sudo apt-get install python3-setuptools
 ```
 
-**Fedora** (23 and later)
+**Fedora** (23)
 ```bash
 sudo dnf install python3-setuptools
 ```
 
-**FreeBSD** (10.3 and later)  
+**FreeBSD** (10.3)  
 The *pkg* package manager requires a *specific* version number; unlike the two
 linux distributions listed above, so either install a version that supports
 python version above **3.3** or use the following command to install the most
@@ -87,7 +87,8 @@ resides and install by:
 sudo python3 ./setup.py install --optimize 1 --record install_log.txt
 ```
 
-To run the bundled unit test suite:
+To run the bundled unit test suite (done automatically by the continuous
+integration system):
 ```bash
 python3 ./setup.py test
 ```

@@ -12,85 +12,85 @@
 <text text-anchor="middle" x="188" y="-7.8" font-family="Times,serif" font-size="14.00">The responsibility decision chart from &#39;cli&#39; module&#39;s point of view</text>
 <!-- Start -->
 <g id="node1" class="node"><title>Start</title>
-<ellipse fill="none" stroke="black" cx="116.986" cy="-602.693" rx="27.0966" ry="27.0966"/>
-<text text-anchor="middle" x="116.986" y="-598.993" font-family="Times,serif" font-size="14.00">Start</text>
+<ellipse fill="none" stroke="black" cx="115.486" cy="-602.693" rx="27.0966" ry="27.0966"/>
+<text text-anchor="middle" x="115.486" y="-598.993" font-family="Times,serif" font-size="14.00">Start</text>
 </g>
 <!-- Input -->
 <g id="node3" class="node"><title>Input</title>
-<polygon fill="none" stroke="black" points="159.751,-538.396 91.7219,-538.396 74.2216,-502.396 142.251,-502.396 159.751,-538.396"/>
-<text text-anchor="middle" x="116.986" y="-516.696" font-family="Times,serif" font-size="14.00">Input</text>
+<polygon fill="none" stroke="black" points="158.251,-538.396 90.2219,-538.396 72.7216,-502.396 140.751,-502.396 158.251,-538.396"/>
+<text text-anchor="middle" x="115.486" y="-516.696" font-family="Times,serif" font-size="14.00">Input</text>
 </g>
 <!-- Start&#45;&gt;Input -->
 <g id="edge1" class="edge"><title>Start&#45;&gt;Input</title>
-<path fill="none" stroke="black" d="M116.986,-574.955C116.986,-566.487 116.986,-557.119 116.986,-548.616"/>
-<polygon fill="black" stroke="black" points="120.487,-548.443 116.986,-538.443 113.487,-548.443 120.487,-548.443"/>
+<path fill="none" stroke="black" d="M115.486,-574.955C115.486,-566.487 115.486,-557.119 115.486,-548.616"/>
+<polygon fill="black" stroke="black" points="118.987,-548.443 115.486,-538.443 111.987,-548.443 118.987,-548.443"/>
 </g>
 <!-- End -->
 <g id="node2" class="node"><title>End</title>
-<ellipse fill="none" stroke="black" cx="111.986" cy="-47.6978" rx="24.8972" ry="24.8972"/>
-<text text-anchor="middle" x="111.986" y="-43.9978" font-family="Times,serif" font-size="14.00">End</text>
+<ellipse fill="none" stroke="black" cx="113.486" cy="-47.6978" rx="24.8972" ry="24.8972"/>
+<text text-anchor="middle" x="113.486" y="-43.9978" font-family="Times,serif" font-size="14.00">End</text>
 </g>
 <!-- IfValid -->
 <g id="node4" class="node"><title>IfValid</title>
-<polygon fill="none" stroke="black" points="116.986,-465.396 65.5408,-447.396 116.986,-429.396 168.432,-447.396 116.986,-465.396"/>
-<text text-anchor="middle" x="116.986" y="-443.696" font-family="Times,serif" font-size="14.00">IfValid</text>
+<polygon fill="none" stroke="black" points="115.486,-465.396 64.0408,-447.396 115.486,-429.396 166.932,-447.396 115.486,-465.396"/>
+<text text-anchor="middle" x="115.486" y="-443.696" font-family="Times,serif" font-size="14.00">IfValid</text>
 </g>
 <!-- Input&#45;&gt;IfValid -->
 <g id="edge2" class="edge"><title>Input&#45;&gt;IfValid</title>
-<path fill="none" stroke="black" d="M116.986,-502.208C116.986,-494.185 116.986,-484.443 116.986,-475.465"/>
-<polygon fill="black" stroke="black" points="120.487,-475.424 116.986,-465.424 113.487,-475.424 120.487,-475.424"/>
+<path fill="none" stroke="black" d="M115.486,-502.208C115.486,-494.185 115.486,-484.443 115.486,-475.465"/>
+<polygon fill="black" stroke="black" points="118.987,-475.424 115.486,-465.424 111.987,-475.424 118.987,-475.424"/>
 </g>
 <!-- IfValid&#45;&gt;End -->
 <g id="edge4" class="edge"><title>IfValid&#45;&gt;End</title>
-<path fill="none" stroke="black" d="M109.038,-431.829C100.76,-415.27 88.9864,-387.187 88.9864,-361.396 88.9864,-361.396 88.9864,-361.396 88.9864,-126.396 88.9864,-110.661 93.3771,-93.843 98.3217,-79.8926"/>
-<polygon fill="black" stroke="black" points="101.687,-80.889 101.965,-70.2978 95.1431,-78.404 101.687,-80.889"/>
-<text text-anchor="middle" x="97.4864" y="-240.196" font-family="Times,serif" font-size="14.00">No</text>
+<path fill="none" stroke="black" d="M108.389,-431.733C100.998,-415.089 90.4864,-386.93 90.4864,-361.396 90.4864,-361.396 90.4864,-361.396 90.4864,-126.396 90.4864,-110.661 94.8771,-93.843 99.8217,-79.8926"/>
+<polygon fill="black" stroke="black" points="103.187,-80.889 103.465,-70.2978 96.6431,-78.404 103.187,-80.889"/>
+<text text-anchor="middle" x="98.9864" y="-240.196" font-family="Times,serif" font-size="14.00">No</text>
 </g>
-<!-- LoadJsonConfig -->
-<g id="node6" class="node"><title>LoadJsonConfig</title>
-<path fill="none" stroke="black" d="M232.986,-378.396C232.986,-378.396 150.986,-378.396 150.986,-378.396 144.986,-378.396 138.986,-372.396 138.986,-366.396 138.986,-366.396 138.986,-354.396 138.986,-354.396 138.986,-348.396 144.986,-342.396 150.986,-342.396 150.986,-342.396 232.986,-342.396 232.986,-342.396 238.986,-342.396 244.986,-348.396 244.986,-354.396 244.986,-354.396 244.986,-366.396 244.986,-366.396 244.986,-372.396 238.986,-378.396 232.986,-378.396"/>
-<text text-anchor="middle" x="191.986" y="-356.696" font-family="Times,serif" font-size="14.00">LoadJsonConfig</text>
+<!-- LoadConfig -->
+<g id="node6" class="node"><title>LoadConfig</title>
+<path fill="none" stroke="black" d="M216.486,-378.396C216.486,-378.396 158.486,-378.396 158.486,-378.396 152.486,-378.396 146.486,-372.396 146.486,-366.396 146.486,-366.396 146.486,-354.396 146.486,-354.396 146.486,-348.396 152.486,-342.396 158.486,-342.396 158.486,-342.396 216.486,-342.396 216.486,-342.396 222.486,-342.396 228.486,-348.396 228.486,-354.396 228.486,-354.396 228.486,-366.396 228.486,-366.396 228.486,-372.396 222.486,-378.396 216.486,-378.396"/>
+<text text-anchor="middle" x="187.486" y="-356.696" font-family="Times,serif" font-size="14.00">LoadConfig</text>
 </g>
-<!-- IfValid&#45;&gt;LoadJsonConfig -->
-<g id="edge3" class="edge"><title>IfValid&#45;&gt;LoadJsonConfig</title>
-<path fill="none" stroke="black" d="M128.705,-433.114C139.721,-420.629 156.491,-401.624 169.999,-386.314"/>
-<polygon fill="black" stroke="black" points="172.727,-388.513 176.719,-378.699 167.478,-383.882 172.727,-388.513"/>
-<text text-anchor="middle" x="171.986" y="-400.196" font-family="Times,serif" font-size="14.00">Yes</text>
+<!-- IfValid&#45;&gt;LoadConfig -->
+<g id="edge3" class="edge"><title>IfValid&#45;&gt;LoadConfig</title>
+<path fill="none" stroke="black" d="M126.736,-433.114C137.215,-420.744 153.116,-401.972 166.021,-386.737"/>
+<polygon fill="black" stroke="black" points="169.037,-388.592 172.829,-378.699 163.695,-384.067 169.037,-388.592"/>
+<text text-anchor="middle" x="168.486" y="-400.196" font-family="Times,serif" font-size="14.00">Yes</text>
 </g>
 <!-- CallSkaff -->
 <g id="node5" class="node"><title>CallSkaff</title>
-<path fill="none" stroke="black" d="M179.986,-145.396C179.986,-145.396 135.986,-145.396 135.986,-145.396 129.986,-145.396 123.986,-139.396 123.986,-133.396 123.986,-133.396 123.986,-121.396 123.986,-121.396 123.986,-115.396 129.986,-109.396 135.986,-109.396 135.986,-109.396 179.986,-109.396 179.986,-109.396 185.986,-109.396 191.986,-115.396 191.986,-121.396 191.986,-121.396 191.986,-133.396 191.986,-133.396 191.986,-139.396 185.986,-145.396 179.986,-145.396"/>
-<text text-anchor="middle" x="157.986" y="-123.696" font-family="Times,serif" font-size="14.00">CallSkaff</text>
+<path fill="none" stroke="black" d="M179.486,-145.396C179.486,-145.396 135.486,-145.396 135.486,-145.396 129.486,-145.396 123.486,-139.396 123.486,-133.396 123.486,-133.396 123.486,-121.396 123.486,-121.396 123.486,-115.396 129.486,-109.396 135.486,-109.396 135.486,-109.396 179.486,-109.396 179.486,-109.396 185.486,-109.396 191.486,-115.396 191.486,-121.396 191.486,-121.396 191.486,-133.396 191.486,-133.396 191.486,-139.396 185.486,-145.396 179.486,-145.396"/>
+<text text-anchor="middle" x="157.486" y="-123.696" font-family="Times,serif" font-size="14.00">CallSkaff</text>
 </g>
 <!-- CallSkaff&#45;&gt;End -->
 <g id="edge8" class="edge"><title>CallSkaff&#45;&gt;End</title>
-<path fill="none" stroke="black" d="M147.778,-109.152C142.414,-100.092 135.689,-88.7342 129.522,-78.3162"/>
-<polygon fill="black" stroke="black" points="132.399,-76.3062 124.293,-69.4843 126.376,-79.8724 132.399,-76.3062"/>
+<path fill="none" stroke="black" d="M147.721,-109.152C142.591,-100.092 136.159,-88.7342 130.259,-78.3162"/>
+<polygon fill="black" stroke="black" points="133.231,-76.4612 125.258,-69.4843 127.14,-79.9106 133.231,-76.4612"/>
 </g>
 <!-- OverwriteWithGivenArguments -->
 <g id="node8" class="node"><title>OverwriteWithGivenArguments</title>
-<path fill="none" stroke="black" d="M298.486,-305.396C298.486,-305.396 129.486,-305.396 129.486,-305.396 123.486,-305.396 117.486,-299.396 117.486,-293.396 117.486,-293.396 117.486,-281.396 117.486,-281.396 117.486,-275.396 123.486,-269.396 129.486,-269.396 129.486,-269.396 298.486,-269.396 298.486,-269.396 304.486,-269.396 310.486,-275.396 310.486,-281.396 310.486,-281.396 310.486,-293.396 310.486,-293.396 310.486,-299.396 304.486,-305.396 298.486,-305.396"/>
-<text text-anchor="middle" x="213.986" y="-283.696" font-family="Times,serif" font-size="14.00">OverwriteWithGivenArguments</text>
+<path fill="none" stroke="black" d="M299.986,-305.396C299.986,-305.396 130.986,-305.396 130.986,-305.396 124.986,-305.396 118.986,-299.396 118.986,-293.396 118.986,-293.396 118.986,-281.396 118.986,-281.396 118.986,-275.396 124.986,-269.396 130.986,-269.396 130.986,-269.396 299.986,-269.396 299.986,-269.396 305.986,-269.396 311.986,-275.396 311.986,-281.396 311.986,-281.396 311.986,-293.396 311.986,-293.396 311.986,-299.396 305.986,-305.396 299.986,-305.396"/>
+<text text-anchor="middle" x="215.486" y="-283.696" font-family="Times,serif" font-size="14.00">OverwriteWithGivenArguments</text>
 </g>
-<!-- LoadJsonConfig&#45;&gt;OverwriteWithGivenArguments -->
-<g id="edge5" class="edge"><title>LoadJsonConfig&#45;&gt;OverwriteWithGivenArguments</title>
-<path fill="none" stroke="black" d="M197.312,-342.208C199.825,-334.098 202.882,-324.231 205.689,-315.172"/>
-<polygon fill="black" stroke="black" points="209.093,-316.012 208.71,-305.424 202.407,-313.94 209.093,-316.012"/>
+<!-- LoadConfig&#45;&gt;OverwriteWithGivenArguments -->
+<g id="edge5" class="edge"><title>LoadConfig&#45;&gt;OverwriteWithGivenArguments</title>
+<path fill="none" stroke="black" d="M194.264,-342.208C197.497,-334.011 201.438,-324.019 205.042,-314.88"/>
+<polygon fill="black" stroke="black" points="208.358,-316.011 208.771,-305.424 201.846,-313.443 208.358,-316.011"/>
 </g>
-<!-- SaveJsonConfig -->
-<g id="node7" class="node"><title>SaveJsonConfig</title>
-<path fill="none" stroke="black" d="M219.986,-218.396C219.986,-218.396 139.986,-218.396 139.986,-218.396 133.986,-218.396 127.986,-212.396 127.986,-206.396 127.986,-206.396 127.986,-194.396 127.986,-194.396 127.986,-188.396 133.986,-182.396 139.986,-182.396 139.986,-182.396 219.986,-182.396 219.986,-182.396 225.986,-182.396 231.986,-188.396 231.986,-194.396 231.986,-194.396 231.986,-206.396 231.986,-206.396 231.986,-212.396 225.986,-218.396 219.986,-218.396"/>
-<text text-anchor="middle" x="179.986" y="-196.696" font-family="Times,serif" font-size="14.00">SaveJsonConfig</text>
+<!-- SaveConfig -->
+<g id="node7" class="node"><title>SaveConfig</title>
+<path fill="none" stroke="black" d="M200.486,-218.396C200.486,-218.396 144.486,-218.396 144.486,-218.396 138.486,-218.396 132.486,-212.396 132.486,-206.396 132.486,-206.396 132.486,-194.396 132.486,-194.396 132.486,-188.396 138.486,-182.396 144.486,-182.396 144.486,-182.396 200.486,-182.396 200.486,-182.396 206.486,-182.396 212.486,-188.396 212.486,-194.396 212.486,-194.396 212.486,-206.396 212.486,-206.396 212.486,-212.396 206.486,-218.396 200.486,-218.396"/>
+<text text-anchor="middle" x="172.486" y="-196.696" font-family="Times,serif" font-size="14.00">SaveConfig</text>
 </g>
-<!-- SaveJsonConfig&#45;&gt;CallSkaff -->
-<g id="edge7" class="edge"><title>SaveJsonConfig&#45;&gt;CallSkaff</title>
-<path fill="none" stroke="black" d="M174.661,-182.208C172.148,-174.098 169.09,-164.231 166.283,-155.172"/>
-<polygon fill="black" stroke="black" points="169.566,-153.94 163.263,-145.424 162.88,-156.012 169.566,-153.94"/>
+<!-- SaveConfig&#45;&gt;CallSkaff -->
+<g id="edge7" class="edge"><title>SaveConfig&#45;&gt;CallSkaff</title>
+<path fill="none" stroke="black" d="M168.855,-182.208C167.16,-174.185 165.102,-164.443 163.205,-155.465"/>
+<polygon fill="black" stroke="black" points="166.576,-154.485 161.084,-145.424 159.727,-155.932 166.576,-154.485"/>
 </g>
-<!-- OverwriteWithGivenArguments&#45;&gt;SaveJsonConfig -->
-<g id="edge6" class="edge"><title>OverwriteWithGivenArguments&#45;&gt;SaveJsonConfig</title>
-<path fill="none" stroke="black" d="M207.106,-269.195C202.405,-257.443 196.082,-241.634 190.723,-228.238"/>
-<polygon fill="black" stroke="black" points="193.82,-226.556 186.857,-218.571 187.321,-229.156 193.82,-226.556"/>
+<!-- OverwriteWithGivenArguments&#45;&gt;SaveConfig -->
+<g id="edge6" class="edge"><title>OverwriteWithGivenArguments&#45;&gt;SaveConfig</title>
+<path fill="none" stroke="black" d="M206.785,-269.195C200.781,-257.328 192.685,-241.324 185.866,-227.844"/>
+<polygon fill="black" stroke="black" points="188.812,-225.914 181.175,-218.571 182.566,-229.074 188.812,-225.914"/>
 </g>
 </g>
 </svg>

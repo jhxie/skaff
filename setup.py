@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 
 # --------------------------------- MODULES -----------------------------------
-import skaff
-import gzip
 import os
-import shutil
+import skaff
 import sys
 
-from filecmp import dircmp
 from setuptools import setup
-from tempfile import TemporaryDirectory
+from skaff.manualtools import (
+    manuals_install,
+    manuals_probe,
+    manpath_select
+)
 # --------------------------------- MODULES -----------------------------------
 
 
+# -------------------------------- FUNCTIONS ----------------------------------
 def main():
     """
     Main installation routine.
@@ -21,9 +23,13 @@ def main():
     skaff_long_description = "Simple program that generates " +\
         "language specific (c/c++) cmake based project templates"
     flags = ("--dry-run", "-n", "--help")
+    skaff_man_source_dir = (os.path.dirname(os.path.abspath(__file__)) +
+                            os.sep + "man" + os.sep)
+    skaff_man_sources = manuals_probe(skaff_man_source_dir)
     manual_conditions = (flag not in sys.argv for flag in flags)
 
-    # This script and MANIFEST.in file are based on the guide at
+    # This whole installation routine and 'MANIFEST.in' file are based
+    # on the guide at
     # https://pythonhosted.org/setuptools/setuptools.html
     # and
     # https://python-packaging.readthedocs.org/en/latest/index.html
@@ -81,48 +87,9 @@ def main():
     # Note the following would not be properly executed
     # if permission is not satisfied
     if "install" in sys.argv and all(manual_conditions):
-        manual_install()
+        manuals_install(manpath_select(), True, *skaff_man_sources)
+# -------------------------------- FUNCTIONS ----------------------------------
 
-
-def manual_install():
-    """
-    Installs the gzipped manual page to one of the non-empty 'manpath'.
-    """
-    install_prefix = os.path.dirname(os.path.abspath(__file__))
-    skaff_man_source = install_prefix + "/man/skaff.1"
-    skaff_man_candidates = None
-    skaff_man_target = None
-
-    with os.popen("manpath") as proc, TemporaryDirectory() as tmpdir:
-        skaff_man_candidates = proc.read().strip().split(os.pathsep)
-        for candidate in skaff_man_candidates:
-            # "Elect" the candidate directory with "rich" non-empty status
-            if dircmp(candidate, tmpdir).left_only:
-                skaff_man_target = candidate
-                break
-
-    if not skaff_man_candidates:
-        sys.exit("Output of the 'manpath' program cannot be parsed")
-
-    if not skaff_man_target:
-        sys.exit("All the directories specified in 'manpath' is empty")
-
-    # 'skaff' program belongs to "Section 1: User Commands and Tools"
-    for tail in ("/man1/", os.path.basename(skaff_man_source), ".gz"):
-        skaff_man_target += tail
-
-    # Based on example from
-    # https://docs.python.org/3/library/gzip.html
-    with open(skaff_man_source, "rb") as input_manpage:
-        with gzip.open(skaff_man_target, "wb") as output_manpage:
-            shutil.copyfileobj(input_manpage, output_manpage)
-
-    # Finally rebuild the manpage database
-    os.system("mandb")
-
-    if "--record" in sys.argv:
-        with open(sys.argv[sys.argv.index("--record") + 1], "a") as output:
-            output.write(skaff_man_target + "\n")
 
 if __name__ == "__main__":
     main()

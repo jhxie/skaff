@@ -9,7 +9,7 @@ import os
 import pwd
 import unittest
 
-from skaff import SkaffConfig
+from skaff.config import SkaffConfig
 from tempfile import TemporaryDirectory
 # --------------------------------- MODULES -----------------------------------
 
@@ -130,7 +130,10 @@ class TestConfig(unittest.TestCase):
 
         # '_author_get()' must return identical term if GECOS field is defined
         if pw_record.pw_gecos:
-            self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_gecos)
+            author = pw_record.pw_gecos
+            if author.endswith(","):
+                author = author.strip(",")
+            self.assertEqual(SkaffConfig.author_fetch(), author)
         # Otherwise it must matches the current user's login name
         elif pw_record.pw_name:
             self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_name)
@@ -285,7 +288,8 @@ class TestConfig(unittest.TestCase):
     def test_license_get(self):
         # Here 'bsd2' license is chosen to be overridden even though
         # those licenses rarely (if at all) need to be "re-defined".
-        bsd2_text = ("Legal Text to be Written by Lawyers")
+        bsd2_text = ("Legal Text to be Written by Lawyers"
+                     "with Some Extra Strings Attached")
         bsd2_markdown = (
             "Licensed under the BSD 2 Clause License.  \n"
             "Distributed under the BSD 2 Clause License.  \n\n")

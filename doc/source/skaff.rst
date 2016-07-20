@@ -29,10 +29,18 @@ skaff.config module
     :undoc-members:
     :show-inheritance:
 
-skaff.core module
+skaff.driver module
 -------------------
 
-.. automodule:: skaff.core
+.. automodule:: skaff.driver
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+skaff.manualtools module
+-------------------
+
+.. automodule:: skaff.manualtools
     :members:
     :undoc-members:
     :show-inheritance:

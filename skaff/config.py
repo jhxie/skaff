@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Custom configuration type definition used for the 'core' skaff module.
+Custom configuration type definition used for the 'driver' skaff module.
 """
 
 # --------------------------------- MODULES -----------------------------------
@@ -32,7 +32,7 @@ class SkaffConfig:
     # NOTE: 'languages', 'licenses', and 'templates' attributes may be dropped
     # without actually affecting the behavior of this class since mutators for
     # all three ('language_set', 'license_set', 'templates_set') automatically
-    # call 'languages_probe' and 'licenses_probe' 'templates_probe'
+    # call 'languages_probe', 'licenses_probe', and 'templates_probe'
     # respectively to enforce the dependency.
     # However, for verbosity and most importantly completeness they are listed
     # here as well: the only drawback I can think of is THREE MORE REDUNDANT
@@ -630,11 +630,6 @@ class SkaffConfig:
                                      ", ".join(temp_license_dict.keys())))
 
         self.__config["licenses"] |= temp_license_dict[".txt"]
-        # rootDir = '.'
-        # for dirName, subdirList, fileList in os.walk(rootDir):
-        #     print('Found directory: %s' % dirName)
-        #     for fname in fileList:
-        #         print('\t%s' % fname)
 
     def licenses_validate(self):
         """
@@ -687,7 +682,7 @@ class SkaffConfig:
 
         Supported keyword arguments:
 
-        'config': path containing 'skaff.json' configuration file.
+        'config': path containing 'skaff.conf' configuration file.
         Default is:
         "$HOME/.config/skaff/"
 
@@ -715,18 +710,20 @@ class SkaffConfig:
                               ", ".join(keys)))
 
         kwargs.setdefault("config", user_config)
-        kwargs.setdefault("template", user_template)
         kwargs.setdefault("license", user_license)
+        kwargs.setdefault("template", user_template)
 
         self.__config["paths"] = dict()
-        self.__config["paths"]["config"] = kwargs["config"]
-        self.__config["paths"]["license"] = kwargs["license"]
-        self.__config["paths"]["template"] = kwargs["template"]
+        for key in keys:
+            self.__config["paths"][key] = kwargs[key]
 
     def paths_get(self, *args):
         """
         Gets the paths containing configuration, template, and license files.
-        Accepted arguments are strings: 'config', 'license' and 'template'.
+        Accepted arguments are the following strings:
+        'config':
+        'license':
+        'template':
 
         If called without any actual argument, returns a deep copy of the
         internal dictionary containing all the stored key-value pairs.

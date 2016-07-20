@@ -3,12 +3,15 @@ This document records all notable changes to Skaff.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0 (Upcoming)
-* Add **json-parsing** functionality for saving/restoring configurations
-* Add sample header file (under *src* subdirectory) generation functionality
+* Add **ini-parsing** functionality for saving/restoring configurations
+* Add custom python module based **hook** support for different
+**file-creation** events
+* Add sample header file (under *include* subdirectory) generation
+functionality
 * Add support for **user-defined** programming languages, subdirectories,
 licenses, and templates.
 * Allow specifying *more than one* author(s) for any project
-* Finalize a stable API for *core* module based on *SkaffConfig* class
+* Finalize a stable API for *driver* module based on *SkaffConfig* class
 * Set up a dedicated website hosted by *GitHubPages* based on existing template
 
 ## 0.9 (2016-06-05)
