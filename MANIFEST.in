@@ -1,6 +1,9 @@
+include CHANGELOG.md
 include README.md
 include LICENSE.txt
 recursive-include skaff/config *
+recursive-include doc *
 recursive-include man *
+recursive-include tests *
 # global-exclude __pycache__
 # global-exclude *.py[co]

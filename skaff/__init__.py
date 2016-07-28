@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+"""
+A collection of extensible tools used for project scaffolding that comes with
+default C/C++ support.
+"""
+
 # -------------------------------- COPYRIGHT ----------------------------------
 # Copyright © 2016 Jiahui Xie
 # All rights reserved.
@@ -44,6 +49,7 @@ __version__ = "1.0"
 # "
 # from skaff import getkey
 # "
+# (only used in 'driver_test' unit test module to access private functions)
 # from breaking -- DEPRECATED
 from skaff.clitools import getkey
 from skaff.clitools import timeout
@@ -53,7 +59,7 @@ from skaff.clitools import SmartFormatter
 
 from skaff.config import SkaffConfig
 
-from skaff.driver import skaff
+from skaff.driver import skaff_drive
 from skaff.driver import skaff_version_get
 from skaff.driver import _arguments_check
 from skaff.driver import _conf_doc_prompt

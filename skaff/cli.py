@@ -14,7 +14,7 @@ from skaff.clitools import (
     SmartFormatter
 )
 from skaff.driver import (
-    skaff,
+    skaff_drive,
     skaff_version_get
 )
 # --------------------------------- MODULES -----------------------------------
@@ -78,7 +78,7 @@ def main():
         skaff_cli_dict[attr] = getattr(args, attr)
 
     config = SkaffConfig(**skaff_cli_dict)
-    skaff(config)
+    skaff_drive(config)
 # -------------------------------- FUNCTIONS ----------------------------------
 
 

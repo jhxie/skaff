@@ -30,7 +30,7 @@ from skaff import __version__
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def skaff(config):
+def skaff_drive(config):
     """
     Creates all the necessary subdirectories in addition to the project root.
     """

@@ -23,11 +23,14 @@ def manual_check(manual):
 
     Files that are considered to be unix manual page format must end with file
     extensions that are solely consists of digits 1 to 9 excluding 0.
+
+    NOTE: Man-page section 9 is a non-POSIX standard (convention adopted by
+    both Linux and FreeBSD) commonly used for documenting "Kernel Routines".
     """
     if not isinstance(manual, str):
         raise TypeError("'manual' argument must be of 'str' type")
 
-    # The "lazy evulation" property of the builtin 'all' function ensures that
+    # The "lazy evaluation" property of the builtin 'all' function ensures that
     # the second lambda would NEVER be evaluated just in case 'x' is a string
     # of zero length
     qualifiers = [

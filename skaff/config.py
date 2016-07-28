@@ -776,7 +776,12 @@ class SkaffConfig:
         Sets the name(s) of the subdirectory(ies) within the project(s)' base
         directory(ies).
         Defaults to
-        {"build", "coccinelle", "doc", "examples", "img", "src", "tests"}
+        {
+        "build", "cmake", "contrib",
+        "doc", "examples", "include",
+        "misc", "misc" + os.sep + "conf", "misc" + os.sep + "img",
+        "src", "tests", "tools"
+        }
         if left as empty or 'None'.
         Platform-dependent path separator will be appended if missing.
         This member function is called by the constructor by default.
@@ -785,15 +790,20 @@ class SkaffConfig:
         containing instance of 'str'(s).
         """
         if None == subdirectories:
-            self.__config["subdirectories"] = set((
+            self.__config["subdirectories"] = {
                 "build",
-                "coccinelle",
+                "cmake",
+                "contrib",
                 "doc",
                 "examples",
-                "img",
+                "include",
+                "misc",
+                "misc" + os.sep + "conf",
+                "misc" + os.sep + "img",
                 "src",
-                "tests"
-            ))
+                "tests",
+                "tools"
+            }
             return
 
         if not isinstance(subdirectories, collections.Iterable):

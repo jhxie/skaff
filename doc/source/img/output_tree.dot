@@ -1,22 +1,36 @@
 graph {
+    /* Level 1 Vertexes */
     root[label="nihil", shape="circle"];
-    header[label="nihil", shape="circle"];
-
     build[shape="circle"];
-    coccinelle[shape="circle"];
+    cmake[shape="circle"];
+    contrib[shape="circle"];
     doc[shape="circle"];
     examples[shape="circle"];
-    img[shape="circle"];
     include[shape="circle"];
+    misc[shape="circle"];
     src[shape="circle"];
     tests[shape="circle"];
+    tools[shape="circle"];
 
+    /* Level 1 Edges */
     root -- build;
-    root -- coccinelle;
+    root -- cmake;
+    root -- contrib;
     root -- doc;
     root -- examples;
-    root -- img;
-    root -- include -- header;
+    root -- include;
+    root -- misc;
     root -- src;
     root -- tests;
+    root -- tools;
+
+    /* Level 2 Vertexes */
+    conf[shape="circle"];
+    header[label="nihil", shape="circle"];
+    img[shape="circle"];
+
+    /* Level 2 Edges */
+    include -- header;
+    misc -- conf;
+    misc -- img;
 }

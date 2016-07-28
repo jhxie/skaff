@@ -31,14 +31,14 @@ class TestDriver(unittest.TestCase):
         # function a new 'SkaffConfig' instance is created.
         self.tmp_dir.cleanup()
 
-    def test_skaff(self):
+    def test_skaff_drive(self):
         # Fail due to wrong type for the 'config' argument
         with self.assertRaises(ValueError):
-            skaff.skaff(None)
+            skaff.skaff_drive(None)
 
         # Fail due to pre-existing directory
         with self.assertRaises(FileExistsError):
-            skaff.skaff(self.config)
+            skaff.skaff_drive(self.config)
 
     def test_skaff_version_get(self):
         self.assertTrue(skaff.skaff_version_get())
