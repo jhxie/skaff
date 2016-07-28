@@ -9,10 +9,8 @@ import argparse
 import os
 import sys
 
-from skaff.clitools import (
-    SkaffConfig,
-    SmartFormatter
-)
+from skaff.clitools import SmartFormatter
+from skaff.config import SkaffConfig
 from skaff.driver import (
     skaff_drive,
     skaff_version_get
