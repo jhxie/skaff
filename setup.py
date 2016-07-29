@@ -17,7 +17,7 @@ from skaff.manualtools import (
 # -------------------------------- FUNCTIONS ----------------------------------
 def main():
     """
-    Main installation routine.
+    Main installation subroutine.
     """
     skaff_description = "A CMake-Based Project Scaffolding Tool"
     skaff_long_description = "Simple program that generates " +\
@@ -28,7 +28,7 @@ def main():
     skaff_man_sources = manuals_probe(skaff_man_source_dir)
     manual_conditions = (flag not in sys.argv for flag in flags)
 
-    # This whole installation routine and 'MANIFEST.in' file are based
+    # This whole installation subroutine and 'MANIFEST.in' file are based
     # on the guide at
     # https://pythonhosted.org/setuptools/setuptools.html
     # and

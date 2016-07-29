@@ -38,9 +38,9 @@ def skaff_drive(config):
         raise ValueError("'config' argument must be of 'SkaffConfig' type")
 
     for base_dir in config.directories_get():
-        os.mkdir(base_dir)
+        os.makedirs(base_dir)
         for sub_dir in config.subdirectories_get():
-            os.mkdir(base_dir + sub_dir)
+            os.makedirs(base_dir + sub_dir)
         # Create parent directory if it does not exist
         os.makedirs("{0}include{1}{2}".format(base_dir,
                                               os.sep,

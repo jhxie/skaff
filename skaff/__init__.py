@@ -39,7 +39,7 @@ default C/C++ support.
 # http://ranger.nongnu.org/
 __all__ = ["clitools", "config", "driver", "manualtools"]
 __author__ = "Jiahui Xie"
-__email__ = "jiahui.xie@outlook.com"
+__email__ = ".".join(__author__.lower().split()) + "@outlook.com"
 __license__ = "BSD2"
 __maintainer__ = __author__
 __version__ = "1.0"

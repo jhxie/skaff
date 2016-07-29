@@ -777,8 +777,9 @@ class SkaffConfig:
         directory(ies).
         Defaults to
         {
-        "build", "cmake", "contrib",
-        "doc", "examples", "include",
+        "build",
+        "cmake", "cmake" + os.sep + "caches", "cmake" + os.sep + "modules",
+        "contrib", "doc", "examples", "include",
         "misc", "misc" + os.sep + "conf", "misc" + os.sep + "img",
         "src", "tests", "tools"
         }
@@ -793,6 +794,8 @@ class SkaffConfig:
             self.__config["subdirectories"] = {
                 "build",
                 "cmake",
+                "cmake" + os.sep + "caches",
+                "cmake" + os.sep + "modules",
                 "contrib",
                 "doc",
                 "examples",

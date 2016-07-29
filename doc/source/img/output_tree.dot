@@ -25,11 +25,15 @@ graph {
     root -- tools;
 
     /* Level 2 Vertexes */
+    caches[shape="circle"];
     conf[shape="circle"];
     header[label="nihil", shape="circle"];
     img[shape="circle"];
+    modules[shape="circle"];
 
     /* Level 2 Edges */
+    cmake -- caches;
+    cmake -- modules;
     include -- header;
     misc -- conf;
     misc -- img;
