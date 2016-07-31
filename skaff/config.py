@@ -489,7 +489,7 @@ class SkaffConfig:
             authors=", ".join(self.authors_get())
         )
         readme_template = (
-            "![{0}](img{1}banner.png)\n"
+            "![{0}](misc{1}img{1}banner.png)\n"
             "\n## Overview\n"
             "\n## License\n"
         )

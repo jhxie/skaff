@@ -73,7 +73,7 @@ sudo dnf install python3-setuptools
 **FreeBSD** (10.3)  
 The *pkg* package manager requires a *specific* version number; unlike the two
 linux distributions listed above, so either install a version that supports
-python version above **3.3** or use the following command to install the most
+python version **3.3** or use the following command to install the most
 recent version:
 ```bash
 sudo pkg install `pkg search -ce 'Python packages installer' | sort | awk 'END{print $1}'`
@@ -87,16 +87,32 @@ resides and install by:
 sudo python3 ./setup.py install --optimize 1 --record install_log.txt
 ```
 
-To run the bundled unit test suite (done automatically by the continuous
+Alternatively, to install (mininal changes to the file system: only a
+single python script pointing to the 'cli.py' executable of source directory
+is actually installed to one of the system **$PATH**; manual pages and
+system-wide configuration files are not installed) the development version:
+```bash
+sudo python3 ./setup.py develop
+```
+
+To run the bundled unit test suite (done automatically by
+the continuous
 integration system):
 ```bash
 python3 ./setup.py test
 ```
 
-To uninstall the *skaff* program along with its data and manual pages:
+To uninstall the *skaff* program along with its data and manual pages (before
+doing so, make ensure there is **no whitespace characters** in all the paths
+recorded in the *install_log.txt* file; you have been **warned**):
 ```bash
 cat install_log.txt | sudo xargs rm -rf
 sudo mandb
+```
+
+To uninstall the development version:
+```bash
+sudo python3 ./setup.py develop --uninstall
 ```
 
 ## Supported Platforms

@@ -245,7 +245,7 @@ def _doc_create(directory, config):
         "* New feature here\n"
     ).format(directory[:-1].title())
     readme_header = (
-        "![{0}](img{1}banner.png)\n"
+        "![{0}](misc{1}img{1}banner.png)\n"
         "\n## Overview\n"
         "\n## License\n"
     ).format(directory[:-1], os.sep)
