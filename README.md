@@ -2,7 +2,7 @@
 
 ## Overview
 A collection of extensible tools used for project scaffolding that comes with
-default (CMake-based) C/C++ support.
+default (CMake-based) C/C++ support.  
 Click any of the following badges to see details.  
 [![Documentation Status](
 https://readthedocs.org/projects/skaff/badge/?version=latest)](

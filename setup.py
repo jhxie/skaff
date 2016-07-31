@@ -61,6 +61,8 @@ def main():
           url="http://github.com/jhxie/skaff",
           author=skaff.__author__,
           author_email=skaff.__email__,
+          maintainer=skaff.__maintainer__,
+          maintainer_email=skaff.__email__,
           license=skaff.__license__,
           packages=["skaff"],
           package_data={
