@@ -1,7 +1,8 @@
 ![skaff](img/banner.png)
 
 ## Overview
-A CMake-based project scaffolding tool.  
+A collection of extensible tools used for project scaffolding that comes with
+default (CMake-based) C/C++ support.
 Click any of the following badges to see details.  
 [![Documentation Status](
 https://readthedocs.org/projects/skaff/badge/?version=latest)](
@@ -103,7 +104,7 @@ python3 ./setup.py test
 ```
 
 To uninstall the *skaff* program along with its data and manual pages (before
-doing so, make ensure there is **no whitespace characters** in all the paths
+doing so, make sure there is **no whitespace characters** in all the paths
 recorded in the *install_log.txt* file; you have been **warned**):
 ```bash
 cat install_log.txt | sudo xargs rm -rf

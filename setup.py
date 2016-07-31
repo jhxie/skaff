@@ -20,8 +20,9 @@ def main():
     Main installation subroutine.
     """
     skaff_description = "A CMake-Based Project Scaffolding Tool"
-    skaff_long_description = "Simple program that generates " +\
-        "language specific (c/c++) cmake based project templates"
+    skaff_long_description = ("A collection of extensible tools used for "
+                              "project scaffolding that comes with default "
+                              "C/C++ support")
     flags = ("--dry-run", "-n", "--help")
     skaff_man_source_dir = (os.path.dirname(os.path.abspath(__file__)) +
                             os.sep + "man" + os.sep)
