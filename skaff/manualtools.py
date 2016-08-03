@@ -3,6 +3,16 @@
 """
 A suite of manual pages processing tools.
 """
+
+# ------------------------------- MODULE INFO ---------------------------------
+__all__ = [
+    "manual_check",
+    "manuals_install",
+    "manuals_probe",
+    "manpath_select"
+]
+# ------------------------------- MODULE INFO ---------------------------------
+
 # --------------------------------- MODULES -----------------------------------
 import gzip
 import os

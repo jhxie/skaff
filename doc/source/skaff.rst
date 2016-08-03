@@ -1,11 +1,11 @@
 skaff package
-===============
+=============
 
 Submodules
 ----------
 
 skaff.cli module
-------------------
+----------------
 
 .. figure:: img/cli.svg
 .. automodule:: skaff.cli
@@ -14,7 +14,7 @@ skaff.cli module
     :show-inheritance:
 
 skaff.clitools module
------------------------
+---------------------
 
 .. automodule:: skaff.clitools
     :members:
@@ -22,7 +22,7 @@ skaff.clitools module
     :show-inheritance:
 
 skaff.config module
----------------------
+-------------------
 
 .. automodule:: skaff.config
     :members:
@@ -38,7 +38,7 @@ skaff.driver module
     :show-inheritance:
 
 skaff.manualtools module
--------------------
+------------------------
 
 .. automodule:: skaff.manualtools
     :members:

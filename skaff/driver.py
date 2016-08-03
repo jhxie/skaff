@@ -4,6 +4,10 @@
 Main driver module of the skaff program.
 """
 
+# ------------------------------- MODULE INFO ---------------------------------
+__all__ = ["skaff_drive", "skaff_version_get"]
+# ------------------------------- MODULE INFO ---------------------------------
+
 # --------------------------------- MODULES -----------------------------------
 import collections
 import os
@@ -21,11 +25,13 @@ from skaff.clitools import (
     TimeOutError
 )
 from skaff.config import SkaffConfig
-from skaff import __author__
-from skaff import __email__
-from skaff import __license__
-from skaff import __maintainer__
-from skaff import __version__
+from skaff import (
+    __author__,
+    __email__,
+    __license__,
+    __maintainer__,
+    __version__
+)
 # --------------------------------- MODULES -----------------------------------
 
 

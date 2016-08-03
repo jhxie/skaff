@@ -4,6 +4,10 @@
 Custom configuration type definition used for the 'driver' skaff module.
 """
 
+# ------------------------------- MODULE INFO ---------------------------------
+__all__ = ["SkaffConfig"]
+# ------------------------------- MODULE INFO ---------------------------------
+
 # --------------------------------- MODULES -----------------------------------
 import collections
 import copy

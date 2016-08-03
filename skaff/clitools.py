@@ -3,6 +3,17 @@
 """
 A suite of command line based tools.
 """
+
+# ------------------------------- MODULE INFO ---------------------------------
+__all__ = [
+    "getkey",
+    "timeout",
+    "ANSIColor",
+    "SmartFormatter",
+    "TimeOutError"
+]
+# ------------------------------- MODULE INFO ---------------------------------
+
 # --------------------------------- MODULES -----------------------------------
 import argparse
 import errno

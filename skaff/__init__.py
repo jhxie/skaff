@@ -51,26 +51,32 @@ __version__ = "1.0"
 # "
 # (only used in 'driver_test' unit test module to access private functions)
 # from breaking -- DEPRECATED
-from skaff.clitools import getkey
-from skaff.clitools import timeout
-from skaff.clitools import ANSIColor
-from skaff.clitools import TimeOutError
-from skaff.clitools import SmartFormatter
+from skaff.clitools import (
+    getkey,
+    timeout,
+    ANSIColor,
+    SmartFormatter,
+    TimeOutError
+)
 
 from skaff.config import SkaffConfig
 
-from skaff.driver import skaff_drive
-from skaff.driver import skaff_version_get
-from skaff.driver import _arguments_check
-from skaff.driver import _conf_doc_prompt
-from skaff.driver import _conf_edit
-from skaff.driver import _conf_spawn
-from skaff.driver import _doc_create
-from skaff.driver import _doxyfile_generate
-from skaff.driver import _doxyfile_attr_match
-from skaff.driver import _license_sign
+from skaff.driver import (
+    skaff_drive,
+    skaff_version_get,
+    _arguments_check,
+    _conf_doc_prompt,
+    _conf_edit,
+    _conf_spawn,
+    _doc_create,
+    _doxyfile_generate,
+    _doxyfile_attr_match,
+    _license_sign
+)
 
-from skaff.manualtools import manual_check
-from skaff.manualtools import manuals_install
-from skaff.manualtools import manuals_probe
-from skaff.manualtools import manpath_select
+from skaff.manualtools import (
+    manual_check,
+    manuals_install,
+    manuals_probe,
+    manpath_select
+)
