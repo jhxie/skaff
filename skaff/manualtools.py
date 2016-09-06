@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-A suite of manual pages processing tools.
+A suite of manual-page processing tools.
 """
 
 # ------------------------------- MODULE INFO ---------------------------------
@@ -22,11 +22,15 @@ import sys
 
 from filecmp import dircmp
 from tempfile import TemporaryDirectory
+from typing import (
+    List,
+    Union
+)
 # --------------------------------- MODULES -----------------------------------
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def manual_check(manual):
+def manual_check(manual: str) -> bool:
     """
     Checks whether 'manual' actually is a valid unix man-page format manual;
     returns boolean value True if so, False otherwise.
@@ -55,7 +59,7 @@ def manual_check(manual):
         return False
 
 
-def manuals_install(directory, rebuild=True, *manuals):
+def manuals_install(directory: str, rebuild: bool=True, *manuals: str) -> None:
     """
     Installs the gzipped manual page(s) in 'manuals' to the subdirectory of
     'directory' that ends with an extra manual section number if it exists;
@@ -145,7 +149,7 @@ def _manuals_copy(directory, log=None, *manuals):
             log.write(target_manpage)
 
 
-def manuals_probe(*directories):
+def manuals_probe(*directories: str) -> List[str]:
     """
     Probes all directory specified in 'directories' and returns a sorted list
     containing all the manual page(s) found.
@@ -178,7 +182,7 @@ def manuals_probe(*directories):
     return sorted(result_manuals)
 
 
-def manpath_select(select=True):
+def manpath_select(select: bool=True) -> Union[str, List[str]]:
     """
     Parses the output of the 'manpath' program and returns one of its non-empty
     results (non-empty directory) if 'select' is set to True; otherwise returns

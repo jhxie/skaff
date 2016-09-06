@@ -11,26 +11,27 @@ import sys
 
 from skaff.clitools import SmartFormatter
 from skaff.config import SkaffConfig
-from skaff.driver import (
-    skaff_drive,
-    skaff_version_get
+from skaff.driver import skaff_drive
+from skaff.info import (
+    skaff_description_get,
+    skaff_info_get
 )
 # --------------------------------- MODULES -----------------------------------
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def main():
+def main() -> None:
     """
-    Parses and validates command line option flags, then invoke 'skaff()'.
+    Parses and validates command line option flags, then calls 'skaff_drive'.
     """
     if "posix" != os.name:
         sys.exit("This program is only mean to be used on POSIX systems.")
 
-    skaff_cli_description = "A CMake-Based Project Scaffolding Tool"
+    skaff_cli_description = skaff_description_get(short=True)
     skaff_cli_dict = dict()
 
     # Fall back to SmartFormatter to let the string returned
-    # by 'skaff_version_get()' function print properly
+    # by 'skaff_info_get()' function print properly
     parser = argparse.ArgumentParser(description=skaff_cli_description,
                                      formatter_class=SmartFormatter,
                                      prog="skaff")
@@ -65,7 +66,7 @@ def main():
     parser.add_argument("-V",
                         "--version",
                         action="version",
-                        version=skaff_version_get(),
+                        version=skaff_info_get(),
                         help="print version of skaff and exit")
 
     args = parser.parse_args()

@@ -5,7 +5,7 @@ Main driver module of the skaff program.
 """
 
 # ------------------------------- MODULE INFO ---------------------------------
-__all__ = ["skaff_drive", "skaff_version_get"]
+__all__ = ["skaff_drive"]
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
@@ -25,18 +25,11 @@ from skaff.clitools import (
     TimeOutError
 )
 from skaff.config import SkaffConfig
-from skaff import (
-    __author__,
-    __email__,
-    __license__,
-    __maintainer__,
-    __version__
-)
 # --------------------------------- MODULES -----------------------------------
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def skaff_drive(config):
+def skaff_drive(config: SkaffConfig) -> None:
     """
     Creates all the necessary subdirectories in addition to the project root.
     """
@@ -53,27 +46,6 @@ def skaff_drive(config):
                                               os.path.basename(base_dir[:-1])))
         _license_sign(base_dir, config)
         _conf_doc_prompt(base_dir, config)
-
-
-def skaff_version_get():
-    """
-    Returns the version information string of the skaff program.
-    """
-    module_info_dict = {"author": __author__,
-                        "email": __email__,
-                        "license": __license__,
-                        "maintainer": __maintainer__,
-                        "version": __version__,
-                        "year": datetime.now().year}
-    skaff_version_info = (
-        "skaff "
-        "(A CMake-based project scaffolding tool) {version}\n"
-        "Copyright (C) {year} {author}.\n"
-        "Licensed and distributed under the BSD 2-Clause License.\n"
-        "This is free software: you are free to change and redistribute it.\n"
-        "There is NO WARRANTY, to the extent permitted by law.\n\n"
-        "Written by {author}.".format(**module_info_dict))
-    return skaff_version_info
 
 
 def _arguments_check(directory, config):
@@ -256,7 +228,7 @@ def _doc_create(directory, config):
         "\n## License\n"
     ).format(directory[:-1], os.sep)
     changelog_text = directory + "CHANGELOG.md"
-    copyright_line = "Copyright &copy; {year} {authors}\n".format(
+    copyright_line = "Copyright © {year} {authors}\n".format(
         year=datetime.now().year,
         authors=", ".join(config.authors_get())
     )

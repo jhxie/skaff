@@ -6,6 +6,7 @@ import skaff
 import sys
 
 from setuptools import setup
+from skaff.info import skaff_description_get
 from skaff.manualtools import (
     manuals_install,
     manuals_probe,
@@ -15,14 +16,12 @@ from skaff.manualtools import (
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def main():
+def main() -> None:
     """
     Main installation subroutine.
     """
-    skaff_description = "A CMake-Based Project Scaffolding Tool"
-    skaff_long_description = ("A collection of extensible tools used for "
-                              "project scaffolding that comes with default "
-                              "C/C++ support")
+    skaff_description = skaff_description_get(short=True)
+    skaff_long_description = skaff_description_get(short=False)
     flags = ("--dry-run", "-n", "--help")
     skaff_man_source_dir = (os.path.dirname(os.path.abspath(__file__)) +
                             os.sep + "man" + os.sep)
@@ -52,8 +51,7 @@ def main():
               "Operating System :: POSIX",
               "Programming Language :: Python :: 3",
               # 'shutil.get_terminal_size()' is supported starting at 3.3
-              "Programming Language :: Python :: 3.3",
-              "Programming Language :: Python :: 3.4",
+              # module 'typing' is supported starting at 3.5
               "Programming Language :: Python :: 3.5",
               "Topic :: Software Development :: Build Tools"
           ],

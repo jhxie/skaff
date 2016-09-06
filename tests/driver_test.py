@@ -14,6 +14,7 @@ import skaff
 # --------------------------------- MODULES -----------------------------------
 
 
+# --------------------------------- CLASSES -----------------------------------
 class TestDriver(unittest.TestCase):
     """
     Main unit testing suite, which is a subclass of 'unittest.TestCase'.
@@ -39,9 +40,6 @@ class TestDriver(unittest.TestCase):
         # Fail due to pre-existing directory
         with self.assertRaises(FileExistsError):
             skaff.skaff_drive(self.config)
-
-    def test_skaff_version_get(self):
-        self.assertTrue(skaff.skaff_version_get())
 
     def test__arguments_check(self):
         # Fail because 'directory' does not exist
@@ -154,6 +152,7 @@ class TestDriver(unittest.TestCase):
         # the 'directory' is no longer empty
         with self.assertRaises(OSError):
             os.rmdir(self.tmp_dir.name)
+# --------------------------------- CLASSES -----------------------------------
 
 if __name__ == "__main__":
     unittest.main()

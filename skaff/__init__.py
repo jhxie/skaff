@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 """
-A collection of extensible tools used for project scaffolding that comes with
-default C/C++ support.
+Skaff is a Python library for building programming language dependent
+scaffolding of software projects, and a command-line tool that uses this
+library with built-in (CMake-based) C/C++ support.
 """
 
 # -------------------------------- COPYRIGHT ----------------------------------
@@ -37,7 +38,7 @@ default C/C++ support.
 # ------------------------------- MODULE INFO ---------------------------------
 # Note the naming convention shown here coming from the 'ranger' program from
 # http://ranger.nongnu.org/
-__all__ = ["clitools", "config", "driver", "manualtools"]
+__all__ = ["clitools", "config", "driver", "info", "manualtools"]
 __author__ = "Jiahui Xie"
 __email__ = ".".join(__author__.lower().split()) + "@outlook.com"
 __license__ = "BSD2"
@@ -63,7 +64,6 @@ from skaff.config import SkaffConfig
 
 from skaff.driver import (
     skaff_drive,
-    skaff_version_get,
     _arguments_check,
     _conf_doc_prompt,
     _conf_edit,
@@ -72,6 +72,11 @@ from skaff.driver import (
     _doxyfile_generate,
     _doxyfile_attr_match,
     _license_sign
+)
+
+from skaff.info import (
+    skaff_description_get,
+    skaff_info_get
 )
 
 from skaff.manualtools import (

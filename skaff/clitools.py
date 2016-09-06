@@ -24,6 +24,7 @@ import sys
 import termios
 
 from functools import wraps
+from typing import Callable
 # --------------------------------- MODULES -----------------------------------
 
 
@@ -109,7 +110,7 @@ class SmartFormatter(argparse.HelpFormatter):
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def timeout(seconds, error_message=os.strerror(errno.ETIME)):
+def timeout(seconds: int, message: str=os.strerror(errno.ETIME)) -> Callable:
     """Sets a timer on a function; should be used as a decorator.
 
     Raises 'TimeOutError' upon expiration.
@@ -118,7 +119,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     # /questions/2281850/timeout-function-if-it-takes-too-long-to-finish
     def decorator(func):
         def _timeout_handle(signum, frame):
-            raise TimeOutError(error_message)
+            raise TimeOutError(message)
 
         def wrapper(*args, **kwargs):
             signal.signal(signal.SIGALRM, _timeout_handle)
@@ -134,7 +135,7 @@ def timeout(seconds, error_message=os.strerror(errno.ETIME)):
     return decorator
 
 
-def getkey():
+def getkey() -> str:
     """Waits for a single keypress on stdin.
 
     This is a silly function to call if you need to do it a lot because it has
@@ -155,7 +156,7 @@ def getkey():
         try:
             ret = msvcrt.getch()
         except KeyboardInterrupt:
-            ret = 0
+            ret = str()
         return ret
 
     fd = sys.stdin.fileno()
@@ -183,7 +184,7 @@ def getkey():
     try:
         ret = sys.stdin.read(1)  # returns a single character
     except KeyboardInterrupt:
-        ret = 0
+        ret = str()
     finally:
         # restore old state
         termios.tcsetattr(fd, termios.TCSAFLUSH, attrs_save)

@@ -3,12 +3,11 @@
 Overview
 --------
 
-| A collection of extensible tools used for project scaffolding that
-  comes with default (CMake-based) C/C++ support.
+| Skaff is a Python library for building programming language dependent
+  scaffolding of software projects, and a command-line tool that uses this
+  library with built-in (CMake-based) C/C++ support.
 | Click any of the following badges to see details.
-| |Documentation Status|
-| |License|
-| |Build Status|
+| |Documentation Status| |License| |Build Status|
 
 Getting Started
 ---------------
@@ -50,52 +49,56 @@ Versioning
 | Once the version number gets to **v1.0** it goes out of beta stage and
   would be released on `PyPI <https://pypi.python.org/pypi>`__ as well; more
   features may be added later on.
-| The changelog can be viewed `here <CHANGELOG.rst>`__.
+| The change log can be viewed `here <CHANGELOG.rst>`__.
 
-Installation
-------------
+Dependency
+----------
 
-| As mentioned in the above section, for now the only way to get the package is
-  here as well as the `BitBucket mirror <https://bitbucket.org/jhxie/skaff>`__;
-  there is no *binary* (or *compiled-bytecode,* if you prefer) package
-  available.
+- Python 3.5+
+- Setuptools 20.0+
 
-Once downloaded, make sure the version of python is **at least 3.3**:
+| Once downloaded, make sure the version of python is **at least 3.5**:
 
 .. code:: bash
 
     which python3 && python3 --version
 
---------------
-
-And also remember to have **python3-setuptools** installed:
-
-**Ubuntu** (14.04 - 16.04)
+| And also remember to have **python3-setuptools** installed:
+| **Ubuntu** (>= 16.04)
 
 .. code:: bash
 
     sudo apt-get install python3-setuptools
 
-**Fedora** (23)
-
-.. code:: bash
-
-    sudo dnf install python3-setuptools
-
-| **FreeBSD** (10.3)
+| **FreeBSD** (>= 10.3)
 | The *pkg* package manager requires a *specific* version number; unlike the
-  two linux distributions listed above, so either install a version that
-  supports python version **3.3** or use the following command to install the
+  Ubuntu linux distribution listed above, so either install a version that
+  supports python version **3.5** or use the following command to install the
   most recent version:
 
 .. code:: bash
 
     sudo pkg install `pkg search -ce 'Python packages installer' | sort | awk 'END{print $1}'`
 
---------------
+| To ensure there is no problems caused by Python version skew, run the bundled
+  unit test suite (done automatically by the continuous integration system):
 
-| Then simply change directory to where the un-compressed source directory
-  resides and install by:
+.. code:: bash
+
+    python3 ./setup.py test
+
+
+Installation
+------------
+
+| As mentioned in the *Versioning* section, for now the only way to get the
+  package is here as well as the
+  `BitBucket mirror <https://bitbucket.org/jhxie/skaff>`__;
+  there is no *binary* (or *compiled-bytecode,* if you prefer) package
+  available.
+
+| First grab the source code from here and then simply change directory to
+  where the un-compressed source directory resides and install by:
 
 .. code:: bash
 
@@ -109,13 +112,6 @@ And also remember to have **python3-setuptools** installed:
 .. code:: bash
 
     sudo python3 ./setup.py develop
-
-| To run the bundled unit test suite (done automatically by the continuous
-  integration system):
-
-.. code:: bash
-
-    python3 ./setup.py test
 
 | To uninstall the *skaff* program along with its data and manual pages
   (before doing so, make sure there is **no whitespace character** in all the
@@ -132,6 +128,7 @@ To uninstall the development version:
 .. code:: bash
 
     sudo python3 ./setup.py develop --uninstall
+    which skaff && sudo rm `which skaff`
 
 Supported Platforms
 -------------------
@@ -149,12 +146,9 @@ Credit
 -  The **BSD-2-Clause** badge is from
    `here <https://github.com/demhydraz/badge-collection>`__.
 -  `Inkscape <https://inkscape.org/>`__ is used to design the original
-   SVG format
-   logo.
--  Motivation from Douglas Mcilroy: "*As a programmer, it is your job to
-   put
-   yourself out of business. What you do today can be automated
-   tomorrow.*"
+   SVG format logo.
+-  Motivation from Douglas Mcilroy: "*As a programmer, it is your job to put
+   yourself out of business. What you do today can be automated tomorrow.*"
 
 License
 -------

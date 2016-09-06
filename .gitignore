@@ -88,5 +88,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
-*.swo
-*.swp
+# PyCharm project settings
+.idea
+
+# Vim swap files
+*.sw[op]
+*.sw
