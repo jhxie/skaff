@@ -13,7 +13,12 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 endif()
 
 # remember to override this variable if debug info is not needed
-set(CMAKE_BUILD_TYPE "Debug")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
+        "Choose the type of build, options are:
+        None Debug Release RelWithDebInfo MinSizeRel."
+        FORCE)
+endif()
 
 # add support for YCM
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
@@ -39,6 +44,10 @@ set(CMAKE_C_STANDARD 99)
 # i.e. make the c99 standard a requirement
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# make sure that our source directory is on the current cmake module path so
+# that we can include cmake files from this directory
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
 # test the existence of pthread run-time on the system
 find_package(Threads REQUIRED)
 if(NOT CMAKE_THREAD_LIBS_INIT)
@@ -55,6 +64,6 @@ endif()
 # relative root directory of this project
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
-    )
+)
 
 add_subdirectory(src)

@@ -5,7 +5,13 @@
 # SET(BUILD_SHARED_LIBRARIES OFF)
 # SET(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 
-add_executable(main main.c)
+add_executable(main "main.c")
+
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    target_compile_definitions(main PRIVATE  PRINT_DEBUG_INFO=1)
+endif()
+
+target_link_libraries(main m)
 
 # target_link_libraries(timestamp ${CMAKE_THREAD_LIBS_INIT})
 # install(TARGETS main

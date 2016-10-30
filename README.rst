@@ -80,8 +80,9 @@ Dependency
 
     sudo pkg install `pkg search -ce 'Python packages installer' | sort | awk 'END{print $1}'`
 
-| To ensure there is no problems caused by Python version skew, run the bundled
-  unit test suite (done automatically by the continuous integration system):
+| To ensure there are no problems caused by Python version skew, run the
+  bundled unit test suite (done automatically by the continuous integration
+  system):
 
 .. code:: bash
 
