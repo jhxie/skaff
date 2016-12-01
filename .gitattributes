@@ -1,3 +1,4 @@
+.gitattributes text eol=lf
 *.[ch] whitespace=tab-in-indent,trailing-space eol=lf
 *.cc whitespace=tab-in-indent,trailing-space eol=lf
 *.cpp whitespace=tab-in-indent,trailing-space eol=lf

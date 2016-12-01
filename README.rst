@@ -114,6 +114,13 @@ Installation
 
     sudo python3 ./setup.py develop
 
+| To try out the program without installing anything, simply treat it as an
+ordinary Python package (note this method is preferred if you are using
+*Windows* since the `setup.py <setup.py>`__ script would fail):
+.. code:: bash
+
+    python3 -m skaff.cli -h
+
 | To uninstall the *skaff* program along with its data and manual pages
   (before doing so, make sure there is **no whitespace character** in all the
   paths recorded in the *install\_log.txt* file created by the previous
@@ -137,6 +144,7 @@ Supported Platforms
 -  Linux
 -  FreeBSD
 -  Mac OS X (haven't tested, but I see no reason why it doesn't work)
+-  Windows
 
 Credit
 ------
