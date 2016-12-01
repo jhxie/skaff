@@ -117,6 +117,7 @@ Installation
 | To try out the program without installing anything, simply treat it as an
 ordinary Python package (note this method is preferred if you are using
 *Windows* since the `setup.py <setup.py>`__ script would fail):
+
 .. code:: bash
 
     python3 -m skaff.cli -h
@@ -144,7 +145,7 @@ Supported Platforms
 -  Linux
 -  FreeBSD
 -  Mac OS X (haven't tested, but I see no reason why it doesn't work)
--  Windows
+-  Windows (only 10 is tested)
 
 Credit
 ------
