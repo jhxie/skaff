@@ -24,8 +24,8 @@ def main() -> None:
     """
     Parses and validates command line option flags, then calls 'skaff_drive'.
     """
-    if "posix" != os.name:
-        sys.exit("This program is only mean to be used on POSIX systems.")
+    # if "posix" != os.name:
+    #     sys.exit("This program is only mean to be used on POSIX systems.")
 
     skaff_cli_description = skaff_description_get(short=True)
     skaff_cli_dict = dict()

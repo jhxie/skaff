@@ -48,16 +48,16 @@ __version__ = "1.0"
 
 # To keep older "one level import statements" like
 # "
-# from skaff import getkey
+# from skaff import key_get
 # "
 # (only used in 'driver_test' unit test module to access private functions)
 # from breaking -- DEPRECATED
 from skaff.clitools import (
-    getkey,
+    key_get,
     timeout,
+    timed_key_get,
     ANSIColor,
-    SmartFormatter,
-    TimeOutError
+    SmartFormatter
 )
 
 from skaff.config import SkaffConfig

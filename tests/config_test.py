@@ -6,7 +6,10 @@ Unit testing suite for config module.
 # --------------------------------- MODULES -----------------------------------
 import collections
 import os
-import pwd
+if "posix" == os.name:
+    import pwd
+elif "nt" == os.name:
+    import getpass
 import unittest
 
 from skaff.config import SkaffConfig
@@ -125,22 +128,32 @@ class TestConfig(unittest.TestCase):
         self.assertCountEqual(authors, get_result)
 
     def test_author_fetch(self):
-        # Get system password database record based on current user UID
-        pw_record = pwd.getpwuid(os.getuid())
 
-        # '_author_get()' must return identical term if GECOS field is defined
-        if pw_record.pw_gecos:
-            author = pw_record.pw_gecos
-            if author.endswith(","):
-                author = author.strip(",")
-            self.assertEqual(SkaffConfig.author_fetch(), author)
-        # Otherwise it must matches the current user's login name
-        elif pw_record.pw_name:
-            self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_name)
-        # If none of the above works, 'RuntimeError' is raised
-        else:
-            with self.assertRaises(RuntimeError):
-                SkaffConfig.author_fetch()
+        if "posix" == os.name:
+            # Get system password database record based on current user UID
+            pw_record = pwd.getpwuid(os.getuid())
+
+            # '_author_get()' must return identical term
+            # if GECOS field is defined
+            if pw_record.pw_gecos:
+                author = pw_record.pw_gecos
+                if author.endswith(","):
+                    author = author.strip(",")
+                self.assertEqual(SkaffConfig.author_fetch(), author)
+            # Otherwise it must matches the current user's login name
+            elif pw_record.pw_name:
+                self.assertEqual(SkaffConfig.author_fetch(), pw_record.pw_name)
+            # If none of the above works, 'RuntimeError' is raised
+            else:
+                with self.assertRaises(RuntimeError):
+                    SkaffConfig.author_fetch()
+        elif "nt" == os.name:
+            author = getpass.getuser()
+            if author:
+                self.assertEqual(SkaffConfig.author_fetch(), author)
+            else:
+                with self.assertRaises(RuntimeError):
+                    SkaffConfig.author_fetch()
 
     def test_basepath_fetch(self):
         basepath = SkaffConfig.basepath_fetch()
@@ -294,7 +307,7 @@ class TestConfig(unittest.TestCase):
             "Licensed under the BSD 2 Clause License.  \n"
             "Distributed under the BSD 2 Clause License.  \n\n")
         bsd2_text_name = self.tmp_dir.name + "bsd2.txt"
-        bsd2_markdown_name = self.tmp_dir.name + "bsd2.md"
+        bsd2_md_name = self.tmp_dir.name + "bsd2.md"
         normalize_funcs = (os.path.basename, os.path.splitext, lambda x: x[0])
         system_licenses = None
         user_licenses = None
@@ -304,38 +317,38 @@ class TestConfig(unittest.TestCase):
             self.config.license_set(license)
             self.assertEqual(license, self.config.license_get())
 
-        # The following tests abide by the similar test patern used in
+        # The following tests abide by the similar test pattern used in
         # 'test_license_list'; but slightly simpler.
         # Revert to the default license
         self.config.license_set()
         system_licenses = self.config.license_get(fullname=True)
 
-        with open(bsd2_text_name, "w") as license_text:
+        with open(bsd2_text_name, "w", encoding="utf-8") as license_text:
             license_text.write(bsd2_text)
 
-        with open(bsd2_markdown_name, "w") as license_markdown:
+        with open(bsd2_md_name, "w", encoding="utf-8") as license_markdown:
             license_markdown.write(bsd2_markdown)
 
-        # Add the overriden 'bsd2' license to the internal database
+        # Add the overridden 'bsd2' license to the internal database
         self.config.paths_set(license=self.tmp_dir.name)
         self.config.licenses_probe()
         user_licenses = self.config.license_get(fullname=True)
 
         # Success if two versions of qualified licenses differ;
-        # should be the case if 'bsd2' license is successfully overriden
+        # should be the case if 'bsd2' license is successfully overridden
         self.assertNotEqual(system_licenses, user_licenses)
 
         # Success if the fully qualified version of the licenses are equivalent
         # to each other after removing paths and file extensions
         for licenses in (system_licenses, user_licenses):
-            for index, license in enumerate(licenses):
+            for index in range(len(licenses)):
                 for func in normalize_funcs:
-                    licenses[index] = func(license)
+                    licenses[index] = func(licenses[index])
 
         self.assertEqual(system_licenses, user_licenses)
 
         os.remove(bsd2_text_name)
-        os.remove(bsd2_markdown_name)
+        os.remove(bsd2_md_name)
 
     def test_license_sign(self):
         chosen_license = "bsd2"
