@@ -103,7 +103,7 @@ class TestDriver(unittest.TestCase):
         argument_dict = dict(project_name="Project", line=None)
         attr_dict = {"PROJECT_NAME":
                      "\"{project_name}\"".format(**argument_dict),
-                     "OUTPUT_DIRECTORY": "./doc",
+                     "OUTPUT_DIRECTORY": "." + os.sep + "doc",
                      "TAB_SIZE": 8,
                      "EXTRACT_ALL": "YES",
                      "EXTRACT_STATIC": "YES",

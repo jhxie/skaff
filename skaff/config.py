@@ -13,7 +13,10 @@ import collections
 import copy
 import glob
 import os
-import pwd
+if "posix" == os.name:
+    import pwd
+elif "nt" == os.name:
+    import getpass
 import shutil
 
 from datetime import datetime
@@ -225,19 +228,22 @@ class SkaffConfig:
         # argument, default to the GECOS field, which normally stands for the
         # full username of the current user; otherwise fall back to login name.
         author = None
-        pw_record = pwd.getpwuid(os.getuid())
+        if "posix" == os.name:
+            pw_record = pwd.getpwuid(os.getuid())
 
-        # In Ubuntu 16.04 LTS, the default GECOS field is suffixed by 3 extra
-        # commas for some reason, so they are tested and removed if it is the
-        # case.
-        # Similar anomaly has not been found on the other linux distribution
-        # tested (Fedora) or FreeBSD.
-        if pw_record.pw_gecos:
-            author = pw_record.pw_gecos
-            if author.endswith(","):
-                author = author.strip(",")
-        elif pw_record.pw_name:
-            author = pw_record.pw_name
+            # In Ubuntu 16.04 LTS, the default GECOS field is suffixed by 3
+            # extra commas for some reason, so they are tested and removed if
+            # it is the case.
+            # Similar anomaly has not been found on the other linux distribution
+            # tested (Fedora) or FreeBSD.
+            if pw_record.pw_gecos:
+                author = pw_record.pw_gecos
+                if author.endswith(","):
+                    author = author.strip(",")
+            elif pw_record.pw_name:
+                author = pw_record.pw_name
+        elif "nt" == os.name:
+            author = getpass.getuser()
 
         if author:
             return author
@@ -501,26 +507,26 @@ class SkaffConfig:
         sign_required_licenses = ("bsd2", "bsd3", "mit")
 
         for directory in self.directories_get():
-            license_target = directory + "LICENSE.txt"
+            lse_tgt = directory + "LICENSE.txt"
             readme_target = directory + "README.md"
             readme_header = readme_template.format(directory[:-1], os.sep)
-            for license_source in license_sources:
-                if license_source.endswith(".md"):
-                    with open(license_source, "r") as from_file:
+            for lse_src in license_sources:
+                if lse_src.endswith(".md"):
+                    with open(lse_src, "r", encoding="utf-8") as from_file:
                         license_markdown = from_file.read()
-                    with open(readme_target, "w") as to_file:
+                    with open(readme_target, "w", encoding="utf-8") as to_file:
                         to_file.write(readme_header)
                         to_file.write(copyright_line)
                         to_file.write(license_markdown)
                 else:
                     if self.license_get() in sign_required_licenses:
-                        with open(license_source, "r") as from_file:
+                        with open(lse_src, "r", encoding="utf-8") as from_file:
                             vanilla_license_text = from_file.read()
-                        with open(license_target, "w") as to_file:
+                        with open(lse_tgt, "w", encoding="utf-8") as to_file:
                             to_file.write(copyright_line)
                             to_file.write(vanilla_license_text)
                     else:
-                        shutil.copy(license_source, license_target)
+                        shutil.copy(lse_src, lse_tgt)
 
     @staticmethod
     def licenses_fetch():

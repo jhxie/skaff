@@ -19,10 +19,8 @@ import tempfile
 from datetime import datetime
 from distutils import spawn
 from skaff.clitools import (
-    getkey,
-    timeout,
-    ANSIColor,
-    TimeOutError
+    timed_key_get,
+    ANSIColor
 )
 from skaff.config import SkaffConfig
 # --------------------------------- MODULES -----------------------------------
@@ -93,20 +91,26 @@ def _conf_doc_prompt(directory, config):
     quiet = config.quiet_get()
 
     if not quiet:
-        os.system("clear")
+        if "posix" == os.name:
+            os.system("clear")
+        elif "nt" == os.name:
+            os.system("cls")
         print("-" * terminal_info.columns + "\n")
         for line in hints:
             print(line.center(terminal_info.columns))
         print("\n" + "-" * terminal_info.columns)
         try:
             while "c" != key.lower():
-                key = timeout(5)(getkey)()
+                key = timed_key_get(5)
                 if "a" == key.lower() or "k" == key.lower():
                     config.quiet_set(True)
                     break
-        except TimeOutError:
+        except TimeoutError:
             pass
-        os.system("clear")
+        if "posix" == os.name:
+            os.system("clear")
+        elif "nt" == os.name:
+            os.system("cls")
 
     _conf_spawn(directory, config)
     _doc_create(directory, config)
@@ -137,12 +141,14 @@ def _conf_edit(directory, conf_files):
 
     # Default to 'vi' or 'vim' if the environment variable is not set.
     default_editor = None
-    editor_candidates = ("vim", "vi")
+    editor_candidates = ("vim", "vi", "notepad")
 
     for candidate in editor_candidates:
         if spawn.find_executable(candidate):
             default_editor = candidate
             break
+    else:
+        raise RuntimeError("editors not found")
 
     editor = os.environ.get("EDITOR", default_editor)
 
@@ -191,15 +197,17 @@ def _conf_spawn(directory, config):
         "template" + os.sep
     conf_target_prefix = directory + "."
     travis_file = "travis.yml"
+    travis_source_file = conf_source_prefix + travis_file
+    travis_target_file = conf_target_prefix + travis_file
     language_header = "language: {0}\n".format(language)
 
     for configuration in conf_files:
         shutil.copy(conf_source_prefix + configuration + ".txt",
                     conf_target_prefix + configuration)
 
-    with open(conf_source_prefix + travis_file, "r") as travis_source:
+    with open(travis_source_file, "r", encoding="utf-8") as travis_source:
         travis_text = travis_source.read()
-        with open(conf_target_prefix + travis_file, "w") as travis_target:
+        with open(travis_target_file, "w", encoding="utf-8") as travis_target:
             travis_target.write(language_header)
             travis_target.write(travis_text)
     if not quiet:
@@ -238,14 +246,14 @@ def _doc_create(directory, config):
         config.license_get() + ".md"
     readme_text = directory + "README.md"
 
-    with open(license_text, "r") as license_file:
+    with open(license_text, "r", encoding="utf-8") as license_file:
         license_markdown = license_file.read()
-        with open(readme_text, "w") as readme_file:
+        with open(readme_text, "w", encoding="utf-8") as readme_file:
             readme_file.write(readme_header)
             readme_file.write(copyright_line)
             readme_file.write(license_markdown)
 
-    with open(changelog_text, "w") as changelog_file:
+    with open(changelog_text, "w", encoding="utf-8") as changelog_file:
         changelog_file.write(changelog_header)
 
     _doxyfile_generate(directory, config)
@@ -368,9 +376,9 @@ def _license_sign(directory, config):
     license_target = directory + "LICENSE.txt"
 
     if config.license_get() in frozenset(("bsd2", "bsd3", "mit")):
-        with open(license_source, "r") as from_file:
+        with open(license_source, "r", encoding="utf-8") as from_file:
             vanilla_license_text = from_file.read()
-            with open(license_target, "w") as to_file:
+            with open(license_target, "w", encoding="utf-8") as to_file:
                 to_file.write(copyright_line)
                 to_file.write(vanilla_license_text)
     else:

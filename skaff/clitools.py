@@ -6,22 +6,26 @@ A suite of command line based tools.
 
 # ------------------------------- MODULE INFO ---------------------------------
 __all__ = [
-    "getkey",
+    "key_get",
+    "timed_key_get",
     "timeout",
     "ANSIColor",
     "SmartFormatter",
-    "TimeOutError"
 ]
 # ------------------------------- MODULE INFO ---------------------------------
 
 # --------------------------------- MODULES -----------------------------------
 import argparse
-import errno
-import fcntl
 import os
 import signal
 import sys
-import termios
+
+if "posix" == os.name:
+    import fcntl
+    import termios
+elif "nt" == os.name:
+    import msvcrt
+    import time
 
 from functools import wraps
 from typing import Callable
@@ -40,10 +44,6 @@ class ANSIColor:
     CYAN = "\x1b[36m"
     BOLD = "\x1b[1m"
     RESET = "\x1b[0m"
-
-
-class TimeOutError(Exception):
-    pass
 
 
 class SmartFormatter(argparse.HelpFormatter):
@@ -110,33 +110,63 @@ class SmartFormatter(argparse.HelpFormatter):
 
 
 # -------------------------------- FUNCTIONS ----------------------------------
-def timeout(seconds: int, message: str=os.strerror(errno.ETIME)) -> Callable:
-    """Sets a timer on a function; should be used as a decorator.
-
-    Raises 'TimeOutError' upon expiration.
+def timed_key_get(seconds: int) -> str:
     """
-    # Borrowed from stackoverflow:
-    # /questions/2281850/timeout-function-if-it-takes-too-long-to-finish
-    def decorator(func):
-        def _timeout_handle(signum, frame):
-            raise TimeOutError(message)
+    Gets a single key press from the terminal within the given number of
+    'seconds' and returns a 'str' representing the key pressed; returns empty
+    "" string upon time out.
 
-        def wrapper(*args, **kwargs):
-            signal.signal(signal.SIGALRM, _timeout_handle)
-            signal.alarm(seconds)
-            try:
-                result = func(*args, **kwargs)
-            finally:
-                signal.alarm(0)
-            return result
+    Based on the version from StackOverflow by Paul:
+    http://stackoverflow.com/questions/3471461/raw-input-and-timeout/3911560
+    """
+    if "posix" == os.name:
+        return timeout(seconds)(key_get)()
+    elif "nt" == os.name:
+        start_time = time.time()
+        key = str()
 
-        return wraps(func)(wrapper)
+        while True:
+            if msvcrt.kbhit():
+                key = key_get()
+                break
+            if len(key) == 0 and (time.time() - start_time) > seconds:
+                raise TimeoutError()
+        return key
 
-    return decorator
+
+def timeout(seconds: int) -> Callable:
+    """
+    Sets a timer on a function; should be used as a decorator.
+    Raises 'TimeOutError' upon expiration.
+
+    Reference (StackOverflow):
+    /questions/2281850/timeout-function-if-it-takes-too-long-to-finish
+    """
+    if "posix" == os.name:
+        def decorator(func):
+            def _timeout_handle(signum, frame):
+                raise TimeoutError()
+
+            def wrapper(*args, **kwargs):
+                signal.signal(signal.SIGALRM, _timeout_handle)
+                signal.alarm(seconds)
+                try:
+                    result = func(*args, **kwargs)
+                finally:
+                    signal.alarm(0)
+                return result
+
+            return wraps(func)(wrapper)
+
+        return decorator
+    elif "nt" == os.name:
+        raise NotImplementedError(("'timeout' is not implemented on "
+                                   "'Windows'"))
 
 
-def getkey() -> str:
-    """Waits for a single keypress on stdin.
+def key_get() -> str:
+    """
+    Waits for a single keypress on stdin.
 
     This is a silly function to call if you need to do it a lot because it has
     to store stdin's current setup, setup stdin for reading single keystrokes
@@ -146,48 +176,47 @@ def getkey() -> str:
     Returns the character of the key that was pressed (zero on
     KeyboardInterrupt which can happen when a signal gets handled)
 
+    Reference (StackOverflow):
+    /questions/983354/how-do-i-make-python-to-wait-for-a-pressed-key
     """
-    # Borrowed from stackoverflow:
-    # /questions/983354/how-do-i-make-python-to-wait-for-a-pressed-key
-    # Windows support is added but not tested.
-
-    if "nt" == os.name:
-        import msvcrt
+    if "posix" == os.name:
+        fd = sys.stdin.fileno()
+        # save old state
+        flags_save = fcntl.fcntl(fd, fcntl.F_GETFL)
+        attrs_save = termios.tcgetattr(fd)
+        # make raw - the way to do this comes from the termios(3) man page.
+        attrs = list(attrs_save)  # copy the stored version to update
+        # iflag
+        attrs[0] &= ~(termios.IGNBRK | termios.BRKINT | termios.PARMRK
+                      | termios.ISTRIP | termios.INLCR | termios. IGNCR
+                      | termios.ICRNL | termios.IXON)
+        # oflag
+        attrs[1] &= ~termios.OPOST
+        # cflag
+        attrs[2] &= ~(termios.CSIZE | termios. PARENB)
+        attrs[2] |= termios.CS8
+        # lflag
+        attrs[3] &= ~(termios.ECHONL | termios.ECHO | termios.ICANON
+                      | termios.ISIG | termios.IEXTEN)
+        termios.tcsetattr(fd, termios.TCSANOW, attrs)
+        # turn off non-blocking
+        fcntl.fcntl(fd, fcntl.F_SETFL, flags_save & ~os.O_NONBLOCK)
+        # read a single keystroke
         try:
-            ret = msvcrt.getch()
+            ret = sys.stdin.read(1)  # returns a single character
+        except KeyboardInterrupt:
+            ret = str()
+        finally:
+            # restore old state
+            termios.tcsetattr(fd, termios.TCSAFLUSH, attrs_save)
+            fcntl.fcntl(fd, fcntl.F_SETFL, flags_save)
+        return ret
+    elif "nt" == os.name:
+        try:
+            # 'getch' by default returns a 'bytes' object;
+            # so an extra conversion is required
+            ret = msvcrt.getch().decode()
         except KeyboardInterrupt:
             ret = str()
         return ret
-
-    fd = sys.stdin.fileno()
-    # save old state
-    flags_save = fcntl.fcntl(fd, fcntl.F_GETFL)
-    attrs_save = termios.tcgetattr(fd)
-    # make raw - the way to do this comes from the termios(3) man page.
-    attrs = list(attrs_save)  # copy the stored version to update
-    # iflag
-    attrs[0] &= ~(termios.IGNBRK | termios.BRKINT | termios.PARMRK
-                  | termios.ISTRIP | termios.INLCR | termios. IGNCR
-                  | termios.ICRNL | termios.IXON)
-    # oflag
-    attrs[1] &= ~termios.OPOST
-    # cflag
-    attrs[2] &= ~(termios.CSIZE | termios. PARENB)
-    attrs[2] |= termios.CS8
-    # lflag
-    attrs[3] &= ~(termios.ECHONL | termios.ECHO | termios.ICANON
-                  | termios.ISIG | termios.IEXTEN)
-    termios.tcsetattr(fd, termios.TCSANOW, attrs)
-    # turn off non-blocking
-    fcntl.fcntl(fd, fcntl.F_SETFL, flags_save & ~os.O_NONBLOCK)
-    # read a single keystroke
-    try:
-        ret = sys.stdin.read(1)  # returns a single character
-    except KeyboardInterrupt:
-        ret = str()
-    finally:
-        # restore old state
-        termios.tcsetattr(fd, termios.TCSAFLUSH, attrs_save)
-        fcntl.fcntl(fd, fcntl.F_SETFL, flags_save)
-    return ret
 # -------------------------------- FUNCTIONS ----------------------------------
