@@ -3,6 +3,15 @@
 Overview
 --------
 
+| **NOTE**
+| The development is halted indefinitely as the author discovered the
+  built-in *CMake* support is so much better in certain IDEs (*Clion*, and at
+  the time of this writing, the upcoming *Visual Studio 2017*) and in the
+  author's opinion it is also much more productive when working with certain
+  IDEs compared with the *old-school* text-editor plus miscellaneous tools
+  approach; feel free to use certain *vi* emulator plugins in those IDEs if you
+  think the default text editing capability is severvely limited.
+
 | Skaff is a Python library for building programming language dependent
   scaffolding of software projects, and a command-line tool that uses this
   library with built-in (CMake-based) C/C++ support.
