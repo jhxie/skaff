@@ -11,10 +11,10 @@ if(CMAKE_BUILD_TYPE MATCHES "Debug")
     target_compile_definitions(main PRIVATE  PRINT_DEBUG_INFO=1)
 endif()
 
-target_link_libraries(main m)
+target_link_libraries(main "m")
 
-# target_link_libraries(timestamp ${CMAKE_THREAD_LIBS_INIT})
+# target_link_libraries(main ${CMAKE_THREAD_LIBS_INIT})
 # install(TARGETS main
 # RUNTIME DESTINATION /usr/bin      COMPONENT Runtime)
 # LIBRARY DESTINATION lib      COMPONENT Runtime
-# ARCHIVE DESTINATION lib/timestamp COMPONENT Development)
+# ARCHIVE DESTINATION lib/main COMPONENT Development)

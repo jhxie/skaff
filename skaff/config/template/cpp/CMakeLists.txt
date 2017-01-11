@@ -7,14 +7,32 @@ cmake_minimum_required(VERSION 3.0.2 FATAL_ERROR)
 # listed below
 project( C CXX)
 
-# the short system name, e.g. "Linux", "FreeBSD" or "Windows"
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    # unfortunately I have not actually tested my code
-    # on windows using mingw/cygwin
-    # so feel free to report any bugs encoutered when you are using them
-    if(NOT MINGW AND NOT CYGWIN)
-        message(FATAL_ERROR
-            "Non-MinGW/Cygwin build system is not supported!")
+if(APPLE)
+    # the short system name, e.g. "FreeBSD", "Darwin", "Linux", or "Windows"
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        message(STATUS "Build Environment: Mac OS X")
+    else()
+        message(STATUS "Build Environment: Mac OS")
+    endif()
+
+elseif(WIN32)
+    if(BORLAND)
+        message(STATUS "Build Environment: Windows/Borland")
+    elseif(CYGWIN)
+        message(STATUS "Build Environment: Windows/Cygwin")
+    elseif(MINGW)
+        message(STATUS "Build Environment: Windows/MinGW")
+    elseif(MSVC)
+        message(STATUS "Build Environment: Windows/MSVC")
+    elseif(WATCOM)
+        message(STATUS "Build Environment: Windows/Watcom")
+    endif()
+
+elseif(UNIX)
+    if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+        message(STATUS "Build Environment: FreeBSD")
+    elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        message(STATUS "Build Environment: Linux")
     endif()
 endif()
 
@@ -68,17 +86,19 @@ set(GCC_PIPE "-pipe")
 # from the cmake documentation: "Adds options to the compiler command line for
 # sources in the current directory and below", so it is used rather than
 # add_definitions(), which seems to be reserved for macros
-add_compile_options(
-    # ${GCC_SANITIZE_ADDRESS_FLAG}
-    # ${GCC_SANITIZE_LEAK_FLAG}
-    # ${GCC_SANITIZE_UNDEFINED_FLAG}
-    ${GCC_WARN_ALL}
-    ${GCC_WARN_EXTRA}
-    ${GCC_WARN_FLOAT_EQUAL_FLAG}
-    ${GCC_WARN_SHADOW_FLAG}
-    ${GCC_WARN_POINTER_ARITH}
-    ${GCC_SIGNED_OVERFLOW_TRAP_FLAG}
-    ${GCC_PIPE})
+if(UNIX)
+    add_compile_options(
+        # ${GCC_SANITIZE_ADDRESS_FLAG}
+        # ${GCC_SANITIZE_LEAK_FLAG}
+        # ${GCC_SANITIZE_UNDEFINED_FLAG}
+        ${GCC_WARN_ALL}
+        ${GCC_WARN_EXTRA}
+        ${GCC_WARN_FLOAT_EQUAL_FLAG}
+        ${GCC_WARN_SHADOW_FLAG}
+        ${GCC_WARN_POINTER_ARITH}
+        ${GCC_SIGNED_OVERFLOW_TRAP_FLAG}
+        ${GCC_PIPE})
+endif()
 # -------------------------------- GCC FLAGS ----------------------------------
 
 # make sure that our source directory is on the current cmake module path so
@@ -100,7 +120,7 @@ endif()
 # common header(s) reside(s) in the include directory in the
 # relative root directory of this project
 include_directories(
-    ${PROJECT_SOURCE_DIR}/include
+    "${PROJECT_SOURCE_DIR}/include"
 )
 
-add_subdirectory(src)
+add_subdirectory("src")
